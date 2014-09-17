@@ -48,8 +48,6 @@
 #include "..\drivers\stm32\usart.h"
 #endif
 
-#include "..\drivers\stm32\led.h"
-
 //
 //Driver entry array for all inline device drivers.
 //Inline device drivers means these drivers' source code is put together
@@ -90,7 +88,6 @@ __DRIVER_ENTRY DriverEntryArray[] = {
 #ifdef __CFG_DRV_USART //Only available under STM32.
 	UsartDrvEntry,
 #endif
-  LEDDrvEntry,
 	NULL               //Terminator of the driver entry array.
 };
 

@@ -24,7 +24,7 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
 //Timer handler's parameter.
@@ -169,15 +169,18 @@ BOOL EventInitialize(__COMMON_OBJECT* lpThis)
 
 	lpEvent = (__EVENT*)lpThis;
 
-	lpPriorityQueue = (__PRIORITY_QUEUE*)
-		ObjectManager.CreateObject(&ObjectManager,NULL,
+	lpPriorityQueue = (__PRIORITY_QUEUE*)ObjectManager.CreateObject(&ObjectManager,NULL,
 		OBJECT_TYPE_PRIORITY_QUEUE);
 	if(NULL == lpPriorityQueue)
+	{
 		goto __TERMINAL;
+	}
 
 	bResult = lpPriorityQueue->Initialize((__COMMON_OBJECT*)lpPriorityQueue);
 	if(!bResult)
+	{
 		goto __TERMINAL;
+	}
 
 	lpEvent->lpWaitingQueue      = lpPriorityQueue;
 	lpEvent->dwEventStatus       = EVENT_STATUS_OCCUPIED;
@@ -192,8 +195,7 @@ __TERMINAL:
 	if(!bResult)
 	{
 		if(NULL != lpPriorityQueue)    //Release the priority queue.
-			ObjectManager.DestroyObject(&ObjectManager,
-			(__COMMON_OBJECT*)lpPriorityQueue);
+			ObjectManager.DestroyObject(&ObjectManager,(__COMMON_OBJECT*)lpPriorityQueue);
 	}
 	return bResult;
 }
@@ -249,7 +251,6 @@ VOID EventUninitialize(__COMMON_OBJECT* lpThis)
 
 	ObjectManager.DestroyObject(&ObjectManager,
 		(__COMMON_OBJECT*)lpPriorityQueue);          //*******CAUTION!!!************
-		//lpPriorityQueue->Uninitialize((__COMMON_OBJECT*)lpPriorityQueue);
 	return;
 }
 
@@ -261,7 +262,6 @@ VOID EventUninitialize(__COMMON_OBJECT* lpThis)
 // 3. Wakes up all kernel thread(s) in it's waiting queue.
 // 4. Returns the previous status.
 //
-
 static DWORD SetEvent(__COMMON_OBJECT* lpThis)
 {
 	DWORD                     dwPreviousStatus     = EVENT_STATUS_OCCUPIED;
@@ -270,7 +270,9 @@ static DWORD SetEvent(__COMMON_OBJECT* lpThis)
 	DWORD                     dwFlags              = 0;
 
 	if(NULL == lpThis)
+	{
 		return dwPreviousStatus;
+	}
 
 	lpEvent = (__EVENT*)lpThis;
 
@@ -448,7 +450,6 @@ static DWORD WaitForEventObjectEx(__COMMON_OBJECT* lpObject,DWORD dwMillionSecon
 //
 //The implementation of ReleaseMutex.
 //
-
 static DWORD ReleaseMutex(__COMMON_OBJECT* lpThis)
 {
 	__KERNEL_THREAD_OBJECT*     lpKernelThread   = NULL;
@@ -547,7 +548,6 @@ static DWORD WaitForMutexObjectEx(__COMMON_OBJECT* lpThis,DWORD dwMillionSecond)
 
 	if(NULL == lpMutex)
 	{
-		BUG();
 		return OBJECT_WAIT_FAILED;
 	}
 	
@@ -1002,14 +1002,16 @@ static DWORD WaitForAll(__COMMON_OBJECT** pObjectArray,
 						DWORD dwMillionSeconds,
 						int* pnSignalObjectIndex)
 {
-	DWORD                         dwRetVal  = OBJECT_WAIT_FAILED;
+	DWORD                         dwRetVal      = OBJECT_WAIT_FAILED;
 	DWORD                         dwFlags;
-	DWORD                         dwTimeToWait = dwMillionSeconds;
+	DWORD                         dwTimeToWait  = dwMillionSeconds;
 	__KERNEL_THREAD_OBJECT*       pKernelThread = NULL;
+	BOOL                          bTryAgain     = FALSE;
 	int                           i;
 
-	__ENTER_CRITICAL_SECTION(NULL,dwFlags);
 	pKernelThread = KernelThreadManager.lpCurrentKernelThread;
+__TRY_AGAIN:
+	__ENTER_CRITICAL_SECTION(NULL,dwFlags);
 	while(TRUE)
 	{
 		if(ObjectsAreSignal(pObjectArray,nObjectNum))
@@ -1041,6 +1043,11 @@ static DWORD WaitForAll(__COMMON_OBJECT** pObjectArray,
 		pKernelThread->dwThreadStatus = KERNEL_THREAD_STATUS_BLOCKED;
 		pKernelThread->dwWaitingStatus &= ~OBJECT_WAIT_MASK;
 		pKernelThread->dwWaitingStatus |= OBJECT_WAIT_WAITING;
+		//Cancel wait for re-enter.
+		if(bTryAgain)
+		{
+			CancelWait(pObjectArray,(__COMMON_OBJECT*)pKernelThread);
+		}
 		//Wait on all non-signal objects.
 		if(!WaitTheseObjects(pObjectArray,nObjectNum,(__COMMON_OBJECT*)pKernelThread))  //Exception case,maybe caused by lack memory.
 		{
@@ -1062,7 +1069,8 @@ static DWORD WaitForAll(__COMMON_OBJECT** pObjectArray,
 				return OBJECT_WAIT_DELETED;
 			case OBJECT_WAIT_RESOURCE:
 				ClearMultipleWaitStatus(pKernelThread);
-				break;  //Go to while(TRUE) clause to check again.
+				bTryAgain = TRUE;
+				goto __TRY_AGAIN;
 			default:
 				BUG();  //Should not occur this case.
 				ClearMultipleWaitStatus(pKernelThread);
@@ -1078,7 +1086,8 @@ static DWORD WaitForAll(__COMMON_OBJECT** pObjectArray,
 			{
 			case OBJECT_WAIT_RESOURCE:
 				ClearMultipleWaitStatus(pKernelThread);
-				break;  //Go to while(TRUE) cluse to check again.
+				bTryAgain = TRUE;
+				goto __TRY_AGAIN;
 			case OBJECT_WAIT_DELETED:
 				*pnSignalObjectIndex = (pKernelThread->dwMultipleWaitFlags & 0x000000FF);
 				ClearMultipleWaitStatus(pKernelThread);

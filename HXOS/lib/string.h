@@ -40,6 +40,12 @@ VOID ConvertToUper(LPSTR);     //Convert the string's characters from low to upe
 
 INT FormString(LPSTR,LPSTR,LPVOID*);
 
+//Memory manipulating functions.
+void* memcpy(void* dst,const void* src,size_t count);
+void* memset(void* dst,int val,size_t count);
+void* memzero(void* dst,size_t count); 
+int memcmp(const void* p1,const void* p2,int count);
+
 //Standard C Lib string operations.
 char* strcat(char* dst,const char* src);
 char* strcpy(char* dst,const char* src);

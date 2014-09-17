@@ -23,7 +23,7 @@
 //
 //************************************************************************
 
-#define VERSION_INFO "    HelloX [Version 1.760,build in 2014/05/10,by Garry.Xin]"
+#define VERSION_INFO "    HelloX [Version 1.760,build in 2014/08/31,by Garry.Xin]"
 #define SLOGAN_INFO  "    HelloX OS,through which you can talk to everything."
 
 //************************************************************************
@@ -52,6 +52,9 @@
 //hardware to keep same as this definition.
 #define SYSTEM_TIME_SLICE  10  //10 million seconds per tick.
 
+//CPU byte alignment,memory allocation will use this value to align block.
+#define SYSTEM_BYTE_ALIGN  4   //4 will work under most platforms.
+
 //************************************************************************
 //
 //  Common system level parameters that can fit any hardware platform.
@@ -75,7 +78,7 @@
 //if the user does not give a stack size in CreateKernelThread calling,then
 //use this value as stack size.
 //
-#define DEFAULT_STACK_SIZE 0x00000400 //16k bytes.
+#define DEFAULT_STACK_SIZE 0x00000800 //2k bytes.
 
 //************************************************************************
 //
@@ -93,6 +96,9 @@
 
 //Include virtual memory management functions in OS.
 //#define __CFG_SYS_VMM
+
+//Include thread heap functions.
+//#define __CFG_SYS_HEAP
 
 //Include bus management code.
 //#define __CFG_SYS_BM
@@ -119,6 +125,8 @@
 //in console object.
 #define __CFG_SYS_CONSOLE
 
+// Logcat service for debug subsystem
+//#define __CFG_SYS_LOGCAT
 
 //************************************************************************
 //
@@ -166,10 +174,10 @@
 //************************************************************************
 
 //Include IPv4 network protocol in OS.
-//#define __CFG_NET_IPV4
+#define __CFG_NET_IPv4
 
 //Include IPv6 network protocol in OS.
-//#define __CFG_NET_IPV6
+//#define __CFG_NET_IPv6
 
 //************************************************************************
 //
@@ -194,3 +202,4 @@
 //************************************************************************
 
 //More compiling switches can be appended here.
+

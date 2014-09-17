@@ -278,7 +278,7 @@ static DWORD fslist(__CMD_PARA_OBJ* pcpo)
 		{
 			continue;
 		}
-		sprintf(Buffer,"  %4c:    %11s    %8X",
+		_hx_sprintf(Buffer,"  %4c:    %11s    %8X",
 			FsGlobalData.FsArray[i].FileSystemIdentifier,
 			FsGlobalData.FsArray[i].VolumeLbl,
 			FsGlobalData.FsArray[i].dwAttribute);
@@ -292,7 +292,7 @@ static VOID PrintDir(FS_FIND_DATA* pFindData)
 {
 	CHAR    Buffer[128];
 
-	sprintf(Buffer,"    %16s    %16d    %4s",
+	_hx_sprintf(Buffer,"    %16s    %16d    %4s",
 		pFindData->cAlternateFileName,
 		pFindData->nFileSizeLow,
 		(pFindData->dwFileAttribute & FILE_ATTR_DIRECTORY) ? "DIR" : "FILE");
@@ -352,7 +352,7 @@ static DWORD cd(__CMD_PARA_OBJ* pCmdObj)
 
 	if(1 == pCmdObj->byParameterNum)  //Print out the current directory.
 	{
-		sprintf(Buffer,"  Current directory is: %s",FsGlobalData.CurrentDir);
+		_hx_sprintf(Buffer,"  Current directory is: %s",FsGlobalData.CurrentDir);
 		PrintLine(Buffer);
 		goto __TERMINAL;
 	}
@@ -384,7 +384,7 @@ static DWORD cd(__CMD_PARA_OBJ* pCmdObj)
 		PrintLine("  Bad target directory name.");
 		goto __TERMINAL;
 	}
-	if(dwFileAttr & FILE_ATTR_DIRECTORY == 0)   //Is not a directory,is a regular file.
+	if((dwFileAttr & FILE_ATTR_DIRECTORY) == 0)   //Is not a directory,is a regular file.
 	{
 		PrintLine("  Please specify a DIRECTORY name,not a file name.");
 		goto __TERMINAL;
@@ -524,7 +524,7 @@ static DWORD vl(__CMD_PARA_OBJ* pCmdObj)
 	}
 	while(dwCounter)
 	{
-		sprintf(Buffer,"Wish it can work,this line number is %d.\r\n",
+		_hx_sprintf(Buffer,"Wish it can work,this line number is %d.\r\n",
 			dwCounter);
 		if(!IOManager.WriteFile((__COMMON_OBJECT*)&IOManager,
 			hFile,
@@ -532,7 +532,7 @@ static DWORD vl(__CMD_PARA_OBJ* pCmdObj)
 			Buffer,
 			&dwWritten))
 		{
-			sprintf(Buffer,"  Can not write to file,The line number is %d.",dwCounter);
+			_hx_sprintf(Buffer,"  Can not write to file,The line number is %d.",dwCounter);
 			PrintLine(Buffer);
 			goto __TERMINAL;
 		}
@@ -614,7 +614,7 @@ static DWORD type(__CMD_PARA_OBJ* pCmdObj)
 
 	GotoHome();
 	ChangeLine();
-	sprintf(Buffer,"%d byte(s) read.",dwTotalRead);
+	_hx_sprintf(Buffer,"%d byte(s) read.",dwTotalRead);
 	PrintLine(Buffer);
 
 __TERMINAL:
@@ -673,7 +673,7 @@ static DWORD use(__CMD_PARA_OBJ* pCmdObj)
 		Info[0] = FsGlobalData.CurrentFs;
 		Info[1] = ':';
 		Info[2] = 0;
-		sprintf(Buffer,"  Current file system is: %s",Info);
+		_hx_sprintf(Buffer,"  Current file system is: %s",Info);
 		PrintLine(Buffer);
 		goto __TERMINAL;
 	}

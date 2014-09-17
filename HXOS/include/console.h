@@ -21,6 +21,11 @@ extern "C" {
 
 //Available when and only when the __CFG_SYS_CONSOLE macro is defined.
 #ifdef __CFG_SYS_CONSOLE
+	
+//Default output usert under STM32 platform.
+#ifdef __STM32__
+#define DEFAULT_USART USART1
+#endif
 
 //CONSOLE object's definition.
 typedef struct tag__CONSOLE{

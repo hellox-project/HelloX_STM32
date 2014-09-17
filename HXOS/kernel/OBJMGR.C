@@ -14,7 +14,7 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
 //
@@ -55,8 +55,8 @@ BEGIN_DECLARE_INIT_DATA(ObjectInitData)
 	DrcbInitialize,DrcbUninitialize)
 #endif
 
-	//OBJECT_INIT_DATA(OBJECT_TYPE_MAILBOX,sizeof(__MAILBOX),
-	//MailBoxInitialize,MailBoxUninitialize)
+	OBJECT_INIT_DATA(OBJECT_TYPE_MAILBOX,sizeof(__MAIL_BOX),
+	MailboxInitialize,MailboxUninitialize)
 
 #ifdef __CFG_SYS_VMM
 	OBJECT_INIT_DATA(OBJECT_TYPE_PAGE_INDEX_MANAGER,sizeof(__PAGE_INDEX_MANAGER),
@@ -68,8 +68,8 @@ BEGIN_DECLARE_INIT_DATA(ObjectInitData)
 	//OBJECT_INIT_DATA(OBJECT_TYPE_COMMON_QUEUE,sizeof(__COMMON_QUEUE),
 	//CommQueueInit,CommQueueUninit)
 
-	//OBJECT_INIT_DATA(OBJECT_TYPE_SEMAPHORE,sizeof(__SEMAPHORE),
-	//SemaphoreInitialize,SemaphoreUninitialize)
+	OBJECT_INIT_DATA(OBJECT_TYPE_SEMAPHORE,sizeof(__SEMAPHORE),
+	SemInitialize,SemUninitialize)
 
 END_DECLARE_INIT_DATA()
 
@@ -114,6 +114,7 @@ static __COMMON_OBJECT* CreateObject(__OBJECT_MANAGER* lpObjectManager,    //Obj
 	DWORD            dwLoop          = 0;
 	BOOL             bFind           = FALSE;
 	DWORD            dwObjectSize    = 0;
+	DWORD            dwFlags;
 
 	if((NULL == lpObjectManager) || (dwType >= MAX_OBJECT_TYPE))  //Parameters valid check.
 	{
@@ -156,6 +157,7 @@ static __COMMON_OBJECT* CreateObject(__OBJECT_MANAGER* lpObjectManager,    //Obj
 	}
 
 	//The following lines initialize the new created object.
+	__ENTER_CRITICAL_SECTION(NULL,dwFlags);
 	pObject->dwObjectID = lpObjectManager->dwCurrentObjectID;
 	lpObjectManager->dwCurrentObjectID ++;     //Now,update the Object Manager's status.
 
@@ -178,6 +180,7 @@ static __COMMON_OBJECT* CreateObject(__OBJECT_MANAGER* lpObjectManager,    //Obj
 			lpObjectManager->ObjectListHeader[dwType].dwMaxObjectID = pObject->dwObjectID;
 		}
 		lpObjectManager->ObjectListHeader[dwType].dwObjectNum ++;
+		__LEAVE_CRITICAL_SECTION(NULL,dwFlags);
 		goto __TERMINAL;
 	}
 
@@ -191,6 +194,7 @@ static __COMMON_OBJECT* CreateObject(__OBJECT_MANAGER* lpObjectManager,    //Obj
 		lpObjectManager->ObjectListHeader[dwType].dwMaxObjectID = pObject->dwObjectID;
 	}
 	lpObjectManager->ObjectListHeader[dwType].dwObjectNum ++;
+	__LEAVE_CRITICAL_SECTION(NULL,dwFlags);
 
 __TERMINAL:
 	return pObject;
@@ -217,13 +221,17 @@ static __COMMON_OBJECT* GetObjectByID(__OBJECT_MANAGER* lpObjectManager,
 	BOOL                     bFind        = FALSE;
 
 	if(NULL == lpObjectManager)  //Parameters check.
+	{
 		goto __TERMINAL;
+	}
 
 	for(dwLoop = 0;dwLoop < MAX_OBJECT_TYPE;dwLoop ++)    //For every object type.
 	{
 		lpListHeader = &(lpObjectManager->ObjectListHeader[dwLoop]);
 		if(lpListHeader->dwMaxObjectID < dwObjectID)  //If the maximal ID smaller than dwObjectID.
+		{
 			continue;
+		}
 
 		lpObject = lpListHeader->lpFirstObject;
 		while(lpObject)    //For every object in this type list.
@@ -236,11 +244,15 @@ static __COMMON_OBJECT* GetObjectByID(__OBJECT_MANAGER* lpObjectManager,
 			lpObject = lpObject->lpNextObject;      //Seek the next object.
 		}
 		if(TRUE == bFind)  //Find the correct object.
+		{
 			break;
+		}
 	}
 
 	if(FALSE == bFind)    //If can not find the correct object,set the return value to NULL.
+	{
 		lpObject = NULL;
+	}
 
 __TERMINAL:
 	return lpObject;
@@ -264,7 +276,9 @@ static __COMMON_OBJECT* GetFirstObjectByType(__OBJECT_MANAGER* lpObjectManager,
 	__COMMON_OBJECT* lpObject = NULL;
 
 	if((NULL == lpObjectManager) || (dwObjectType >= MAX_OBJECT_TYPE))    //Parameter check.
+	{
 		goto __TERMINAL;
+	}
 
 	lpObject = lpObjectManager->ObjectListHeader[dwObjectType].lpFirstObject;
 
@@ -289,7 +303,7 @@ static VOID DestroyObject(__OBJECT_MANAGER* lpObjectManager,
 	__OBJECT_LIST_HEADER*      lpListHeader      = NULL;
 	__COMMON_OBJECT*           lpTmpObject       = NULL;
 	DWORD                      dwMaxID           = 0;
-	//BOOL                       bFind             = FALSE;
+	DWORD                      dwFlags;
 
 	if((NULL == lpObjectManager) || (NULL == lpObject))  //Parameters check.
 	{
@@ -301,9 +315,11 @@ static VOID DestroyObject(__OBJECT_MANAGER* lpObjectManager,
 		goto __TERMINAL;
 	}
 
+	__ENTER_CRITICAL_SECTION(NULL,dwFlags);
 	lpListHeader = &(lpObjectManager->ObjectListHeader[lpObject->dwObjectType]);
 	if(NULL == lpListHeader->lpFirstObject)
 	{
+		__LEAVE_CRITICAL_SECTION(NULL,dwFlags);
 		goto __TERMINAL;
 	}
 	dwMaxID = lpObject->dwObjectID;  //Record the object's ID.
@@ -336,6 +352,7 @@ static VOID DestroyObject(__OBJECT_MANAGER* lpObjectManager,
 			lpListHeader->dwObjectNum --;
 		}
 	}
+	__LEAVE_CRITICAL_SECTION(NULL,dwFlags);
 
 	lpObject->Uninitialize(lpObject);    //Call the Uninitialize routine to de-initialize
 	                                     //the current object.
@@ -343,6 +360,7 @@ static VOID DestroyObject(__OBJECT_MANAGER* lpObjectManager,
 	KMemFree((LPVOID)lpObject,KMEM_SIZE_TYPE_ANY,lpObject->dwObjectSize);  //Free the
 	                                                                       //Object's memory.
 
+	__ENTER_CRITICAL_SECTION(NULL,dwFlags);
 	if(dwMaxID >= lpListHeader->dwMaxObjectID)  //Now,should update the current list's maximal
 		                                        //object ID.
 	{
@@ -357,10 +375,9 @@ static VOID DestroyObject(__OBJECT_MANAGER* lpObjectManager,
 			lpTmpObject = lpTmpObject->lpNextObject;
 		}
 	}
-
 	lpListHeader->dwMaxObjectID = dwMaxID;  //Update the current list's maximal ID value.
+	__LEAVE_CRITICAL_SECTION(NULL,dwFlags);
 
 __TERMINAL:
 	return;
 }
-

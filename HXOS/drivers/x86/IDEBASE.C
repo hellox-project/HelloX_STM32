@@ -20,15 +20,12 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#ifndef __IDEBASE_H__
-#include "IDEBASE.H"
-#endif
-
+#include "idebase.h"
+#include "stdio.h"
 #include "..\arch\x86\BIOS.H"
-#include "..\lib\stdio.h"
 
 /*
 BOOL ReadHDSector(LPVOID lpBuffer,
@@ -269,7 +266,7 @@ BOOL ReadSector(int nHdNum,DWORD dwStartSector,DWORD dwSectorNum,BYTE* pBuffer)
 		return TRUE;
 	}
 	tmp = __inb(0x1f2);
-	sprintf(Buffer,"The error number is : %d",tmp);
+	_hx_sprintf(Buffer,"The error number is : %d",tmp);
 	PrintLine(Buffer);
 	return FALSE;
 }

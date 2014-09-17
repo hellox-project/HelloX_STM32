@@ -98,6 +98,10 @@
 #include "IOMGR.H"
 #endif
 
+#ifndef __DEBUG_H__
+#include "..\include\debug.h"
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -296,6 +300,16 @@ BOOL GetRingBuffElement(HANDLE hRb,DWORD* lpdwElement,DWORD dwMillionSecond);
 BOOL AddRingBuffElement(HANDLE hRb,DWORD dwElement);
 BOOL SetRingBuffLength(HANDLE hRb,DWORD dwNewLength);
 VOID DestroyRingBuff(HANDLE hRb);
+
+//*********************************
+// For log service
+//Author :	Erwin
+//Email  :	erwin.wang@qq.com
+//Date	 :  9th June, 2014
+//********************************
+void Log(char *tag, char *msg);
+void Logk(char *tag, char *msg);
+
 
 #ifdef __cplusplus
 }

@@ -13,7 +13,7 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
 //If and only if the VMM function is enabled,heap function is available since
@@ -579,6 +579,7 @@ __HEAP_MANAGER HeapManager = {
 
 #endif
 
+/*
 //
 //The following are malloc routine's implementation.
 //This routine create a default heap,if not exists yet,then allocate
@@ -639,4 +640,5 @@ VOID free(LPVOID lpMemory)
 	KMemFree(lpMemory,KMEM_SIZE_TYPE_ANY,0);
 #endif
 }
+*/
 

@@ -15,10 +15,10 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#include "..\INCLUDE\comqueue.h"
+#include "comqueue.h"
 
 //
 //Declare static routines in this module(file).

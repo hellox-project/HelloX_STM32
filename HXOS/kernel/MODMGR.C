@@ -14,17 +14,13 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#ifndef __MODMGR_H__
-#include "..\INCLUDE\MODMGR.H"
-#endif
-
-#include "..\INCLUDE\KAPI.H"
-
-#include "..\lib\string.h"
-#include "..\lib\stdio.h"
+#include "MODMGR.H"
+#include "KAPI.H"
+#include "string.h"
+#include "stdio.h"
 
 //Implementation of InitModule routine.
 static BOOL InitModule(__MODULE_INIT InitEntry)
@@ -57,7 +53,7 @@ static BOOL ModMgrInit(__MODULE_MGR* lpThis)
 		bResult = InitModule(KernelModule[i].InitRoutine);
 		if(!bResult)
 		{
-			sprintf(Buffer,"  The module with start address 0x%08X can not be initialized.",
+			_hx_sprintf(Buffer,"  The module with start address 0x%08X can not be initialized.",
 				KernelModule[i].dwLoadAddress);
 			PrintLine(Buffer);
 		}
@@ -208,7 +204,7 @@ static BOOL LoadModule(__EXTERNAL_MOD_DESC* pModDesc)
 		NULL);
 	if(NULL == hFile)  //Can not open the file.
 	{
-		sprintf(Msg,"Can not open the module named %s.",FullPathName);
+		_hx_sprintf(Msg,"Can not open the module named %s.",FullPathName);
 		PrintLine(Msg);
 		goto __TERMINAL;
 	}
@@ -219,7 +215,7 @@ static BOOL LoadModule(__EXTERNAL_MOD_DESC* pModDesc)
 			pStartAddr,
 			&dwReadSize))  //Failed to read.
 		{
-			sprintf(Msg,"Can not read from module file %s.",FullPathName);
+			_hx_sprintf(Msg,"Can not read from module file %s.",FullPathName);
 			PrintLine(Msg);
 			goto __TERMINAL;
 		}
@@ -231,12 +227,12 @@ static BOOL LoadModule(__EXTERNAL_MOD_DESC* pModDesc)
 		bInitResult = initRoutine();
 		if(bInitResult)
 		{
-			sprintf(Msg,"Initialize module %s at 0x%X successful.",FullPathName,pModDesc->StartAddress);
+			_hx_sprintf(Msg,"Initialize module %s at 0x%X successful.",FullPathName,pModDesc->StartAddress);
 			PrintLine(Msg);
 		}
 		else
 		{
-			sprintf(Msg,"Initialize module %s at 0x%X failed.",FullPathName,pModDesc->StartAddress);
+			_hx_sprintf(Msg,"Initialize module %s at 0x%X failed.",FullPathName,pModDesc->StartAddress);
 			PrintLine(Msg);
 		}
 	}
@@ -246,7 +242,7 @@ static BOOL LoadModule(__EXTERNAL_MOD_DESC* pModDesc)
 	if(pModDesc->dwModAttribute & MOD_ATTR_EXE)  //Will be implemented later.
 	{
 	}
-    sprintf(Msg,"Load module %s at 0x%X successful.",FullPathName,pModDesc->StartAddress);
+    _hx_sprintf(Msg,"Load module %s at 0x%X successful.",FullPathName,pModDesc->StartAddress);
 	PrintLine(Msg);
 	bResult = TRUE;
 

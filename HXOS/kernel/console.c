@@ -12,23 +12,68 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\include\StdAfx.h"
+#include "StdAfx.h"
 #endif
-
-#ifndef __CONSOLE_H__
-#include "..\include\console.h"
-#endif
+#include <stm32f10x.h>                       /* STM32F10x definitions         */
+#include "console.h"
 
 //Available when and only when the __CFG_SYS_CONSOLE macro is defined.
 #ifdef __CFG_SYS_CONSOLE
+
+#ifdef __STM32__
+//Low level output routine for STM32.
+static int __SER_PutChar (int c) {
+#ifdef __DBG_ITM
+    ITM_SendChar(c);
+#else
+  while (!(DEFAULT_USART->SR & USART_SR_TXE));
+  DEFAULT_USART->DR = (c & 0x1FF);
+#endif
+  return (c);
+}
+
+//Initialize STM32's default USART.
+static void __Init_Default_Usart()
+{
+	  int i = 0;
+	
+	  RCC->APB2ENR |=  (   1UL <<  0);         /* enable clock Alternate Function */
+		AFIO->MAPR   &= ~(   1UL <<  2);         /* clear USART1 remap              */
+		
+		RCC->APB2ENR |=  (   1UL <<  2);         /* enable GPIOA clock              */
+		GPIOA->CRH   &= ~(0xFFUL <<  4);         /* clear PA9, PA10                 */
+		GPIOA->CRH   |=  (0x0BUL <<  4);         /* USART1 Tx (PA9) output push-pull*/
+		GPIOA->CRH   |=  (0x04UL <<  8);         /* USART1 Rx (PA10) input floating */
+		
+		RCC->APB2ENR |=  (   1UL << 14);         /* enable USART1 clock             */
+		
+		/* 115200 baud, 8 data bits, 1 stop bit, no flow control */
+		DEFAULT_USART->CR1   = 0x002C;                  /* enable RX, TX                   */
+		
+		//Disable all interrupts one by one.
+		DEFAULT_USART->CR1  &= (~256);                  //Disable PEIE
+		DEFAULT_USART->CR1  &= (~128);                  //Disable TXEIE
+		DEFAULT_USART->CR1  &= (~64);                   //Disable TC interrupt.
+		DEFAULT_USART->CR1  &= (~32);                   //Disable RXNE interrupt.
+		DEFAULT_USART->CR1  &= (~16);                   //Disable IDLEIE.
+		
+		DEFAULT_USART->CR2   = 0x0000;
+		DEFAULT_USART->CR3   = 0x0000;                  /* no flow control                 */
+		DEFAULT_USART->BRR   = 0x0271;
+		for (i = 0; i < 0x1000; i++) __NOP();    /* avoid unwanted output           */
+		DEFAULT_USART->CR1  |= 0x2000;                    /* enable USART                   */
+}
+#endif //__STM32__
 
 //Low level output routine,which is used in interrupt context or OS initialization
 //phase.
 static void __LL_Output(UCHAR bt)
 {
+#ifdef __I386__
 	DWORD dwCount1 = 1024;
 	DWORD dwCount2 = 3;
 	UCHAR ctrlReg  = 0;    //Used to save and restore temporary control register of COM interface.
+#endif //__I386__
 
 	//Check if the low level output function is initialized,initialize it if not.
 	if(!Console.bLLInitialized)
@@ -39,12 +84,14 @@ static void __LL_Output(UCHAR bt)
          __outb(0x00,CON_DEF_COMBASE + 1);  //Set high byte of baud rate divisor.
          __outb(0x07,CON_DEF_COMBASE + 3);  //Reset DLAB bit,and set data bit to 8,one stop bit,without parity check.
          __outb(0x00,CON_DEF_COMBASE + 1);  //Disable all interrupts.
-#else
-		 //Other platform's low level initialization code should be put here.
-#endif
+#elif defined(__STM32__)
+		 //Initialize STM32's default USART port,which is defined in console.h file,default is USART1.
+		 __Init_Default_Usart();
+#endif  //__I386__
 		 Console.bLLInitialized = TRUE;      //Indicate low level function is initialized.
 	}
 
+#ifdef __I386__
 	//Try to output one byte.Please note that the output operation may fail,if the hardware is not ready for
 	//sending for too long time.Control register of COM interface should be saved before sending,and restore
 	//it after sending.
@@ -64,6 +111,10 @@ static void __LL_Output(UCHAR bt)
 		dwCount1 = 1024;
 	}
 	__outb(ctrlReg,CON_DEF_COMBASE + 1);  //Restore previous control register.
+#elif defined(__STM32__)
+	//Call USART's low level output function.
+	__SER_PutChar(bt);
+#endif  //__I386__
 }
 
 //Console reading thread,it reads console input message and deliver
@@ -91,7 +142,7 @@ static DWORD ConReadThread(LPVOID pData)
 				NULL); 
 		}
 	}
-	return 0;
+	//return 0;
 }
 
 //Initialization routine of Console object.
@@ -220,6 +271,7 @@ static VOID ConPrintCh(unsigned short ch)
 	if(IN_INTERRUPT() || IN_SYSINITIALIZATION())
 	{
 		__LL_Output(chTarg);
+		return;
 	}
 
 	if(!Console.bInitialized)
@@ -322,7 +374,7 @@ static VOID ConPrintLine(const char* pszStr)
 //Input operation routines of console.
 static int getch(void)
 {
-	char   ch    = -1;
+	char   ch    = 0;
 
 	if(!Console.bInitialized)
 	{

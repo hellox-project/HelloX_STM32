@@ -175,11 +175,9 @@ static DWORD CommandParser(LPSTR lpszCmdLine)
 	DWORD                  dwRetVal          = SYS_DIAG_CMD_PARSER_INVALID;
 	DWORD                  dwIndex           = 0;
 	__CMD_PARA_OBJ*        lpCmdParamObj     = NULL;
-	
+
 	if((NULL == lpszCmdLine) || (0 == lpszCmdLine[0]))    //Parameter check
-	{
 		return SYS_DIAG_CMD_PARSER_INVALID;
-	}
 
 	lpCmdParamObj = FormParameterObj(lpszCmdLine);
 	if(NULL == lpCmdParamObj)    //Can not form a valid command parameter object.
@@ -191,7 +189,7 @@ static DWORD CommandParser(LPSTR lpszCmdLine)
 	{
 		return SYS_DIAG_CMD_PARSER_FAILED;
 	}
-	
+
 	//
 	//The following code looks up the command map,to find the correct handler that handle
 	//the current command.If find,then calls the handler,else,return SYS_DIAG_CMD_PARSER_INVALID
@@ -228,7 +226,6 @@ static DWORD CommandParser(LPSTR lpszCmdLine)
 
 static DWORD exit(__CMD_PARA_OBJ* lpCmdObj)
 {
-	PrintLine("    Exit sysdiag program.\r\n");
 	return SYS_DIAG_CMD_PARSER_TERMINAL;
 }
 

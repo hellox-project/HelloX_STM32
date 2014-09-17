@@ -13,26 +13,17 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#ifndef __SYSCALL_H__
-#include "..\INCLUDE\SYSCALL.H"
-#endif
-
-#ifndef __KAPI_H__
-#include "..\INCLUDE\KAPI.H"
-#endif
-
-#ifndef __MODMGR_H__
-#include "..\INCLUDE\MODMGR.H"
-#endif
+#include "SYSCALL.H"
+#include "KAPI.H"
+#include "MODMGR.H"
+#include "stdio.h"
 
 #ifdef __I386__
 #include "..\arch\x86\bios.h"
 #endif
-
-#include "..\lib\stdio.h"
 
 //A static array to contain system call range.
 static __SYSCALL_RANGE SyscallRange[SYSCALL_RANGE_NUM] = {0};

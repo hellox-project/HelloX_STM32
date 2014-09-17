@@ -52,11 +52,10 @@ extern "C" {
 #define PDE_FLAG_USER2      0x400
 #define PDE_FLAG_USER3      0x800
 
-#define U32                 unsigned long
-#define __PTE               U32                      //Page table entry for Intel's IA32.
-#define __GPDE              U32
-#define __MPDE              U32
-#define __PDE               U32                      //Page directory entry for Intel's IA32.
+#define __PTE               __U32                      //Page table entry for Intel's IA32.
+#define __GPDE              __U32
+#define __MPDE              __U32
+#define __PDE               __U32                      //Page directory entry for Intel's IA32.
 
 #define NULL_PDE            0
 #define NULL_PTE            0

@@ -30,7 +30,7 @@ static void DumpFileSystem(__NTFS_FILE_SYSTEM* pFileSystem)
 
 	PrintLine("  The file system's key information as follows:");
     PrintLine("  -----------------------------------");
-    sprintf(buff,"  Serial number    : %X%X%X%X-%X%X%X%X",
+    _hx_sprintf(buff,"  Serial number    : %X%X%X%X-%X%X%X%X",
 		pFileSystem->serialNumber[0],
         pFileSystem->serialNumber[1],
         pFileSystem->serialNumber[2],
@@ -40,21 +40,21 @@ static void DumpFileSystem(__NTFS_FILE_SYSTEM* pFileSystem)
         pFileSystem->serialNumber[6],
         pFileSystem->serialNumber[7]);
 	PrintLine(buff);
-    sprintf(buff,"  Bytes per sector : %d",pFileSystem->bytesPerSector);
+    _hx_sprintf(buff,"  Bytes per sector : %d",pFileSystem->bytesPerSector);
 	PrintLine(buff);
-    sprintf(buff,"  Sector per clus  : %d",pFileSystem->sectorPerClus);
+    _hx_sprintf(buff,"  Sector per clus  : %d",pFileSystem->sectorPerClus);
 	PrintLine(buff);
-    sprintf(buff,"  Hidden sector    : %d",pFileSystem->hiddenSector);
+    _hx_sprintf(buff,"  Hidden sector    : %d",pFileSystem->hiddenSector);
 	PrintLine(buff);
-    sprintf(buff,"  Total sector num : %d",pFileSystem->totalSectorLow);
+    _hx_sprintf(buff,"  Total sector num : %d",pFileSystem->totalSectorLow);
 	PrintLine(buff);
-    sprintf(buff,"  MFT start clust  : %d",pFileSystem->mftStartClusLow);
+    _hx_sprintf(buff,"  MFT start clust  : %d",pFileSystem->mftStartClusLow);
 	PrintLine(buff);
-    sprintf(buff,"  Cluster size     : %d",pFileSystem->clusSize);
+    _hx_sprintf(buff,"  Cluster size     : %d",pFileSystem->clusSize);
 	PrintLine(buff);
-    sprintf(buff,"  File record size : %d",pFileSystem->FileRecordSize);
+    _hx_sprintf(buff,"  File record size : %d",pFileSystem->FileRecordSize);
 	PrintLine(buff);
-    sprintf(buff,"  Dir record size  : %d",pFileSystem->DirBlockSize);
+    _hx_sprintf(buff,"  Dir record size  : %d",pFileSystem->DirBlockSize);
 	PrintLine(buff);
     //DumpFileObject(pFileSystem->pMFT);
     //DumpFileObject(pFileSystem->pRootDir);

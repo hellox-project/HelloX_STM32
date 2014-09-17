@@ -98,8 +98,6 @@ static CHAR GetUsartByte(DWORD usartBase)
   Write character to Serial Port
  *----------------------------------------------------------------------------*/
 int SER_PutChar (int c) {
-
-
 #ifdef __DBG_ITM
     ITM_SendChar(c);
 #else
@@ -108,7 +106,6 @@ int SER_PutChar (int c) {
 #endif
   return (c);
 }
-
 
 //For debugging.
 void SER_PutString(CHAR* pszString)

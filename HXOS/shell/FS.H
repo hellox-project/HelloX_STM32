@@ -15,7 +15,6 @@
 
 #ifndef __FS_H__
 #define __FS_H__
-#endif
 
 //Main entry of fs application.
 DWORD fsEntry(LPVOID);
@@ -26,3 +25,4 @@ DWORD fsEntry(LPVOID);
 #define FS_CMD_FAILED       0x00000004
 #define FS_CMD_SUCCESS      0x00000008
 
+#endif //__FS_H__

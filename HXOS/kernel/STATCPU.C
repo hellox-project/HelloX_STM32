@@ -14,14 +14,11 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#ifndef __STATCPU_H__
-#include "..\INCLUDE\STATCPU.H"
-#endif
-
-#include "..\lib\stdio.h"
+#include "STATCPU.H"
+#include "stdio.h"
 
 
 __THREAD_HOOK_ROUTINE  lpCreateHook        = NULL;

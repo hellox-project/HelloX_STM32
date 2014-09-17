@@ -22,7 +22,7 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
 //
@@ -233,7 +233,9 @@ VOID KernelThreadWrapper(__COMMON_OBJECT* lpKThread)
 		NULL);
 	while(lpWaitingThread)
 	{
-		lpWaitingThread->dwThreadStatus = KERNEL_THREAD_STATUS_READY;
+		lpWaitingThread->dwThreadStatus   = KERNEL_THREAD_STATUS_READY;
+		lpWaitingThread->dwWaitingStatus &= ~OBJECT_WAIT_MASK;
+		lpWaitingThread->dwWaitingStatus |= OBJECT_WAIT_RESOURCE;
 		KernelThreadManager.AddReadyKernelThread(
 			(__COMMON_OBJECT*)&KernelThreadManager,
 			lpWaitingThread);  //Add to ready queue.

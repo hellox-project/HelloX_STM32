@@ -14,10 +14,10 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#include "..\lib\stdio.h"
+#include "stdio.h"
 
 //Page Index function is available only if the VMM function is enabled.
 #ifdef __CFG_SYS_VMM

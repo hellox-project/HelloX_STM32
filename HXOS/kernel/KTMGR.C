@@ -18,10 +18,10 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#include "..\lib\stdio.h"
+#include "stdio.h"
 
 //
 //Pre-declare for extern global routines,these routines may

@@ -20,6 +20,8 @@
 extern "C" {
 #endif
 
+#if (defined(__CFG_SYS_HEAP) && defined(__CFG_SYS_VMM))  //Only available when VMM and HEAP are defined.
+
 //
 //The definition of Virtual Area Node,which is used to manage virtual areas
 //allocated by the heap manager for certain heap object.
@@ -116,11 +118,13 @@ extern __HEAP_MANAGER HeapManager;
 //The malloc and free routines are standard C library routine,
 //we also implement these routines in Hello China.
 //
-LPVOID malloc(DWORD dwSize);    //Allocate a block of memory from heap.
-VOID free(LPVOID);              //Release a block of memory.
+//LPVOID malloc(DWORD dwSize);    //Allocate a block of memory from heap.
+//VOID free(LPVOID);              //Release a block of memory.
 
 VOID PrintHeapInfo(__KERNEL_THREAD_OBJECT*);
 VOID DumpFreeList(__HEAP_OBJECT*);
+
+#endif  //defined(__CFG_SYS_VMM) && defined(__CFG_SYS_HEAP)
 
 #ifdef __cplusplus
 }

@@ -21,6 +21,50 @@
 #include "string.h"
 #endif
 
+//------------------------------------------------------------------------
+// Memory manipulating functions,memcpy,memset,...
+//------------------------------------------------------------------------
+
+void * memcpy (
+        void * dst,
+        const void * src,
+        size_t count
+        )
+{
+        void * ret = dst;
+
+        //copy from lower addresses to higher addresses
+        while (count--) {
+                *(char *)dst = *(char *)src;
+                dst = (char *)dst + 1;
+                src = (char *)src + 1;
+        }
+        return(ret);
+}
+
+void * memset (
+        void *dst,
+        int val,
+        size_t count
+        )
+{
+        void *start = dst;
+
+        while (count--) {
+                *(char *)dst = (char)val;
+                dst = (char *)dst + 1;
+        }
+
+        return(start);
+}
+
+void * memzero(
+		void* dst,
+		size_t count)
+{
+	return memset(dst,0,count);
+}
+
 //
 //String operation functions implementation.
 //
@@ -328,85 +372,6 @@ INT FormString(LPSTR lpszBuff,LPSTR lpszFmt,LPVOID* lppParam)
 	return (lpszTmp - lpszBuff);
 }
 
-
-/***
-*long atol(char *nptr) - Convert string to long
-*
-*Purpose:
-*       Converts ASCII string pointed to by nptr to binary.
-*       Overflow is not detected.
-*
-*Entry:
-*       nptr = ptr to string to convert
-*
-*Exit:
-*       return long int value of the string
-*
-*Exceptions:
-*       None - overflow is not detected.
-*
-*******************************************************************************/
-
-#define isspace(ch) ((int)' ' == (ch))
-#define isdigit(ch) (((ch) >= '0') && ((ch) <= '9'))
-
-long atol(
-        const char *nptr
-        )
-{
-        int c;              /* current char */
-        long total;         /* current total */
-        int sign;           /* if '-', then negative, otherwise positive */
-
-        /* skip whitespace */
-        while ( isspace((int)(unsigned char)*nptr) )
-            ++nptr;
-
-        c = (int)(unsigned char)*nptr++;
-        sign = c;           /* save sign indication */
-        if (c == '-' || c == '+')
-            c = (int)(unsigned char)*nptr++;    /* skip sign */
-
-        total = 0;
-
-        while (isdigit(c)) {
-            total = 10 * total + (c - '0');     /* accumulate digit */
-            c = (int)(unsigned char)*nptr++;    /* get next char */
-        }
-
-        if (sign == '-')
-            return -total;
-        else
-            return total;   /* return result, negated if necessary */
-}
-
-
-/***
-*int atoi(char *nptr) - Convert string to long
-*
-*Purpose:
-*       Converts ASCII string pointed to by nptr to binary.
-*       Overflow is not detected.  Because of this, we can just use
-*       atol().
-*
-*Entry:
-*       nptr = ptr to string to convert
-*
-*Exit:
-*       return int value of the string
-*
-*Exceptions:
-*       None - overflow is not detected.
-*
-*******************************************************************************/
-
-int atoi(
-        const char *nptr
-        )
-{
-        return (int)atol(nptr);
-}
-
 //A helper routine used to convert a string from lowercase to capital.
 //The string should be terminated by a zero,i.e,a C string.
 VOID ToCapital(LPSTR lpszString)
@@ -424,4 +389,63 @@ VOID ToCapital(LPSTR lpszString)
 			lpszString[nIndex] += 'A' - 'a';
 		}
 	}
+}
+
+//string comparation code.
+int strcmp (
+        const char * src,
+        const char * dst
+        )
+{
+        int ret = 0 ;
+        while( ! (ret = *(unsigned char *)src - *(unsigned char *)dst) && *dst)
+                ++src, ++dst;  
+        if ( ret < 0 )
+                ret = -1 ;
+        else if ( ret > 0 )
+                ret = 1 ;
+        return( ret );
+}
+
+int memcmp(const void *buffer1,const void *buffer2,int count)
+{
+   if (!count)
+      return(0);
+   while ( --count && *(char *)buffer1 == *(char *)buffer2)
+   {
+      buffer1 = (char *)buffer1 + 1;
+        buffer2 = (char *)buffer2 + 1;
+   }
+   return( *((unsigned char *)buffer1) - *((unsigned char *)buffer2) );
+}
+
+int strlen(const char * s)
+{
+   int i;
+   for (i = 0; s[i]; i++) ;
+   return i;
+}
+
+char *strcpy(char * dst, const char * src)
+{
+    char * cp = dst;
+    while( *cp++ = *src++ )
+            ;               /* Copy src over dst */
+    return( dst );
+}
+
+char * strcat (
+        char * dst,
+        const char * src
+        )
+{
+        char * cp = dst;
+ 
+        while( *cp )
+                cp++;                   /* find end of dst */
+ 
+        while( *cp++ = *src++ ) ;       /* Copy src to end of dst */
+ 
+        return( dst );                  /* return dst */
+ 
 }

@@ -25,18 +25,12 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#ifndef __SYSCALL_H__
-#include "..\INCLUDE\SYSCALL.H"
-#endif
-
-#ifdef __I386__
+#include "SYSCALL.H"
+#include "stdio.h"
 #include "..\arch\x86\bios.h"
-#endif
-
-#include "..\lib\stdio.h"
 
 
 __PERF_RECORDER  TimerIntPr = {
@@ -540,9 +534,9 @@ static VOID DefaultIntHandler(LPVOID lpEsp,UCHAR ucVector)
 	dwTotalNum ++;    //Record this unhandled exception or interrupt.
 
 	PrintLine("  Unhandled interrupt.");  //Print out this message.
-	sprintf(strBuffer,"  Interrupt number = %d.",ucVector);
+	_hx_sprintf(strBuffer,"  Interrupt number = %d.",ucVector);
 	PrintLine(strBuffer);
-	sprintf(strBuffer,"  Total unhandled interrupt times = %d.",dwTotalNum);
+	_hx_sprintf(strBuffer,"  Total unhandled interrupt times = %d.",dwTotalNum);
 	PrintLine(strBuffer);
 	return;
 }
@@ -606,7 +600,7 @@ __RETFROMINT:
 	else
 	{
 		BUG();  //In current version(V1.5),interrupt nesting is not supportted yet.
-		sprintf(strError,"The BUG information(vector,nestlevel):%d,%d",
+		_hx_sprintf(strError,"The BUG information(vector,nestlevel):%d,%d",
 			ucVector,
 			lpSystem->ucIntNestLevel);
 		PrintLine(strError);
@@ -626,7 +620,7 @@ static VOID DefaultExcepHandler(LPVOID pESP,UCHAR ucVector)
 #ifdef __I386__
 	SwitchToText();
 #endif
-	sprintf(Buff,"  Unknown exception occured: excep number = %d",ucVector);
+	_hx_sprintf(Buff,"  Unknown exception occured: excep number = %d",ucVector);
 	PrintLine(Buff);
 	totalExcepNum ++;
 	if(totalExcepNum >= 1)  //Too many exception,maybe in deadlock,so halt the system.
@@ -635,9 +629,9 @@ static VOID DefaultExcepHandler(LPVOID pESP,UCHAR ucVector)
 		PrintLine("  Please power off the system and reboot it.");
 		if(pKernelThread)
 		{
-			sprintf(Buff,"  Exception thread ID = %d.",pKernelThread->dwThreadID);
+			_hx_sprintf(Buff,"  Exception thread ID = %d.",pKernelThread->dwThreadID);
 			PrintLine(Buff);
-			sprintf(Buff,"  Exception thread name : %s.",pKernelThread->KernelThreadName);
+			_hx_sprintf(Buff,"  Exception thread name : %s.",pKernelThread->KernelThreadName);
 			PrintLine(Buff);
 			//Get the exception address try to access.
 #ifdef __I386__
@@ -647,13 +641,13 @@ static VOID DefaultExcepHandler(LPVOID pESP,UCHAR ucVector)
 				mov excepAddr,eax
 				pop eax
 			}
-			sprintf(Buff,"  Exception memaddr = 0x%X.",excepAddr);
+			_hx_sprintf(Buff,"  Exception memaddr = 0x%X.",excepAddr);
 			PrintLine(Buff);
-			sprintf(Buff,"  EIP    = 0x%X.",*((DWORD*)pESP + 8));
+			_hx_sprintf(Buff,"  EIP    = 0x%X.",*((DWORD*)pESP + 8));
 			PrintLine(Buff);
-			sprintf(Buff,"  CS     = 0x%X.",*((DWORD*)pESP + 9));
+			_hx_sprintf(Buff,"  CS     = 0x%X.",*((DWORD*)pESP + 9));
 			PrintLine(Buff);
-			sprintf(Buff,"  EFlags = 0x%X.",*((DWORD*)pESP + 10));
+			_hx_sprintf(Buff,"  EFlags = 0x%X.",*((DWORD*)pESP + 10));
 			PrintLine(Buff);
 #else
 #endif

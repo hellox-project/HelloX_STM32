@@ -33,6 +33,7 @@
 #include "..\INCLUDE\MODMGR.H"
 #include "..\include\console.h"
 #include "..\lib\stdio.h"
+#include "../include/debug.h"
 
 //Host name array of the system.
 #define MAX_HOSTNAME_LEN  16
@@ -53,80 +54,88 @@ __CMD_PARA_OBJ* FormParameterObj(LPSTR pszCmd)
 {
 	__CMD_PARA_OBJ*     pObjBuffer = NULL;    //Local variables.
 	__CMD_PARA_OBJ*     pBasePtr   = NULL;
-	__CMD_PARA_OBJ*     pTmpObj    = NULL;
-	DWORD               dwCounter  = 0x0000;
-	DWORD               index      = 0x0000;
+	__CMD_PARA_OBJ*     pPrevObj   = NULL;
+	DWORD               dwCounter  = 0;
 
 	if(NULL == pszCmd)    //Parameter check.
+	{
 		return NULL;
-
-	pObjBuffer = (__CMD_PARA_OBJ*)KMemAlloc(1024,KMEM_SIZE_TYPE_ANY);
-	if(NULL == pObjBuffer)
-		goto __TERMINAL;
-
-	pBasePtr = pObjBuffer;
-	memzero(pBasePtr,1024);
+	}
 
 	while(*pszCmd)
 	{
 		if(' ' == *pszCmd)
 		{
-			pszCmd ++;
+			pszCmd ++;  //Skip space.
 			continue; 
-		}                                 //Filter the space.
-		
+		}
+
 		if(('-' == *pszCmd) || ('/' == *pszCmd))
 		{
 			pszCmd ++;
+			if(0 == *pszCmd)
+			{
+				break;
+			}
+			//Allocate a command parameter object to contain the command label.
+			pObjBuffer = (__CMD_PARA_OBJ*)KMemAlloc(sizeof(__CMD_PARA_OBJ),KMEM_SIZE_TYPE_ANY);
+			if(NULL == pObjBuffer)
+			{
+				break;
+			}
+			memzero(pObjBuffer,sizeof(__CMD_PARA_OBJ));
+			if(NULL == pPrevObj)  //First command parameter object,save it.
+			{
+				pPrevObj = pObjBuffer;
+				pBasePtr = pObjBuffer;
+			}
+			else
+			{
+				pPrevObj->pNext = pObjBuffer;  //Link the buffer to list.
+				pPrevObj        = pObjBuffer;
+			}
 			pObjBuffer->byFunctionLabel = *pszCmd;
 			pszCmd ++;                    //Skip the function label byte.
 			continue;
 		}
+		//Allocate a new command parameter object.
+		pObjBuffer = (__CMD_PARA_OBJ*)KMemAlloc(sizeof(__CMD_PARA_OBJ),KMEM_SIZE_TYPE_ANY);
+		if(NULL == pObjBuffer)
+		{
+			break;
+		}
+		memzero(pObjBuffer,sizeof(__CMD_PARA_OBJ));
+		if(NULL == pPrevObj)  //First command parameter object,save it.
+		{
+			pPrevObj = pObjBuffer;
+			pBasePtr = pObjBuffer;
+		}
 		else
 		{
-			/*while((' ' != *pszCmd) && *pszCmd)  //To find the first parameter.
+			pPrevObj->pNext = pObjBuffer;  //Link to list.
+			pPrevObj        = pObjBuffer;
+		}
+		while((' ' != *pszCmd) && ('-' != *pszCmd) && ('/' != *pszCmd) && (*pszCmd))
+		{
+			while((' ' != *pszCmd) && (*pszCmd) && (dwCounter <= CMD_PARAMETER_LEN))
 			{
+				pObjBuffer->Parameter[0][dwCounter] = *pszCmd;
+				pszCmd ++;
+				dwCounter ++;
+			}
+			pObjBuffer->Parameter[0][dwCounter] = 0;  //Set the terminal flag.
+			pObjBuffer->byParameterNum          = 1;
+			dwCounter = 0;
+
+			while((' ' != *pszCmd) && (*pszCmd))
+			{
+				//Skip the no space characters if the parameter's length 
+				//is longer than the const CMD_PARAMETER_LEN.
 				pszCmd ++;
 			}
-			if(!*pszCmd)
-				break;
-			while(' ' == *pszCmd)    //Filter the space.
-				pszCmd ++;
-
-			if(!*pszCmd)
-				break;*/
-			index = 0x0000;
-			while(('-' != *pszCmd) && ('/' != *pszCmd) && *pszCmd)
-			{
-				while((' ' != *pszCmd) && (*pszCmd) && (dwCounter <= CMD_PARAMETER_LEN))
-				{
-					pObjBuffer->Parameter[index][dwCounter] = *pszCmd;
-					pszCmd ++;
-					dwCounter ++;
-				}
-				pObjBuffer->Parameter[index][dwCounter] = 0x00;  //Set the terminal flag.
-				index ++;               //Ready to copy the next parameter to parameter object.
-				dwCounter = 0;
-
-				if(!*pszCmd)
-					break;
-				while(' ' != *pszCmd)
-					pszCmd ++;          //Skip the no space characters if the parameter's length
-				                        //is longer than the const CMD_PARAMETER_LEN.
-				while(' ' == *pszCmd)
-					pszCmd ++;          //Skip the space character.
-			}
-
-			pTmpObj = pObjBuffer;       //Update the current parameter object.
-			pObjBuffer = (__CMD_PARA_OBJ*)NextParaAddr(pTmpObj,index);
-			pTmpObj->byParameterNum = (BYTE)(index);
-			if(!*pszCmd)
-				break;
-			pTmpObj->pNext = pObjBuffer;
 		}
 	}
 
-__TERMINAL:
 	return pBasePtr;
 }
 
@@ -135,11 +144,18 @@ __TERMINAL:
 //
 VOID ReleaseParameterObj(__CMD_PARA_OBJ* lpParamObj)
 {
-	if(NULL == lpParamObj)  //Parameter check.
-		return;
+	__CMD_PARA_OBJ*     pNext = NULL;
 
-	KMemFree((LPVOID)lpParamObj,KMEM_SIZE_TYPE_ANY,0);  //Release the memory.
-	return;
+	if(NULL == lpParamObj)  //Parameter check.
+	{
+		return;
+	}
+
+	do{
+		pNext = lpParamObj->pNext;
+		KMemFree((LPVOID)lpParamObj,KMEM_SIZE_TYPE_ANY,0);
+		lpParamObj = pNext;
+	}while(pNext);
 }
 
 //The following handlers are moved to shell1.cpp.
@@ -149,7 +165,7 @@ extern VOID SysInfoHandler(LPSTR);      //Handles the sysinfo command.
 extern VOID HlpHandler(LPSTR);
 extern VOID LoadappHandler(LPSTR);
 extern VOID GUIHandler(LPSTR);          //Handler for GUI command,resides in
-                                        //shell2.cpp file.
+//shell2.cpp file.
 
 static VOID CpuHandler(LPSTR);
 static VOID SptHandler(LPSTR);
@@ -161,6 +177,7 @@ static VOID SysDiagApp(LPSTR);
 static VOID Reboot(LPSTR);
 static VOID Poweroff(LPSTR);
 static VOID ComDebug(LPSTR);
+static VOID DebugHandler(LPSTR);
 
 //Internal command handler array.
 __CMD_OBJ  CmdObj[] = {
@@ -182,6 +199,7 @@ __CMD_OBJ  CmdObj[] = {
 	{"cls"      ,    ClsHandler},
 	//You can add your specific command and it's handler here.
 	//{'yourcmd',    CmdHandler},
+	{"debug"    ,    DebugHandler},
 
 	//The last element of this array must be NULL.
 	{NULL       ,    NULL}
@@ -280,7 +298,9 @@ static VOID SysNameHandler(LPSTR pszSysName)
 	StrCpy(pCmdObj->Parameter[0],&HostName[0]);
 __TERMINAL:
 	if(NULL != pCmdObj)
-		KMemFree((LPVOID)pCmdObj,KMEM_SIZE_TYPE_ANY,0);
+	{
+		ReleaseParameterObj(pCmdObj);
+	}
 	return;
 }
 
@@ -304,17 +324,20 @@ VOID IoCtrlApp(LPSTR pstr)
 		return;
 	}
 
+    //Set the current focus thread to IO control application.
 	DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
-		(__COMMON_OBJECT*)lpIoCtrlThread);    //Set the current focus to IO control
-	                                          //application.
+		(__COMMON_OBJECT*)lpIoCtrlThread);
 
-	lpIoCtrlThread->WaitForThisObject((__COMMON_OBJECT*)lpIoCtrlThread);  //Block the shell
-	                                                                      //thread until
-	                                                                      //the IO control
-	                                                                      //application end.
+	//Block the shell thread untile IoCtrlThread over.
+	lpIoCtrlThread->WaitForThisObject((__COMMON_OBJECT*)lpIoCtrlThread);
+
+	//Reset the current focus kernel thread to shell.
+	DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
+		NULL);
+
+	//Destroy the application thread object.
 	KernelThreadManager.DestroyKernelThread((__COMMON_OBJECT*)&KernelThreadManager,
-		(__COMMON_OBJECT*)lpIoCtrlThread);  //Destroy the thread object.
-
+		(__COMMON_OBJECT*)lpIoCtrlThread);
 }
 
 //
@@ -339,12 +362,20 @@ VOID SysDiagApp(LPSTR pstr)
 		return;
 	}
 
+	//Set current focus kernel thread to diagnostic thread.
 	DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
 		(__COMMON_OBJECT*)lpSysDiagThread);
 
+	//Block current shell thread to wait the diagnostic application execute over.
 	lpSysDiagThread->WaitForThisObject((__COMMON_OBJECT*)lpSysDiagThread);
+
+	//Reset the current focus thread.
+	DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
+		NULL);
+
+	//Destroy the diagnostic thread object.
 	KernelThreadManager.DestroyKernelThread((__COMMON_OBJECT*)&KernelThreadManager,
-		(__COMMON_OBJECT*)lpSysDiagThread);  //Destroy the kernel thread object.
+		(__COMMON_OBJECT*)lpSysDiagThread);
 }
 
 //Entry point of reboot.
@@ -367,7 +398,7 @@ VOID Poweroff(LPSTR pstr)
 //Handler for 'runtime' command.
 VOID RunTimeHandler(LPSTR pstr)
 {
-	CHAR  Buffer[192];
+	char  Buffer[192];
 	DWORD week = 0,day = 0,hour = 0,minute = 0,second = 0;
 
 	second = System.GetSysTick(NULL);  //Get system tick counter.
@@ -397,7 +428,7 @@ VOID RunTimeHandler(LPSTR pstr)
 	}
 
 	//Show out the result.
-	sprintf(Buffer,"System has running %d week(s), %d day(s), %d hour(s), %d minute(s), %d second(s).",
+	_hx_sprintf(Buffer,"System has running %d week(s), %d day(s), %d hour(s), %d minute(s), %d second(s).",
 		week,day,hour,minute,second);
 	PrintLine(Buffer);
 }
@@ -439,6 +470,35 @@ VOID  DefaultHandler(LPSTR pstr)
 	return;
 }
 
+//*********************************
+// For log service
+//Author :	Erwin
+//Email  :	erwin.wang@qq.com
+//Date	 :  9th June, 2014
+//********************************
+VOID DebugHandler(LPSTR pstr)
+{
+#ifdef __CFG_SYS_LOGCAT //Only available when logging function is enabled.
+
+	char buf[256] = {'0'};
+	int count = 0;
+	while(TRUE)
+	{
+		count++;
+		Sleep(1000);
+		DebugManager.Logcat(&DebugManager, buf, 0);
+		if(buf[0] != '0')
+		{
+			PrintLine(buf);
+		}
+		if(count == 5)
+		{
+			break;
+		}
+	}
+#endif //__CFG_SYS_LOGCAT.
+}
+
 //Command analyzing routine,it analyzes user's input and search
 //command array to find a proper handler,then call it.
 //Default handler will be called if no proper command handler is
@@ -447,7 +507,7 @@ static VOID  DoCommand()
 {
 	DWORD wIndex = 0x0000;
 	BOOL bResult = FALSE;        //If find the correct command object,then
-	                             //This flag set to TRUE.
+	//This flag set to TRUE.
 	CHAR tmpBuffer[36];
 	DWORD dwIndex = 0;           //Used for 'for' loop.
 	__KERNEL_THREAD_OBJECT* hKernelThread = NULL;
@@ -498,12 +558,13 @@ static VOID  DoCommand()
 				DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
 					(__COMMON_OBJECT*)hKernelThread);  //Give the current input focus to this thread.
 				hKernelThread->WaitForThisObject((__COMMON_OBJECT*)hKernelThread);
-				KernelThreadManager.DestroyKernelThread(
-					(__COMMON_OBJECT*)&KernelThreadManager,
-					(__COMMON_OBJECT*)hKernelThread);  //Destroy it.
 				//Set focus thread to shell.
 				DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
 					NULL);
+				//Destroy the kernel thread object.
+				KernelThreadManager.DestroyKernelThread(
+					(__COMMON_OBJECT*)&KernelThreadManager,
+					(__COMMON_OBJECT*)hKernelThread);
 			}
 			bResult = TRUE;
 			goto __END;
@@ -530,7 +591,7 @@ static VOID  PrintPrompt()
 	}
 	else
 	{
-	    PrintLine(pszSysName);
+		PrintLine(pszSysName);
 	}
 	return;
 }

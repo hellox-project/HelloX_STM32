@@ -27,8 +27,5 @@ typedef unsigned int     size_t;
 
 #define NOFLOAT  //Kernel does not support floating point number yet.
 
-void* memcpy(void* dst,const void* src,size_t count);
-void* memset(void* dst,int val,size_t count);
-void* memzero(void* dst,size_t count); 
-
-int sprintf(char* buf,const char* fmt,...);
+int _hx_sprintf(char* buf,const char* fmt,...);
+int _hx_printf(const char* fmt,...);

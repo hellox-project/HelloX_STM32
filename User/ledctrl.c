@@ -2,6 +2,9 @@
 #include "..\HXOS\include\kapi.h"
 #endif
 
+#include "stdio.h"
+#include "string.h"
+
 //Entry point of tlon(turn light on) command.
 DWORD TurnLightOn(LPVOID p)
 {

@@ -16,7 +16,7 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
 //
@@ -25,11 +25,12 @@
 
 VOID u64Add(__U64* lpu64_1,__U64* lpu64_2,__U64* lpu64_result)
 {
-	if((NULL == lpu64_1) || (NULL == lpu64_2) || 
-	   (NULL == lpu64_result)) //Parameters check.
+	if((NULL == lpu64_1) || (NULL == lpu64_2) || (NULL == lpu64_result)) //Parameters check.
+	{
 	   return;
+	}
 
-#ifdef __I386__
+#ifdef __I386__  //Use asmble language to accelate speed.
 	__asm{
 		push eax
         push ebx
@@ -50,6 +51,12 @@ VOID u64Add(__U64* lpu64_1,__U64* lpu64_2,__U64* lpu64_result)
         pop eax
 	}
 #else
+	  lpu64_result->dwLowPart = lpu64_1->dwLowPart + lpu64_2->dwLowPart;
+	  if((lpu64_result->dwLowPart < lpu64_1->dwLowPart) || (lpu64_result->dwLowPart < lpu64_2->dwLowPart))
+		{
+			  lpu64_result->dwHighPart += 1;
+		}
+		lpu64_result->dwHighPart = lpu64_1->dwHighPart + lpu64_2->dwHighPart;
 #endif
 }
 

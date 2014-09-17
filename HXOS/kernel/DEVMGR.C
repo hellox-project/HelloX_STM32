@@ -15,12 +15,10 @@
 
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#ifndef __PCI_DRV_H__
-#include "..\INCLUDE\PCI_DRV.H"
-#endif
+#include "PCI_DRV.H"
 
 //Only DDF(Device Driver Framework) is enabled the following code
 //will be included in OS kernel.

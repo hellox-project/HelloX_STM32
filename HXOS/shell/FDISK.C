@@ -409,7 +409,7 @@ static VOID DumpDisk(__DEVICE_OBJECT* pDevObj)
 	CHAR Buffer[256];
 	__PARTITION_EXTENSION* pPe = (__PARTITION_EXTENSION*)pDevObj->lpDevExtension;
 
-	sprintf(Buffer,"    %20s    %9d    0x%X",
+	_hx_sprintf(Buffer,"    %20s    %9d    0x%X",
 		pDevObj->DevName,
 		pPe->dwSectorNum,
 		pDevObj->dwAttribute);
@@ -452,7 +452,7 @@ static VOID DumpPartDev(__DEVICE_OBJECT* pPartDev)
 	__PARTITION_EXTENSION*  ppe = (__PARTITION_EXTENSION*)pPartDev->lpDevExtension;
 	CHAR    Buffer[128];
 
-	sprintf(Buffer,"    %16s    %12d    %12d    %8X",
+	_hx_sprintf(Buffer,"    %16s    %12d    %12d    %8X",
 		pPartDev->DevName,
 		ppe->dwStartSector,
 		ppe->dwSectorNum,
@@ -571,7 +571,7 @@ static DWORD partlist(__CMD_PARA_OBJ* pcpo)
 	PrintLine("     partNum    startsector   totalsector   parttype     actflag");
 	for(i = 0;i < 4;i ++)
 	{
-		sprintf(Buffer,"    %8d    %10d    %10d    %8X    %8X",
+		_hx_sprintf(Buffer,"    %8d    %10d    %10d    %8X    %8X",
 			i,
 			MbrControlBlock.TableEntry[i].dwStartSector,
 			MbrControlBlock.TableEntry[i].dwTotalSector,

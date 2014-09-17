@@ -64,6 +64,10 @@
 #include "ktmgr.h"
 #endif
 
+#ifndef __KTMGR2_H__
+#include "ktmgr2.h"
+#endif
+
 #ifndef __RINGBUFF_H__
 #include "RINGBUFF.H"
 #endif
@@ -114,6 +118,10 @@
 
 #ifndef __KTMSG_H__
 #include "ktmsg.h"
+#endif
+
+#ifndef __SYSNET_H__
+#include "sysnet.h"
 #endif
 
 #ifndef __GLOBAL_VAR__

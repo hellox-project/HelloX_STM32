@@ -15,10 +15,10 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#include "..\lib\stdio.h"
+#include "stdio.h"
 
 //Only Device Driver Framework is enabled the following code will be included
 //in OS kernel.

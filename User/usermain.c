@@ -2,7 +2,7 @@
 #ifndef __STDAFX_H__
 #include "..\HXOS\include\StdAfx.h"
 #endif
-#include <stdio.h>
+#include "stdio.h"
 
 extern void SER_PutString(char*);  //For debugging.
 
@@ -44,42 +44,42 @@ static VOID ShowMemory(__COMMON_OBJECT* hUsart)
 	   pszHdr,
 	   &dwWriteLen);
 	//Get and dump out memory usage status.
-	sprintf(buff,"    Total memory size     : %d(0x%X)\r\n",dwPoolSize,dwPoolSize);
+	_hx_sprintf(buff,"    Total memory size     : %d(0x%X)\r\n",dwPoolSize,dwPoolSize);
 	IOManager.WriteFile(
 	   (__COMMON_OBJECT*)&IOManager,
 	   hUsart,
 	   strlen(buff),
 	   buff,
 	   &dwWriteLen);
-	sprintf(buff,"    Free memory size      : %d(0x%X)\r\n",dwFreeSize,dwFreeSize);
+	_hx_sprintf(buff,"    Free memory size      : %d(0x%X)\r\n",dwFreeSize,dwFreeSize);
 	IOManager.WriteFile(
 	   (__COMMON_OBJECT*)&IOManager,
 	   hUsart,
 	   strlen(buff),
 	   buff,
 	   &dwWriteLen);
-	sprintf(buff,"    Free memory blocks    : %d\r\n",dwFreeBlocks);
+	_hx_sprintf(buff,"    Free memory blocks    : %d\r\n",dwFreeBlocks);
 	IOManager.WriteFile(
 	   (__COMMON_OBJECT*)&IOManager,
 	   hUsart,
 	   strlen(buff),
 	   buff,
 	   &dwWriteLen);
-	sprintf(buff,"    Alloc success times   : %d/%d\r\n",dwAllocTimesSuccH,dwAllocTimesSuccL);
+	_hx_sprintf(buff,"    Alloc success times   : %d/%d\r\n",dwAllocTimesSuccH,dwAllocTimesSuccL);
 		IOManager.WriteFile(
 	   (__COMMON_OBJECT*)&IOManager,
 	   hUsart,
 	   strlen(buff),
 	   buff,
 	   &dwWriteLen);
-	sprintf(buff,"    Alloc operation times : %d/%d\r\n",dwAllocTimesH,dwAllocTimesL);
+	_hx_sprintf(buff,"    Alloc operation times : %d/%d\r\n",dwAllocTimesH,dwAllocTimesL);
 		IOManager.WriteFile(
 	   (__COMMON_OBJECT*)&IOManager,
 	   hUsart,
 	   strlen(buff),
 	   buff,
 	   &dwWriteLen);
-	sprintf(buff,"    Free operation times  : %d/%d\r\n",dwFreeTimesH,dwFreeTimesL);
+	_hx_sprintf(buff,"    Free operation times  : %d/%d\r\n",dwFreeTimesH,dwFreeTimesL);
 		IOManager.WriteFile(
 	   (__COMMON_OBJECT*)&IOManager,
 	   hUsart,

@@ -16,12 +16,10 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\include\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
-#ifndef __MODMGR_H__
-#include "..\include\MODMGR.H"
-#endif
+#include "MODMGR.H"
 
 #define ADD_STATIC_MODULE(baseaddr) {baseaddr,(__MODULE_INIT)baseaddr},
 

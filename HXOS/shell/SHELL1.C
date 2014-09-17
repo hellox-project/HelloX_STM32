@@ -68,17 +68,17 @@ VOID MemHandler(LPSTR pstr)
 
 	PrintLine("    Free block list algorithm is adopted:");
 	//Get and dump out memory usage status.
-	sprintf(buff,"    Total memory size     : %d(0x%X)",dwPoolSize,dwPoolSize);
+	_hx_sprintf(buff,"    Total memory size     : %d(0x%X)",dwPoolSize,dwPoolSize);
 	PrintLine(buff);
-	sprintf(buff,"    Free memory size      : %d(0x%X)",dwFreeSize,dwFreeSize);
+	_hx_sprintf(buff,"    Free memory size      : %d(0x%X)",dwFreeSize,dwFreeSize);
 	PrintLine(buff);
-	sprintf(buff,"    Free memory blocks    : %d",dwFreeBlocks);
+	_hx_sprintf(buff,"    Free memory blocks    : %d",dwFreeBlocks);
 	PrintLine(buff);
-	sprintf(buff,"    Alloc success times   : %d/%d",dwAllocTimesSuccH,dwAllocTimesSuccL);
+	_hx_sprintf(buff,"    Alloc success times   : %d/%d",dwAllocTimesSuccH,dwAllocTimesSuccL);
 	PrintLine(buff);
-	sprintf(buff,"    Alloc operation times : %d/%d",dwAllocTimesH,dwAllocTimesL);
+	_hx_sprintf(buff,"    Alloc operation times : %d/%d",dwAllocTimesH,dwAllocTimesL);
 	PrintLine(buff);
-	sprintf(buff,"    Free operation times  : %d/%d",dwFreeTimesH,dwFreeTimesL);
+	_hx_sprintf(buff,"    Free operation times  : %d/%d",dwFreeTimesH,dwFreeTimesL);
 	PrintLine(buff);
 }
 
@@ -188,6 +188,7 @@ VOID HlpHandler(LPSTR pstr)           //Command 'help' 's handler.
 	LPSTR strSysDiagApp  = "    sysdiag      : System or hardware diag application.";
 	LPSTR strFsApp       = "    fs           : File system operating application.";
 	LPSTR strFdiskApp    = "    fdisk        : Hard disk operating application.";
+	LPSTR strNetApp      = "    network      : Network diagnostic application.";
 	LPSTR strLoadappApp  = "    loadapp      : Load application module and execute it.";
 	LPSTR strGUIApp      = "    gui          : Load GUI module and enter GUI mode.";
 	LPSTR strReboot      = "    reboot       : Reboot the system.";
@@ -204,6 +205,7 @@ VOID HlpHandler(LPSTR pstr)           //Command 'help' 's handler.
 	PrintLine(strIoCtrlApp);
 	PrintLine(strSysDiagApp);
 	PrintLine(strFsApp);
+	PrintLine(strNetApp);
 	PrintLine(strFdiskApp);
 	PrintLine(strLoadappApp);
 	PrintLine(strGUIApp);
@@ -378,7 +380,9 @@ __TERMINAL:
 		CloseFile(hBinFile);
 	}
 	if(NULL != pCmdObj)
-		KMemFree((LPVOID)pCmdObj,KMEM_SIZE_TYPE_4K,4096);
+	{
+		ReleaseParameterObj(pCmdObj);
+	}
 	return;
 }
 

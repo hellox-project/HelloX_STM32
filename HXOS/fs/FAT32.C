@@ -115,7 +115,7 @@ static BOOL GetVolumeLbl(__FAT32_FS* pFat32Fs,CHAR* pVolumeLbl)
 			pFat32Fs->SectorPerClus,
 			pBuffer))  //Can not read the appropriate sector(s).
 		{
-			sprintf(Buffer," Read sector failed in GetVolumeLbl,Info: %d %d %d %d %d %d %d ",
+			_hx_sprintf(Buffer," Read sector failed in GetVolumeLbl,Info: %d %d %d %d %d %d %d ",
 				dwCurrClus,
 				dwSector,
 				pFat32Fs->dwClusterSize,
@@ -158,7 +158,7 @@ static BOOL GetVolumeLbl(__FAT32_FS* pFat32Fs,CHAR* pVolumeLbl)
 		}
 		if(!GetNextCluster(pFat32Fs,&dwCurrClus))
 		{
-			sprintf(Buffer,"Current cluster number is %d",dwCurrClus);
+			_hx_sprintf(Buffer,"Current cluster number is %d",dwCurrClus);
 			PrintLine(Buffer);
 			break;
 		}
@@ -236,7 +236,7 @@ static BOOL CheckPartition(__COMMON_OBJECT* lpThis,  //FAT32 driver device objec
 	/*
 	//Debug only.
 	ppe = (__PARTITION_EXTENSION*)pPartition->lpDevExtension;
-	sprintf(DevName," PT is : %X, attr is : %X",
+	_hx_sprintf(DevName," PT is : %X, attr is : %X",
 		ppe->PartitionType,
 		pPartition->dwAttribute);
 	PrintLine(DevName);

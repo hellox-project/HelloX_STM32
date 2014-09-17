@@ -14,7 +14,7 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
 //KMEM_4K_START_ADDRESS = 0x00200000
@@ -313,6 +313,9 @@ LPVOID KMemAlloc(DWORD dwSize,DWORD dwSizeType)
 	{
 		return pMemAddress;               //Parameter check.
 	}
+
+	//Align size to alignment boundary,which is defined in config.h file.
+	dwSize = ((dwSize + SYSTEM_BYTE_ALIGN - 1) & ~(SYSTEM_BYTE_ALIGN - 1));
 
 	switch(dwSizeType)
 	{

@@ -14,11 +14,11 @@
 //***********************************************************************/
 
 #ifndef __STDAFX_H__
-#include "..\INCLUDE\StdAfx.h"
+#include "StdAfx.h"
 #endif
 
 #ifndef __PCI_DRV_H__
-#include "..\INCLUDE\PCI_DRV.H"
+#include "PCI_DRV.H"
 #endif
 
 static BOOL PciBusProbe()    //Probe if there is(are) PCI bus(es).
