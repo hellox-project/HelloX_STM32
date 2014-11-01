@@ -18,3 +18,6 @@
 .\obj&lst\ledctrl.o: User\..\HXOS\include\kmemmgr.h
 .\obj&lst\ledctrl.o: User\..\HXOS\include\..\arch\stm32\arch.h
 .\obj&lst\ledctrl.o: User\..\HXOS\include\IOMGR.H
+.\obj&lst\ledctrl.o: User\..\HXOS\include\..\include\debug.h
+.\obj&lst\ledctrl.o: .\HXOS\lib\stdio.h
+.\obj&lst\ledctrl.o: .\HXOS\lib\string.h

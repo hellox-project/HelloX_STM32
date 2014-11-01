@@ -42,17 +42,6 @@
 #define LBS_DEB_SYSFS	0x00800000
 #define LBS_DEB_SPI	0x01000000
 
-
-
-
-
-
-
-
-
-
-
-
 /*
 #ifdef DEBUG
 static __inline void lbs_deb_hex(unsigned int grp, const char *prompt, u8 *buf, int len)
@@ -79,8 +68,6 @@ static __inline void lbs_deb_hex(unsigned int grp, const char *prompt, u8 *buf, 
 #define lbs_deb_hex(grp,prompt,buf,len)	do {} while (0)
 #endif*/
 
-
-
 /** Buffer Constants */
 
 /*	The size of SQ memory PPA, DPA are 8 DWORDs, that keep the physical
@@ -102,7 +89,7 @@ static __inline void lbs_deb_hex(unsigned int grp, const char *prompt, u8 *buf, 
 #define MRVDRV_ASSOCIATION_TIME_OUT	255
 #define MRVDRV_SNAP_HEADER_LEN          8
 
-#define	LBS_UPLD_SIZE			1024*3
+#define	LBS_UPLD_SIZE			1600 //1024*3  //This change may lead bug(s),should be roll back if so.
 #define DEV_NAME_LEN			32
 
 /* Wake criteria for HOST_SLEEP_CFG command */
@@ -373,9 +360,5 @@ enum _mesh_fw_ver {
 #define FWT_DEFAULT_EXPIRATION 0
 #define FWT_DEFAULT_SLEEPMODE 0
 #define FWT_DEFAULT_SNR 0
-
-
-
-
 
 #endif

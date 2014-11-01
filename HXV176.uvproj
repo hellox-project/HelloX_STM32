@@ -349,7 +349,7 @@
             <uSurpInc>1</uSurpInc>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>STM32F10X_MD</Define>
+              <Define>STM32F10X_HD</Define>
               <Undefine></Undefine>
               <IncludePath>.\HXOS\include;.\HXOS\lib;.\HXOS\arch\stm32;C:\Keil\ARM\CMSIS\Include;C:\Keil\ARM\INC\ST\STM32F10x;.\HXOS\network;.\HXOS\drivers\stm32;.\Startup\STM32F10x_lib\inc;.\HXOS\network\nicdrv</IncludePath>
             </VariousControls>
@@ -902,6 +902,11 @@
               <FileType>1</FileType>
               <FilePath>.\HXOS\network\nicdrv\ethif.c</FilePath>
             </File>
+            <File>
+              <FileName>ethif.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\HXOS\network\nicdrv\ethif.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1026,6 +1031,16 @@
               <FileName>stm32sys.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\HXOS\drivers\stm32\stm32sys.h</FilePath>
+            </File>
+            <File>
+              <FileName>sdio_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\sdio_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdio_drv.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\HXOS\drivers\stm32\sdio_drv.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1186,6 +1201,11 @@
               <FileName>11d.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\HXOS\network\nicdrv\11d.c</FilePath>
+            </File>
+            <File>
+              <FileName>marvelif.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\network\nicdrv\marvelif.c</FilePath>
             </File>
           </Files>
         </Group>

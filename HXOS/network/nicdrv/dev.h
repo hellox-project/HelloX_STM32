@@ -6,7 +6,6 @@
 #ifndef _LBS_DEV_H_
 #define _LBS_DEV_H_
 
-
 #include "type.h"
 #include "common.h"
 #include "hostcmd.h"
@@ -261,12 +260,10 @@ struct lbs_private {
 	u8 wpa_ie_len;
 	u8 eapol_finish;
 
-
 	/*add by liud 这里是在搜索结果中存储一个IE结构体，供给关联时候用*/
 	u8 __wpa_ie[MAX_WPA_IE_LEN];
 	u8 __wpa_ie_len;
-	u8 __mac_addr[6];
-	
+	u8 __mac_addr[6];	
 };
 
 //extern struct cmd_confirm_sleep confirm_sleep;
@@ -283,22 +280,23 @@ struct lbs_private {
 #define MRVDRV_MAX_SUBBAND_802_11D	83
 
 struct bss_descriptor {
-        u8 bssid[ETH_ALEN];             //物理地址
-        u8 ssid[IW_ESSID_MAX_SIZE + 1]; //网络标识符
-        u8 ssid_len;                    //标识符长度
+	u8 bssid[ETH_ALEN];             //Physical addr.
+  u8 ssid[IW_ESSID_MAX_SIZE + 1]; //SSID.
+  u8 ssid_len;                    //SSID length.
 	u16 capability;
 	u32 rssi;
-        u32 channel;                    //信道
-        u16 beaconperiod;               //beacon帧的周期
+  u32 channel;                    //Channel.
+  u16 beaconperiod;               //beacon frame's period.
 	__le16 atimwindow;
 
 	/* IW_MODE_AUTO, IW_MODE_ADHOC, IW_MODE_INFRA */
-        u8 mode;                        //网络模式，一般为IW_MODE_INFRA
+  u8 mode;                        //Network model.
+	
 	/* zero-terminated array of supported data rates */
-        u8 rates[MAX_RATES + 1];        //BSS支持的速率
+  u8 rates[MAX_RATES + 1];
 	unsigned long last_scanned;
-	 union ieee_phy_param_set phy;
-	 union ieee_ss_param_set ss;
+	union ieee_phy_param_set phy;
+	union ieee_ss_param_set ss;
 	struct  ieee_ie_country_info_full_set countryinfo;
 	u8 wpa_ie[MAX_WPA_IE_LEN];
 	size_t wpa_ie_len;
@@ -306,9 +304,7 @@ struct bss_descriptor {
 	size_t rsn_ie_len; 
 	u8 mesh;
 	struct list_head list;
-
 };
-
 
 
 /** Association request
@@ -354,8 +350,6 @@ struct assoc_request {
 	struct bss_descriptor bss;
 	u8 * psk;
 };
-
-
 
 
 /*
@@ -412,7 +406,5 @@ struct assoc_request {
 				 NETIF_F_FRAGLIST)
 
 #define MAX_ADDR_LEN 6
-
-
 
 #endif

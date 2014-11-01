@@ -50,6 +50,20 @@
 //Enable or disable TCP functions in lwIP.
 #define LWIP_TCP             1
 
+//Enable or disable DHCP client functions.
+#define LWIP_DHCP            1
+
+//Enable or disable DNS functions in lwIP.
+#define LWIP_DNS             1
+
+//Change the default value(3) to larger number,since DHCP is enabled.
+#define MEMP_NUM_SYS_TIMEOUT 8
+
+//Disable the "purge oldest pbuf function" in IP fragment,since it
+//will lead ASSERT failed in ip_reass_free_complete_datagram routine,
+//in ip_frag.c file.
+#define IP_REASS_FREE_OLDEST 0
+
 //*-----------------------------------------------------------------------
 //*
 //*  Thread options for lwIP's internal threads.
@@ -136,6 +150,11 @@
 */
 #ifndef IP_DEBUG
 #define IP_DEBUG                        LWIP_DBG_ON
+#endif
+
+//Turn DHCP debugging one.
+#ifndef DHCP_DEBUG
+#define DHCP_DEBUG                      LWIP_DBG_ON
 #endif
 
 //Debug output routine.

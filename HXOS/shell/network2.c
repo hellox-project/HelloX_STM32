@@ -180,7 +180,7 @@ ping_recv(int s)
 
   if (!bResult)
   {
-	PrintLine("  Request timeout.");
+		_hx_printf("  [%d] Request time out.\r\n",ping_pkt_seq);
   }
 
   if(buf)  //Release it.

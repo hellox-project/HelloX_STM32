@@ -5,14 +5,15 @@
 #include "StdAfx.h"
 #endif
 
-//#include <stdarg.h>
 #include "string.h"
 #include "stdlib.h"
 #include "stdio.h"
-#include <ctype.h>
 #include "type.h"
 #include "stm32sys.h"
 #include "s3cmci.h"
+
+//Switch to enable or disable the debugging of SDIO.
+//#define __HX_SDIO_DEBUG
 
 /*******************************配置marvel驱动程序版本*********************************************/
 //#define MARVELL_8385_DRIVER			//配置固件版本
@@ -20,10 +21,7 @@
 #define WPA_ENABLE	0                       //是否使能WPA
 #define AUTO_CONN 0
 
-
-
 enum { MSG_MSGDUMP, MSG_DEBUG, MSG_INFO, MSG_WARNING, MSG_ERROR };
-
 
 #define KERN_WARNING 
 #define KERN_ERR
@@ -34,8 +32,6 @@ enum { MSG_MSGDUMP, MSG_DEBUG, MSG_INFO, MSG_WARNING, MSG_ERROR };
 #define max(x1,x2) (((x1)>(x2))? (x1):(x2))
 #define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-
-
 
 #define HZ 1000
 #define jiffies 0
@@ -65,12 +61,7 @@ enum { MSG_MSGDUMP, MSG_DEBUG, MSG_INFO, MSG_WARNING, MSG_ERROR };
 #define STRUCT_PACKED 
 #endif
 
-
-
-
 /**************wpa相关宏定义***********************************/
-
-
 
 #ifndef __OS_LIB__H__
 
@@ -80,9 +71,6 @@ enum { MSG_MSGDUMP, MSG_DEBUG, MSG_INFO, MSG_WARNING, MSG_ERROR };
 #define os_memcmp memcmp
 
 #endif
-
-
-
 
 #ifndef bswap_16
 #define bswap_16(a) ((((u16) (a) << 8) & 0xff00) | (((u16) (a) >> 8) & 0xff))
@@ -94,7 +82,6 @@ enum { MSG_MSGDUMP, MSG_DEBUG, MSG_INFO, MSG_WARNING, MSG_ERROR };
      		     (((u32) (a) >> 8) & 0xff00) | \
      		     (((u32) (a) >> 24) & 0xff))
 #endif
-
 
 #ifndef __BYTE_ORDER
 #ifndef __LITTLE_ENDIAN
@@ -143,10 +130,80 @@ enum { MSG_MSGDUMP, MSG_DEBUG, MSG_INFO, MSG_WARNING, MSG_ERROR };
 
 /*****************************调试相关输出**********************************************/
 #define try_bug(val) 	do {if(val) break;}while(1)
-#define Uart_Printf _hx_printf
-#define printk Uart_Printf
-#define pr_err Uart_Printf
-#define lbs_pr_err Uart_Printf
+
+#ifdef __HX_SDIO_DEBUG
+#define printk                      _hx_printf
+#define pr_err                      _hx_printf
+#define lbs_pr_err                  _hx_printf
+#define lbs_deb_sdio		            _hx_printf
+#define lbs_deb_scan		            _hx_printf //Uart_Printf
+#define lbs_deb_assoc 	            _hx_printf //Uart_Printf
+#define lbs_deb_join  	            _hx_printf //Uart_Printf
+#define DEBUG_PARAM_SDIO
+#define pr_sdio_interrupt(arg...)
+#define printf_scan                 _hx_printf
+#define lbs_pr_alert(arg...) 
+#define lbs_deb_host(arg...)  
+#define lbs_deb_thread(arg...)  
+#define lbs_pr_debug(arg...)        // void_dbg
+#define lbs_pr_info(arg...)         // void_dbg//Uart_Printf//
+#define lbs_deb_cmd(arg...)         // lbs_pr_info
+#define lbs_deb_tx(arg...)          // void_dbg//lbs_pr_info
+#define lbs_deb_11d(arg...)         // void_dbg
+#define pr_fifo_debug               _hx_printf
+#define pr_debug                    _hx_printf
+#define pr_warning                  _hx_printf
+#define dbg                         _hx_printf
+#define marvell_error               _hx_printf //Uart_Printf
+#define sdio_deb_enter() 	          //Uart_Printf("enter %s\n",__func__)
+#define sdio_deb_leave()	          //Uart_Printf("leave %s \n",__func__)
+#define lbs_deb_rx _hx_printf
+#define dbg_netdata(info,buf,size)	debug_data_stream(info,buf,size)	
+#define lbs_deb_enter(fmt)    	    _hx_printf("lbs_deb_enter %s\r\n",__func__)
+#define lbs_deb_leave(fmt)		      _hx_printf("lbs_deb_leave %s\r\n",__func__)
+#define lbs_deb_cmd_enter(fmt)     
+#define lbs_deb_cmd_leave(fmt)	  
+#define lbs_deb_enter_args(fmt,arg) _hx_printf("lbs_deb_enter_args %s (ret=%d)\n",__func__,arg)
+#define lbs_deb_leave_args(fmt,arg) _hx_printf("lbs_deb_leave_args %s (ret=%d)\n",__func__,arg)
+#define lbs_deb_cmd_enter_args(fmt,arg) 
+#define lbs_deb_cmd_leave_args(fmt,arg) 
+#else
+#define printk
+#define pr_err     
+#define lbs_pr_err 
+#define lbs_deb_sdio		
+#define lbs_deb_scan		
+#define lbs_deb_assoc 	
+#define lbs_deb_join  	
+#define DEBUG_PARAM_SDIO
+#define pr_sdio_interrupt(arg...)
+#define printf_scan
+#define lbs_pr_alert(arg...) 
+#define lbs_deb_host(arg...)  
+#define lbs_deb_thread(arg...)  
+#define lbs_pr_debug(arg...)          // void_dbg
+#define lbs_pr_info(arg...)           // void_dbg//Uart_Printf//
+#define lbs_deb_cmd(arg...)           // lbs_pr_info
+#define lbs_deb_tx(arg...)            // void_dbg//lbs_pr_info
+#define lbs_deb_11d(arg...)           // void_dbg
+#define pr_fifo_debug 
+#define pr_debug
+#define pr_warning 
+#define dbg 
+#define marvell_error 
+#define sdio_deb_enter()
+#define sdio_deb_leave()
+#define lbs_deb_rx 
+#define dbg_netdata(info,buf,size)	 debug_data_stream(info,buf,size)	
+#define lbs_deb_enter(fmt)    	     //_hx_printf("lbs_deb_enter %s\r\n",__func__)
+#define lbs_deb_leave(fmt)		       //_hx_printf("lbs_deb_leave %s\r\n",__func__)
+#define lbs_deb_cmd_enter(fmt)     
+#define lbs_deb_cmd_leave(fmt)	  
+#define lbs_deb_enter_args(fmt,arg)  //_hx_printf("lbs_deb_enter_args %s (ret=%d)\n",__func__,arg)
+#define lbs_deb_leave_args(fmt,arg)  //_hx_printf("lbs_deb_leave_args %s (ret=%d)\n",__func__,arg)
+#define lbs_deb_cmd_enter_args(fmt,arg) 
+#define lbs_deb_cmd_leave_args(fmt,arg) 
+#endif //__HX_SDIO_DEBUG
 
 #define RUN_TEST printk("RUN_TEST >>> LINE:%d ,,, FUNCTION:%s ,,, FILE:%s \r\n",__LINE__,__FUNCTION__,__FILE__);
 static void xdbug_buf(const char * name , const unsigned char * buf , const int len)
@@ -159,55 +216,9 @@ static void xdbug_buf(const char * name , const unsigned char * buf , const int 
 	}
 	_hx_printf("\n");
 }
-#define DEBUG_PARAM_SDIO
-#define pr_sdio_interrupt(arg...) //void_dbg//Uart_Printf
-#define printf_scan _hx_printf
-#define lbs_pr_alert(arg...) 
-#define lbs_deb_host(arg...)  
-#define lbs_deb_thread(arg...)  
-#define lbs_pr_debug(arg...) // void_dbg
-#define lbs_pr_info(arg...) // void_dbg//Uart_Printf//
-#define lbs_deb_cmd(arg...) // lbs_pr_info
-#define lbs_deb_tx(arg...) // void_dbg//lbs_pr_info
-#define lbs_deb_11d(arg...)// void_dbg
-
-
-#define lbs_deb_sdio(arg...)//		Uart_Printf
-#define lbs_deb_scan		_hx_printf //Uart_Printf
-#define lbs_deb_assoc 	_hx_printf //Uart_Printf
-#define lbs_deb_join  	_hx_printf //Uart_Printf
-
-
-#define pr_fifo_debug(arg...)// void_dbg//Uart_Printf
-#define pr_debug(arg...)// void_dbg//Uart_Printf
-#define pr_warning(arg...)// void_dbg//Uart_Printf
-#define dbg(arg...)//void_dbg//Uart_Printf
-#define  marvell_error Uart_Printf
-
-
-#define sdio_deb_enter() 	    //Uart_Printf("enter %s\n",__func__)
-#define sdio_deb_leave()	    //Uart_Printf("leave %s \n",__func__)
-
-#define lbs_deb_rx Uart_Printf
-
-#define dbg_netdata(info,buf,size)	 debug_data_stream(info,buf,size)	
-
-
-#define lbs_deb_enter(fmt)    	     //Uart_Printf("enter %s\n",__func__)
-#define lbs_deb_leave(fmt)		     //Uart_Printf("leave %s \n",__func__)
-#define lbs_deb_cmd_enter(fmt)    	   
-#define lbs_deb_cmd_leave(fmt)	  
-#define lbs_deb_enter_args(fmt,arg) //Uart_Printf("enter %s (ret=%d)\n",__func__,arg)
-#define lbs_deb_leave_args(fmt,arg) //Uart_Printf("leave %s (ret=%d)\n",__func__,arg)
-#define lbs_deb_cmd_enter_args(fmt,arg) 
-#define lbs_deb_cmd_leave_args(fmt,arg) 
-
 
 #define MAC2STR(a) (a)[0], (a)[1], (a)[2], (a)[3], (a)[4], (a)[5]
 #define MACSTR "%02x:%02x:%02x:%02x:%02x:%02x"
-
-
-
 
 void mmc_delay(unsigned int time);
 void ms_delay(void);
@@ -221,7 +232,7 @@ long  PTR_ERR(const void *ptr);
 long  IS_ERR(const void *ptr);
 void  lbs_hex(unsigned int grp, const char *prompt, u8 *buf, int len);
 #define lbs_deb_hex lbs_hex
-#if 0  // 由于这里的函数定义与WPA_COMMON 冲突，因此先暂时注释掉
+#if 1  // 由于这里的函数定义与WPA_COMMON 冲突，因此先暂时注释掉
 void wpa_hexdump(int level, const char *title, const u8 *buf, size_t len);
 void wpa_hexdump_key(int level, const char *title, const u8 *buf, size_t len);
 void wpa_printf(int level, char *fmt, ...);
@@ -230,4 +241,4 @@ void debug_data_stream(char *info,char *pdata,u16 len);
 #endif
 #define INSERT_PARMA_INFO Ox0000008F(PRIVATE1);Ox0000008D(PRIVATE2);
 
-#endif 
+#endif  //__COMMON_H__

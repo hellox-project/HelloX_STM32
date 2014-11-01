@@ -6,13 +6,10 @@
 #include "mac80211.h"
 #include "cmd.h"
 
-
- #define list_for_each_entry_bssdes(pos, head, member)				\
+#define list_for_each_entry_bssdes(pos, head, member)                 \
 	for (pos = list_entry((head)->next,struct bss_descriptor, member);	\
-	       &pos->member != (head); 	\
-	     pos = list_entry(pos->member.next,struct bss_descriptor, member))
-
-
+	&pos->member != (head);                                             \
+	pos = list_entry(pos->member.next,struct bss_descriptor, member))
 
 #define LBS_IOCTL_USER_SCAN_CHAN_MAX  50
 //! Approximate amount of data needed to pass a scan result back to iwlist
@@ -26,18 +23,15 @@
                              + 40)	/* 40 for WPAIE */
 
 //! Memory needed to store a max sized channel List TLV for a firmware scan
-#define CHAN_TLV_MAX_SIZE  (sizeof(struct mrvl_ie_header)    \
-                            + (MRVDRV_MAX_CHANNELS_PER_SCAN     \
-                               * sizeof(struct chanscanparamset)))
+#define CHAN_TLV_MAX_SIZE  (sizeof(struct mrvl_ie_header)              \
+  + (MRVDRV_MAX_CHANNELS_PER_SCAN * sizeof(struct chanscanparamset)))
 
 //! Memory needed to store a max number/size SSID TLV for a firmware scan
 #define SSID_TLV_MAX_SIZE  (1 * sizeof(struct mrvl_ie_ssid_param_set))
 
 //! Maximum memory needed for a cmd_ds_802_11_scan with all TLVs at max
 #define MAX_SCAN_CFG_ALLOC (sizeof(struct cmd_ds_802_11_scan)	\
-                            + CHAN_TLV_MAX_SIZE + SSID_TLV_MAX_SIZE)
-
-
+  + CHAN_TLV_MAX_SIZE + SSID_TLV_MAX_SIZE)
 
 //! The maximum number of channels the firmware can scan per command
 #define MRVDRV_MAX_CHANNELS_PER_SCAN   14
@@ -48,7 +42,7 @@
  *  Number restricted to prevent hitting the limit on the amount of scan data
  *  returned in a single firmware scan command.
  */
-#define MRVDRV_CHANNELS_PER_SCAN_CMD   4//限制驱动一次scan命令返回扫描数据的个数
+#define MRVDRV_CHANNELS_PER_SCAN_CMD   4    //限制驱动一次scan命令返回扫描数据的个数
 
 //! Scan time specified in the channel TLV for each channel for passive scans
 #define MRVDRV_PASSIVE_SCAN_CHAN_TIME  100
@@ -57,13 +51,6 @@
 #define MRVDRV_ACTIVE_SCAN_CHAN_TIME   100
 
 #define DEFAULT_MAX_SCAN_AGE (15 * HZ)
-
-
-
-
-
-
-
 
 /*********************************************************************/
 /*                                                                   */
@@ -271,8 +258,6 @@ static __inline int is_same_network(struct bss_descriptor *src,
 		!memcmp(src->ssid, dst->ssid, src->ssid_len));
 }
 
-
-
 /*********************************************************************/
 /*                                                                   */
 /*  Misc helper functions                                            */
@@ -294,7 +279,6 @@ static void lbs_unset_basic_rate_flags(u8 *rates, size_t len)
 	for (i = 0; i < len; i++)
 		rates[i] &= 0x7f;
 }
-
 
 /*********************************************************************/
 /*                                                                   */
@@ -418,7 +402,7 @@ static int lbs_process_bss(struct bss_descriptor *bss,
 			break;
 		}
 
-		switch (pos[0]) {
+	switch (pos[0]) {
 		case WLAN_EID_SSID:
 			bss->ssid_len = min(IEEE80211_MAX_SSID_LEN, pos[1]);
 			memcpy(bss->ssid, pos + 2, bss->ssid_len);
@@ -472,14 +456,14 @@ static int lbs_process_bss(struct bss_descriptor *bss,
 					     sizeof(pcountryinfo->countrycode));
 				ret = -1;
 				goto done;
-			}
+		  }
 
-			memcpy(&bss->countryinfo, pcountryinfo,
+		  memcpy(&bss->countryinfo, pcountryinfo,
 				pcountryinfo->header.len + 2);
 			//lbs_deb_hex(LBS_DEB_SCAN, "process_bss: 11d countryinfo",
 			//	    (uint8_t *) pcountryinfo,
 			//	    (int) (pcountryinfo->header.len + 2));
-			break;
+		  break;
 
 		case WLAN_EID_EXT_SUPP_RATES:
 			/* only process extended supported rate if data rate is
@@ -557,7 +541,6 @@ done:
 /*                                                                   */
 /*********************************************************************/
 
-
 /**
  *  @brief This function handles the command response of scan
  *
@@ -590,7 +573,6 @@ static int lbs_ret_80211_scan(struct lbs_private *priv, unsigned long dummy,
 {
 	struct cmd_ds_802_11_scan_rsp *scanresp = (void *)resp;
 	struct bss_descriptor *iter_bss;
-
 	//struct bss_descriptor *safe;
 	uint8_t *bssinfo;
  	uint16_t scanrespsize;
@@ -598,7 +580,9 @@ static int lbs_ret_80211_scan(struct lbs_private *priv, unsigned long dummy,
 	int idx;
  	int tlvbufsize;
 	int ret;
-	
+	struct bss_descriptor *new    = NULL;
+	struct bss_descriptor *found  = NULL;
+	struct bss_descriptor *oldest = NULL;	
 
 	lbs_deb_enter(LBS_DEB_SCAN);
 
@@ -642,13 +626,16 @@ static int lbs_ret_80211_scan(struct lbs_private *priv, unsigned long dummy,
 	 *    driver scan table either as an update to an existing entry
 	 *    or as an addition at the end of the table
 	 */
+	//Allocate heap memory to new scaned bss_descriptor.
+	new = (struct bss_descriptor*)KMemAlloc(sizeof(struct bss_descriptor),KMEM_SIZE_TYPE_ANY);
+	if(NULL == new)
+	{
+		goto done;
+	}
 	for (idx = 0; idx < scanresp->nr_sets && bytesleft; idx++) {
-		struct bss_descriptor new;
-		struct bss_descriptor *found = NULL;
-		struct bss_descriptor *oldest = NULL;
 		/* Process the data fields and IEs returned for this BSS */
-		memset(&new, 0, sizeof (struct bss_descriptor));
-		if (lbs_process_bss(&new, &bssinfo, &bytesleft) != 0) {
+		memset(new, 0, sizeof (struct bss_descriptor));
+		if (lbs_process_bss(new, &bssinfo, &bytesleft) != 0) {
 			/* error parsing the scan response, skipped */
 			lbs_deb_scan("SCAN_RESP: process_bss returned ERROR(%d)\n",tlvbufsize);
 			continue;
@@ -656,25 +643,25 @@ static int lbs_ret_80211_scan(struct lbs_private *priv, unsigned long dummy,
 
 		/* Try to find this bss in the scan table */
 		list_for_each_entry_bssdes(iter_bss, &priv->network_list, list) {
-			if (is_same_network(iter_bss, &new)) {
-				found = iter_bss;//之前扫描的结果
+			if (is_same_network(iter_bss, new)) {
+				found = iter_bss;
 				break;
 			}
 
 			if ((oldest == NULL) ||
 			    (iter_bss->last_scanned < oldest->last_scanned))
-				oldest = iter_bss;//更新最老的
+				oldest = iter_bss;
 		}
 
 		if (found) {
 			/* found, clear it */
 			clear_bss_descriptor(found);
-		} else if (!list_empty(&priv->network_free_list)) {//空闲链表不空
+		} else if (!list_empty(&priv->network_free_list)) {
 			/* Pull one from the free list */
 			found = list_entry(priv->network_free_list.next,
 					   struct bss_descriptor, list);
 			list_move_tail(&found->list, &priv->network_list);
-		} else if (oldest) {//处理最老的
+		} else if (oldest) {
 			/* If there are no more slots, expire the oldest */
 			found = oldest;
 			clear_bss_descriptor(found);
@@ -684,22 +671,23 @@ static int lbs_ret_80211_scan(struct lbs_private *priv, unsigned long dummy,
 		}
 
 		lbs_deb_scan("SCAN_RESP: BSSID %2x:%2x:%2x:%2x:%2x:%2x\n",
-				new.bssid[0],new.bssid[1],new.bssid[2],new.bssid[3],
-				new.bssid[4],new.bssid[5]);
+				new->bssid[0],new->bssid[1],new->bssid[2],new->bssid[3],
+				new->bssid[4],new->bssid[5]);
 
 		/* Copy the locally created newbssentry to the scan table */
-		memcpy(found, &new, offsetof(struct bss_descriptor, list));//链入
+		memcpy(found, new, offsetof(struct bss_descriptor, list));//链入
 	}
 
 	ret = 0;
 
 done:
+	if(new)  //Should free the memory.
+	{
+		KMemFree(new,KMEM_SIZE_TYPE_ANY,0);
+	}
 	lbs_deb_leave_args(LBS_DEB_SCAN, ret);
 	return ret;
 }
-
-
-
 
 /*
  * Generate the CMD_802_11_SCAN command with the proper tlv
@@ -709,7 +697,7 @@ static int lbs_do_scan(struct lbs_private *priv, uint8_t bsstype,
 		       struct chanscanparamset *chan_list, int chan_count)
 {
 	int ret = -ENOMEM;
-	u8 gscan_cmdbuf[MAX_SCAN_CFG_ALLOC];
+	u8* gscan_cmdbuf = NULL;  //[MAX_SCAN_CFG_ALLOC];
 	struct cmd_ds_802_11_scan *scan_cmd;
 	uint8_t *tlv;	/* pointer into our current, growing TLV storage area */
 
@@ -720,11 +708,17 @@ static int lbs_do_scan(struct lbs_private *priv, uint8_t bsstype,
 		bsstype, chan_list ? chan_list[0].channumber : -1,
 		chan_count);
 	
+	//Allocate memory for gscan_cmdbuf.
+	gscan_cmdbuf = (u8*)KMemAlloc(sizeof(u8) * MAX_SCAN_CFG_ALLOC,KMEM_SIZE_TYPE_ANY);
+	if(NULL == gscan_cmdbuf)
+	{
+		goto out;
+	}
 	/* create the fixed part for scan command */
 	/*scan_cmd = kzalloc(MAX_SCAN_CFG_ALLOC, GFP_KERNEL);
 	if (scan_cmd == NULL)
 		goto out;*/
-	scan_cmd=(struct cmd_ds_802_11_scan *)gscan_cmdbuf;
+	scan_cmd = (struct cmd_ds_802_11_scan *)gscan_cmdbuf;
 	memset(scan_cmd,0,MAX_SCAN_CFG_ALLOC);
 
 	tlv = scan_cmd->tlvbuffer;
@@ -746,18 +740,19 @@ static int lbs_do_scan(struct lbs_private *priv, uint8_t bsstype,
 	//lbs_deb_hex(LBS_DEB_SCAN, "SCAN_TLV", scan_cmd->tlvbuffer,
 	//	    tlv - scan_cmd->tlvbuffer);
 	//debug_data_stream("scan command",(char *)&scan_cmd->hdr,
-//	le16_to_cpu(scan_cmd->hdr.size));
-	ret=0;
-	ret = __lbs_cmd(priv, CMD_802_11_SCAN, &scan_cmd->hdr,
+  //	le16_to_cpu(scan_cmd->hdr.size));
+	ret= __lbs_cmd(priv, CMD_802_11_SCAN, &scan_cmd->hdr,
 			le16_to_cpu(scan_cmd->hdr.size),
 			lbs_ret_80211_scan, 0);//这里直接提交扫描命令即可*/
 	
-//out:
-	//kfree(scan_cmd);
+out:
+	if(gscan_cmdbuf)
+	{
+		KMemFree(gscan_cmdbuf,KMEM_SIZE_TYPE_ANY,0);
+	}
 	lbs_deb_leave_args(LBS_DEB_SCAN, ret);
 	return ret;
 }
-
 
 
 /**
@@ -789,20 +784,26 @@ const u8 const_chan_parm[14*7]={0x0,  0x1,  0x0,  0x0,  0x0,  0x64,  0x0,  0x0, 
 int lbs_scan_networks(struct lbs_private *priv, int full_scan)
 {
 	int ret = -ENOMEM;
-	struct chanscanparamset gmarvel_scan_param[LBS_IOCTL_USER_SCAN_CHAN_MAX];
+	struct chanscanparamset *gmarvel_scan_param = NULL; //[LBS_IOCTL_USER_SCAN_CHAN_MAX];
 	struct chanscanparamset *chan_list;
 	struct chanscanparamset *curr_chans;
 	int chan_count;
 	uint8_t bsstype = CMD_BSS_TYPE_ANY;//IBSS和BSS都接受
 	int numchannels = MRVDRV_CHANNELS_PER_SCAN_CMD;
 	union iwreq_data wrqu;
-//#ifdef CONFIG_LIBERTAS_DEBUG
 	struct bss_descriptor *iter;
 	int i = 0;
-//	DECLARE_SSID_BUF(ssid);
-//#endif
 
 	lbs_deb_enter_args(LBS_DEB_SCAN, full_scan);
+	
+	//Allocate memory for gmarvel_scan_param.
+	gmarvel_scan_param = (struct chanscanparamset*)KMemAlloc( \
+	    sizeof(struct chanscanparamset) * LBS_IOCTL_USER_SCAN_CHAN_MAX, \
+	    KMEM_SIZE_TYPE_ANY);
+	if(NULL == gmarvel_scan_param)
+	{
+		goto out2;
+	}
 
 	/* Cancel any partial outstanding partial scans if this scan
 	 * is a full scan.
@@ -818,15 +819,17 @@ int lbs_scan_networks(struct lbs_private *priv, int full_scan)
 		if (user_cfg->bsstype)
 		bsstype = user_cfg->bsstype;
 	} */
-	/*这里清除一个遗留的bug，每次扫描之前清除网络*/
+	
 	/*list_for_each_entry_bssdes(iter, &priv->network_list, list){
 		list_move_tail(&iter->list, &priv->network_free_list);
 		clear_bss_descriptor(iter);
 		
 	}*/
-	INIT_LIST_HEAD(&priv->network_free_list);//初始化扫描相关的链表
+	
+	//Initialize scan related data structures,mainly bss descriptors.
+	INIT_LIST_HEAD(&priv->network_free_list);
 	INIT_LIST_HEAD(&priv->network_list);
-	for (i = 0; i < MAX_NETWORK_COUNT; i++) {//当前未用的所有bss_descriptor链入到空闲链表
+	for (i = 0; i < MAX_NETWORK_COUNT; i++) {
 		list_add_tail(&priv->networks[i].list,
 			      &priv->network_free_list);
 		clear_bss_descriptor(&priv->networks[i]);
@@ -838,8 +841,8 @@ int lbs_scan_networks(struct lbs_private *priv, int full_scan)
 	/*chan_list = kzalloc(sizeof(struct chanscanparamset) *
 			    LBS_IOCTL_USER_SCAN_CHAN_MAX, GFP_KERNEL);*/
 
-	chan_list=gmarvel_scan_param;
-	memset(chan_list,0,sizeof(struct chanscanparamset) *\
+	chan_list = gmarvel_scan_param;
+	memset(chan_list,0,sizeof(struct chanscanparamset) * \
 			LBS_IOCTL_USER_SCAN_CHAN_MAX);
 	
 	/*if (!chan_list) {
@@ -850,7 +853,7 @@ int lbs_scan_networks(struct lbs_private *priv, int full_scan)
 	/* We want to scan all channels */
 	// debug_data_stream("chan list",(char *)priv->region_channel,sizeof(struct region_channel ));
 	// debug_data_stream("cpf information",(char *)priv->region_channel[0].CFP,sizeof(struct chan_freq_power)*14);
-	chan_count = lbs_scan_create_channel_list(priv, chan_list); //需要扫描的所有通道
+	chan_count = lbs_scan_create_channel_list(priv, chan_list);
 	memcpy(gmarvel_scan_param,const_chan_parm,14*7);
 
 	//netif_stop_queue(priv->dev);
@@ -887,7 +890,7 @@ int lbs_scan_networks(struct lbs_private *priv, int full_scan)
 		}
 		curr_chans += to_scan;
 		chan_count -= to_scan;
-		 memcpy(gmarvel_scan_param,const_chan_parm,14*7);
+		memcpy(gmarvel_scan_param,const_chan_parm,14*7);
 		/* somehow schedule the next part of the scan */
 #ifdef MASK_DEBUG
 		if (chan_count && !full_scan &&
@@ -909,7 +912,6 @@ int lbs_scan_networks(struct lbs_private *priv, int full_scan)
 	memset(&wrqu, 0, sizeof(union iwreq_data));
 	//wireless_send_event(priv->dev, SIOCGIWSCAN, &wrqu, NULL);
 
-
 	/* Dump the scan table */
 	//mutex_lock(&priv->lock);
 	printf_scan("scan table:\n");
@@ -919,8 +921,12 @@ int lbs_scan_networks(struct lbs_private *priv, int full_scan)
 			     iter->ssid);
 	//mutex_unlock(&priv->lock);
 
-
 out2:
+	//Release memory.
+	if(gmarvel_scan_param)
+	{
+		KMemFree(gmarvel_scan_param,KMEM_SIZE_TYPE_ANY,0);
+	}
 	priv->scan_channel = 0;
 
 //out:
@@ -939,6 +945,7 @@ out2:
 	lbs_deb_leave_args(LBS_DEB_SCAN, ret);
 	return ret;
 }
+
 /**
  *  @brief Compare two SSIDs
  *
@@ -956,8 +963,6 @@ int lbs_ssid_cmp(uint8_t *ssid1, uint8_t ssid1_len, uint8_t *ssid2,
 	return memcmp(ssid1, ssid2, ssid1_len);
 }
 
-
-
 struct bss_descriptor *find_beacon_bss(struct lbs_private *priv,
 					     uint8_t *ssid, uint8_t ssid_len,int mode)
 {
@@ -971,8 +976,6 @@ struct bss_descriptor *find_beacon_bss(struct lbs_private *priv,
 	}
 	return iter_bss;
 }
-
-
 
 /**
  *  @brief Send a scan command for all available channels filtered on a spec
@@ -1009,4 +1012,3 @@ out:
 	lbs_deb_leave_args(LBS_DEB_SCAN, ret);
 	return ret;
 }
-

@@ -10,10 +10,10 @@
 #include "11d.h"
 #include "types.h"
 
-#define LBS_TX_PWR_DEFAULT		20	/*100mW */
-#define LBS_TX_PWR_US_DEFAULT		20	/*100mW */
-#define LBS_TX_PWR_JP_DEFAULT		16	/*50mW */
-#define LBS_TX_PWR_FR_DEFAULT		20	/*100mW */
+#define LBS_TX_PWR_DEFAULT      20	/*100mW */
+#define LBS_TX_PWR_US_DEFAULT   20	/*100mW */
+#define LBS_TX_PWR_JP_DEFAULT   16	/*50mW */
+#define LBS_TX_PWR_FR_DEFAULT   20	/*100mW */
 #define LBS_TX_PWR_EMEA_DEFAULT	20	/*100mW */
 
 /* Format { channel, frequency (MHz), maxtxpower } */
@@ -153,8 +153,6 @@ u32 lbs_fw_index_to_data_rate(u8 idx)
 	return fw_data_rates[idx];
 }
 
-
-
 void lbs_notify_command_response(struct lbs_private *priv, u8 resp_idx)
 {
 	//lbs_deb_enter(LBS_DEB_THREAD);
@@ -171,31 +169,27 @@ void lbs_notify_command_response(struct lbs_private *priv, u8 resp_idx)
 	//lbs_deb_leave(LBS_DEB_THREAD);
 }
 
-
-
-
-
 void lbs_host_to_card_done(struct lbs_private *priv)
 {
-//	unsigned long flags;
+   //	unsigned long flags;
 
 	 lbs_deb_cmd_enter("enter lbs_host_to_card_done\n");
 
-	//spin_lock_irqsave(&priv->driver_lock, flags);
-
-	priv->dnld_sent = DNLD_RES_RECEIVED;
+	 //spin_lock_irqsave(&priv->driver_lock, flags);
+	 priv->dnld_sent = DNLD_RES_RECEIVED;
 
 	/* Wake main thread if commands are pending */
-	 if (!priv->cur_cmd || priv->tx_pending_len > 0)//µ±Ç°ÃüÁîÖ´ÐÐÍê³É£¬»òÕßÓÐÊý¾ÝÒª·¢ËÍ£¬»½ÐÑÖ÷Ïß³Ì´¦Àí
-		//wake_up_interruptible(&priv->waitq);
-		lbs_thread(priv);
-
-	//spin_unlock_irqrestore(&priv->driver_lock, flags);
+	 if (!priv->cur_cmd || priv->tx_pending_len > 0)
+	 {
+		 //wake_up_interruptible(&priv->waitq);
+		 lbs_thread(priv);
+	 }
+	 
+	 //spin_unlock_irqrestore(&priv->driver_lock, flags);
 	 lbs_deb_cmd_leave("leave lbs_host_to_card_done\n");
 }
 
-
-static int lbs_init_adapter(struct lbs_private *priv)//Ö÷ÒªÊÇ³õÊ¼»¯Íø¿¨µÄÒ»Ð©Èí¼þÐÅÏ¢
+static int lbs_init_adapter(struct lbs_private *priv)
 {
 	size_t bufsize;
 	int i, ret = 0;
@@ -204,7 +198,6 @@ static int lbs_init_adapter(struct lbs_private *priv)//Ö÷ÒªÊÇ³õÊ¼»¯Íø¿¨µÄÒ»Ð©Èí¼
 	lbs_deb_enter("enter lbs_init_adapter\n");
 	/* Allocate buffer to store the BSSID list */
 	bufsize = MAX_NETWORK_COUNT * sizeof(struct bss_descriptor);
-	//·ÖÅäÒ»¸ö·þÎñ¼¯ÃèÊö·ûµÄ¿Õ¼ä£¬ÓÃÀ´´æ·ÅÕâ¸öBSSµÄÒ»Ð©»ù±¾ÐÅÏ¢
 	/*priv->networks = kzalloc(bufsize, GFP_KERNEL);
 	if (!priv->networks) {
 		lbs_pr_err("Out of memory allocating beacons\n");
@@ -215,49 +208,48 @@ static int lbs_init_adapter(struct lbs_private *priv)//Ö÷ÒªÊÇ³õÊ¼»¯Íø¿¨µÄÒ»Ð©Èí¼
 	memset(priv->networks,0,bufsize);
 
 	/* Initialize scan result lists */
-	INIT_LIST_HEAD(&priv->network_free_list);//³õÊ¼»¯É¨ÃèÏà¹ØµÄÁ´±í
+	INIT_LIST_HEAD(&priv->network_free_list);//Initialize scan related list and objects.
 	INIT_LIST_HEAD(&priv->network_list);
-	for (i = 0; i < MAX_NETWORK_COUNT; i++) {//µ±Ç°Î´ÓÃµÄËùÓÐbss_descriptorÁ´Èëµ½¿ÕÏÐÁ´±í
+	//Link all bss descriptors into free list.
+	for (i = 0; i < MAX_NETWORK_COUNT; i++) {
 		list_add_tail(&priv->networks[i].list,
 			      &priv->network_free_list);
 	}
 
-	memset(priv->current_addr, 0xff, ETH_ALEN);//µ±Ç°ÎïÀíµØÖ·Èí¼þ³õÊ¼»¯Îª0xff
-
-	priv->connect_status = LBS_DISCONNECTED;//Î´Á¬½Ó
-	priv->mesh_connect_status = LBS_DISCONNECTED;//meshÍøÂçÎ´Á¬½Ó
-	priv->secinfo.auth_mode = IW_AUTH_ALG_OPEN_SYSTEM;//ÈÏÖ¤Ä£Ê½£¬¿ª·ÅÐÍÈÏÖ¤
-	priv->mode = IW_MODE_INFRA;//»ù´¡ÍøÂç
-	priv->curbssparams.channel = DEFAULT_AD_HOC_CHANNEL;//Êµ¼ÊÉÏ¾ÍÊÇÐ§¹û×îºÃµÄÐÅµÀ£¬ÐÅµÀ6
-	priv->mac_control = CMD_ACT_MAC_RX_ON | CMD_ACT_MAC_TX_ON;//½ÓÊÕ·¢ËÍÊ¹ÄÜ
+	memset(priv->current_addr, 0xff, ETH_ALEN);
+	priv->connect_status = LBS_DISCONNECTED;
+	priv->mesh_connect_status = LBS_DISCONNECTED;
+	priv->secinfo.auth_mode = IW_AUTH_ALG_OPEN_SYSTEM;
+	priv->mode = IW_MODE_INFRA;
+	priv->curbssparams.channel = DEFAULT_AD_HOC_CHANNEL;
+	priv->mac_control = CMD_ACT_MAC_RX_ON | CMD_ACT_MAC_TX_ON;
 	priv->radio_on = 1;
 	priv->enablehwauto = 1;
 	priv->capability = WLAN_CAPABILITY_SHORT_PREAMBLE;
 	priv->psmode = LBS802_11POWERMODECAM;
 	priv->psstate = PS_STATE_FULL_POWER;
-	//ÒÔÉÏ¶¼ÊÇ³õÊ¼»¯ÊÊÅäÆ÷µÄÒ»Ð©Èí¼þ²ÎÊý
 	//mutex_init(&priv->lock);
 
-	/*setup_timer(&priv->command_timer, command_timer_fn,//°²×°Ò»¸öÃüÁî´¦ÀíµÄ¶¨Ê±Æ÷
+	/*setup_timer(&priv->command_timer, command_timer_fn,
 		(unsigned long)priv);*/
 
 	INIT_LIST_HEAD(&priv->cmdfreeq);
 	INIT_LIST_HEAD(&priv->cmdpendingq);
 
 	/*spin_lock_init(&priv->driver_lock);
-	init_waitqueue_head(&priv->cmd_pending);//³õÊ¼»¯Ò»¸öµÈ´ý¶ÓÁÐ´¦ÀíÃüÁî*/
+	init_waitqueue_head(&priv->cmd_pending);
 
 	/* Allocate the command buffers */
-	if (lbs_allocate_cmd_buffer(priv)) {//·ÖÅä²¢³õÊ¼»¯ÃüÁî¿ØÖÆ¿éstruct cmd_ctrl_nodeÊÇÃüÁî´æ·ÅµÄÖ÷Òª½á¹¹
+	if (lbs_allocate_cmd_buffer(priv)) {
 		lbs_pr_err("Out of memory allocating command buffers\n");
 		ret = -ENOMEM;
 		goto out;
 	}
 	priv->resp_idx = 0;
-	priv->resp_len[0] = 0;//Ó²¼þ·µ»ØµÄÃüÁîÏìÓ¦
+	priv->resp_len[0] = 0; //Contains the response from hardware.
 
 	/* Create the event FIFO */
-	/*priv->event_fifo = kfifo_alloc(sizeof(u32) * 16, GFP_KERNEL, NULL);//Ó²¼þµÄevent£¬±ÈÈçÈÈ²å°ÎµÈÊÂ¼þ
+	/*priv->event_fifo = kfifo_alloc(sizeof(u32) * 16, GFP_KERNEL, NULL);
 	if (IS_ERR(priv->event_fifo)) {
 		lbs_pr_err("Out of memory allocating event FIFO buffer\n");
 		ret = -ENOMEM;
@@ -269,7 +261,6 @@ out:
 
 	return ret;
 }
-
 
 int lbs_process_event(struct lbs_private *priv, u32 event)
 {
@@ -399,20 +390,6 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 	return ret;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  *  @brief This function handles the major jobs in the LBS driver.
  *  It handles all events generated by firmware, RX data received
@@ -421,10 +398,10 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
  *  @param data    A pointer to lbs_thread structure
  *  @return 	   0
  */
- int lbs_thread(struct lbs_private *priv)//Ö÷Ïß³Ì£¬´¦ÀíËùÓÐ¹Ì¼þÉú³ÉµÄenvent¡¢½ÓÊÕºÍ·¢ËÍÊý¾ÝÒÔ¼°Ö´ÐÐÍø¿¨ÃüÁî
+ int lbs_thread(struct lbs_private *priv)
 {
-//	struct net_device *dev = data;
-//	struct lbs_private *priv = dev->ml_priv;
+  //struct net_device *dev = data;
+  //struct lbs_private *priv = dev->ml_priv;
 	//wait_queue_t wait;
 	int shouldsleep;
 	u8 resp_idx;
@@ -433,12 +410,10 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 
 	//init_waitqueue_entry(&wait, current);
 	do{
-		
-
 		/*lbs_deb_thread("1: currenttxskb %p, dnld_sent %d\n",
 				priv->currenttxskb, priv->dnld_sent);	 */
 
-		/*add_wait_queue(&priv->waitq, &wait);//½«Ïß³Ì¼ÓÈëµ½µÈ´ý¶ÓÁÐ£¬Ö±µ½µ÷ÓÃschedule()Ïß³Ì½øÈëË¯Ãß
+		/*add_wait_queue(&priv->waitq, &wait);
 		set_current_state(TASK_INTERRUPTIBLE);
 		spin_lock_irq(&priv->driver_lock);
 
@@ -454,13 +429,13 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 			shouldsleep = 1;	/* Firmware not ready. We're waiting for it */
 		else if (priv->dnld_sent)
 			shouldsleep = 1;	/* Something is en route to the device already */
-		//else if (priv->tx_pending_len > 0)//ÓÐÊý¾ÝÐèÒª·¢ËÍ
+		//else if (priv->tx_pending_len > 0)
 		//	shouldsleep = 0;	/* We've a packet to send */
-		else if (priv->resp_len[priv->resp_idx])//ÏìÓ¦£¬Ö÷Òª»¹ÊÇÓÃÓÚ´¦Àí802.11¹ÜÀí
+		else if (priv->resp_len[priv->resp_idx])
 			shouldsleep = 0;	/* We have a command response */
-		else if (priv->cur_cmd)//µ±Ç°»¹ÓÐÃüÁîÔÚ´¦Àí
+		else if (priv->cur_cmd)
 			shouldsleep = 1;	/* Can't send a command; one already running */
-		else if (!list_empty(&priv->cmdpendingq))//ÃüÁî¹ÒÆðÁ´±íÓÐÃüÁîÁ´Èë£¬ÐèÒª´¦Àí
+		else if (!list_empty(&priv->cmdpendingq))
 			shouldsleep = 0;	/* We have a command to send */
 		/*  else if (__kfifo_len(priv->event_fifo))
 			shouldsleep = 0;	*/ /* We have an event to process */
@@ -479,7 +454,7 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 		/*else
 			spin_unlock_irq(&priv->driver_lock);*/
 
-	/*	lbs_deb_thread("2: currenttxskb %p, dnld_send %d\n",
+	  /*lbs_deb_thread("2: currenttxskb %p, dnld_send %d\n",
 			       priv->currenttxskb, priv->dnld_sent);*/
 
 		/*set_current_state(TASK_RUNNING);
@@ -504,25 +479,26 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 		/* Process any pending command response */
 		//spin_lock_irq(&priv->driver_lock);
 		resp_idx = priv->resp_idx;
-		if (priv->resp_len[resp_idx]) {//´¦ÀíÍø¿¨ÏìÓ¦
+		if (priv->resp_len[resp_idx]) {
 		//	spin_unlock_irq(&priv->driver_lock);
 			lbs_process_command_response(priv,
 				priv->resp_buf[resp_idx],
 				priv->resp_len[resp_idx]);
 			//spin_lock_irq(&priv->driver_lock);
-			priv->resp_len[resp_idx] = 0;//Íê³ÉÇå0
+			priv->resp_len[resp_idx] = 0;
 		}
 		//spin_unlock_irq(&priv->driver_lock);
 
 		/* command timeout stuff */
-		if (priv->cmd_timed_out && priv->cur_cmd) {//ÃüÁî³¬Ê±
+		if (priv->cmd_timed_out && priv->cur_cmd)
+		{
 			struct cmd_ctrl_node *cmdnode = priv->cur_cmd;
 
 			if (++priv->nr_retries > 0) {
 				lbs_pr_info("Excessive timeouts submitting "
 					"command 0x%04x\n",
 					le16_to_cpu(cmdnode->cmdbuf->command));
-				lbs_complete_command(priv, cmdnode, -ETIMEDOUT);//³¬¹ýÖØÊÔ´ÎÊýÖ±½Ó¹Òµô
+				lbs_complete_command(priv, cmdnode, -ETIMEDOUT);
 				priv->nr_retries = 0;
 				/*if (priv->reset_card)
 					priv->reset_card(priv);*/
@@ -536,18 +512,18 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 
 				/* Stick it back at the _top_ of the pending queue
 				   for immediate resubmission */
-				list_add(&cmdnode->list, &priv->cmdpendingq);//ÖØÐÂÁ´Èë´¦Àí
+				list_add(&cmdnode->list, &priv->cmdpendingq);
 			}
 		}
 		priv->cmd_timed_out = 0;
 
 		/* Process hardware events, e.g. card removed, link lost */
 		//spin_lock_irq(&priv->driver_lock);
-	 /*	while (__kfifo_len(priv->event_fifo)) {//Ö®Ç°Ìáµ½µÄenvent£¬°üÀ¨µôÏß£¬ÈÈ²å°ÎµÈÊÂ¼þµÄ´¦Àí
+	  /*	while (__kfifo_len(priv->event_fifo)) {
 				u32 event;
 			__kfifo_get(priv->event_fifo,(unsigned char *)&event,sizeof(event));
 			//spin_unlock_irq(&priv->driver_lock);
-			lbs_process_event(priv, event);//´¦ÀíenventÊÂ¼þ
+			lbs_process_event(priv, event);
 			//spin_lock_irq(&priv->driver_lock);
 		} */
 		//spin_unlock_irq(&priv->driver_lock);
@@ -591,8 +567,8 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 			continue;
 
 		/* Execute the next command */
-		if (!priv->dnld_sent && !priv->cur_cmd)//Ö´ÐÐÏÂÒ»¸öÃüÁî
-			lbs_execute_next_command(priv);//»áµ÷ÓÃÓ²¼þÏà¹ØµÄº¯Êý½«ÃüÁîÐ´ÈëÐ¾Æ¬
+		if (!priv->dnld_sent && !priv->cur_cmd)
+			lbs_execute_next_command(priv);
 
 		/* Wake-up command waiters which can't sleep in
 		 * lbs_prepare_and_send_command
@@ -603,8 +579,7 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 #ifdef MASK_DEBUG
 
 		//spin_lock_irq(&priv->driver_lock);
-		if (!priv->dnld_sent && priv->tx_pending_len > 0) {//·¢ËÍÊý¾Ý´¦Àí
-			//ÕâÀï¾ÍÊÇµ÷ÓÃif_sdio_host_to_cardÕâ¸öº¯ÊýÀ´´¦ÀíÏòÉè±¸·¢ËÍÊý¾Ý	
+		if (!priv->dnld_sent && priv->tx_pending_len > 0) {
 			int ret = priv->hw_host_to_card(priv, MVMS_DAT,
 							priv->tx_pending_buf,
 							priv->tx_pending_len);
@@ -635,8 +610,6 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 	return 0;
 }
 
-
-
 /**
  * @brief This function adds the card. it will probe the
  * card, allocate the lbs_priv and initialize the device.
@@ -652,8 +625,7 @@ struct lbs_private *lbs_add_card(void *card)
 	lbs_deb_enter("enter lbs_add_card!\n");
 
 	memset(priv,0,sizeof(struct lbs_private));
-	//ÄÄÀï¼Ç×¡Õâ¸öprivÊÇ¸öbug
-	 if (lbs_init_adapter(priv)) {//³õÊ¼»¯lbs_privateÖÐµÄÐÅÏ¢£¬ËüÊÇ¹ÜÀíÍø¿¨¿ØÖÆÆ÷µÄÖ÷ÒªÊý¾Ý½á¹¹
+	if (lbs_init_adapter(priv)) {//Initialize priv structure.
 		lbs_pr_err("failed to initialize adapter structure.\n");
 		goto err_init_adapter;
 	} 
@@ -726,9 +698,6 @@ done:
 	return ret;
 }
 
-
-
-
 /**
  *  @brief This function finds the CFP in
  *  region_cfp_table based on region and band parameter.
@@ -759,8 +728,6 @@ struct chan_freq_power *lbs_get_region_cfp_table(u8 region, int *cfp_no)
 	lbs_deb_leave_args(LBS_DEB_MAIN, "ret NULL");
 	return NULL;
 }
-
-
 
 int lbs_set_regiontable(struct lbs_private *priv, u8 region, u8 band)
 {
@@ -793,10 +760,9 @@ out:
 	return ret;
 }
 
-
 void lbs_queue_event(struct lbs_private *priv, u32 event)
 {
-//	unsigned long flags;
+  //unsigned long flags;
 	lbs_deb_enter(LBS_DEB_THREAD);
 	//spin_lock_irqsave(&priv->driver_lock, flags);
 
@@ -810,5 +776,3 @@ void lbs_queue_event(struct lbs_private *priv, u32 event)
 	//spin_unlock_irqrestore(&priv->driver_lock, flags);
 	lbs_deb_leave(LBS_DEB_THREAD);
 }
-
-

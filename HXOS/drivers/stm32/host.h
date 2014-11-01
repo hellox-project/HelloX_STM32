@@ -224,7 +224,6 @@ static void mmc_signal_sdio_irq(struct mmc_host *host)
 	sdio_irq_thread(host);
 }
 
-
 #define mmc_priv(host)  (struct stm32_host *)(&(host->private))
 /*#define mmc_signal_sdio_irq(host) 	do{
 									  host->ops->enable_sdio_irq(host, 0);

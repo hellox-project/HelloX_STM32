@@ -266,10 +266,10 @@ static int lbs_associate(struct lbs_private *priv,
 			 struct assoc_request *assoc_req,
 			 u16 command)
 {
-	struct cmd_ds_802_11_associate cmd;
+	struct cmd_ds_802_11_associate *cmd = NULL;
 	int ret = 0;
 	struct bss_descriptor *bss = &assoc_req->bss;
-	u8 *pos = &(cmd.iebuf[0]);
+	u8 *pos = NULL;//&(cmd.iebuf[0]);
 	u16 tmpcap, tmplen, tmpauth;
 	struct mrvl_ie_ssid_param_set *ssid;
 	struct mrvl_ie_ds_param_set *ds;
@@ -279,22 +279,30 @@ static int lbs_associate(struct lbs_private *priv,
 	struct mrvl_ie_auth_type *auth;
 
 	lbs_deb_enter(LBS_DEB_ASSOC);
+	
+	//Allocate memory for associate command.
+	cmd = (struct cmd_ds_802_11_associate*)KMemAlloc(sizeof(struct cmd_ds_802_11_associate),KMEM_SIZE_TYPE_ANY);
+	if(NULL == cmd)
+	{
+		goto done;
+	}
+	pos = &(cmd->iebuf[0]);
 
 	//BUG_ON((command != CMD_802_11_ASSOCIATE) &&
 	//	(command != CMD_802_11_REASSOCIATE));
 
-	memset(&cmd, 0, sizeof(cmd));
-	cmd.hdr.command = cpu_to_le16(command);
+	memset(cmd, 0, sizeof(struct cmd_ds_802_11_associate));
+	cmd->hdr.command = cpu_to_le16(command);
 
 	/* Fill in static fields */
-	memcpy(cmd.bssid, bss->bssid, ETH_ALEN);
-	cmd.listeninterval = cpu_to_le16(MRVDRV_DEFAULT_LISTEN_INTERVAL);
+	memcpy(cmd->bssid, bss->bssid, ETH_ALEN);
+	cmd->listeninterval = cpu_to_le16(MRVDRV_DEFAULT_LISTEN_INTERVAL);
 
 	/* Capability info */
 	tmpcap = (bss->capability & CAPINFO_MASK);
 	if (bss->mode == IW_MODE_INFRA)
 		tmpcap |= WLAN_CAPABILITY_ESS;
-	cmd.capability = cpu_to_le16(tmpcap);
+	cmd->capability = cpu_to_le16(tmpcap);
 	lbs_deb_assoc("ASSOC_CMD: capability 0x%04x\n", tmpcap);
 
 	/* SSID */
@@ -367,8 +375,8 @@ static int lbs_associate(struct lbs_private *priv,
 		pos += sizeof(rsn->header) + tmplen;
 	}
 	#endif
-	cmd.hdr.size = cpu_to_le16((sizeof(cmd) - sizeof(cmd.iebuf)) +
-				   (u16)(pos - (u8 *) &cmd.iebuf));
+	cmd->hdr.size = cpu_to_le16((sizeof(struct cmd_ds_802_11_associate) - sizeof(cmd->iebuf)) +
+				   (u16)(pos - (u8 *) &(*cmd).iebuf));  //CAUTION!!!
 
 	/* update curbssparams */
 	priv->curbssparams.channel = bss->phy.ds.channel;
@@ -377,13 +385,17 @@ static int lbs_associate(struct lbs_private *priv,
 		goto done;
 	}
 
-	ret = lbs_cmd_with_response(priv, command, &cmd);
+	ret = lbs_cmd_with_response(priv, command, cmd);
 	if (ret == 0) {
 		ret = lbs_assoc_post(priv,
-			(struct cmd_ds_802_11_associate_response *) &cmd);
+			(struct cmd_ds_802_11_associate_response *) cmd);
 	}
 
 done:
+	if(cmd)
+	{
+		KMemFree(cmd,KMEM_SIZE_TYPE_ANY,0);
+	}
 	lbs_deb_leave_args(LBS_DEB_ASSOC, ret);
 	return ret;
 }
@@ -430,10 +442,6 @@ out:
 	return ret;
 }
 
-
-
-
-
 /**
  *  @brief This function finds a specific compatible BSSID in the scan list
  *
@@ -467,13 +475,13 @@ static struct bss_descriptor *lbs_find_bssid_in_list(struct lbs_private *priv,
 	 *   is an AP with multiple SSIDs assigned to the same BSSID
 	 */
 	//mutex_lock(&priv->lock);
-	list_for_each_entry_bssdes(iter_bss, &priv->network_list,list) {//在扫描到的网络中寻找合适的bssid
+	list_for_each_entry_bssdes(iter_bss, &priv->network_list,list) {
 		if (compare_ether_addr(iter_bss->bssid, bssid))
 			continue; /* bssid doesn't match */
 		switch (mode) {
 		case IW_MODE_INFRA:
 		case IW_MODE_ADHOC:
-			if (!is_network_compatible(priv, iter_bss, mode))//网络是否兼容，这里主要检查的是加密信息
+			if (!is_network_compatible(priv, iter_bss, mode))
 				break;
 			found_bss = iter_bss;
 			break;
@@ -490,9 +498,9 @@ out:
 }
 
 
-
 static int lbs_adhoc_join(struct lbs_private *priv,
 	struct assoc_request *assoc_req);
+
 static int assoc_helper_bssid(struct lbs_private *priv,
                               struct assoc_request * assoc_req)
 {
@@ -503,7 +511,7 @@ static int assoc_helper_bssid(struct lbs_private *priv,
 
 	/* Search for index position in list for requested MAC */
 	bss = lbs_find_bssid_in_list(priv, assoc_req->bssid,
-			    assoc_req->mode);//在扫描到的BSS列表中，寻找合适的bss
+			    assoc_req->mode);
 	if (bss == NULL) {
 		lbs_deb_assoc("ASSOC: WAP: BSSID %pM not found, "
 			"cannot associate.\n", assoc_req->bssid);
@@ -512,7 +520,7 @@ static int assoc_helper_bssid(struct lbs_private *priv,
 	priv->cur_bss=bss;
 	memcpy(&assoc_req->bss, bss, sizeof(struct bss_descriptor));
 	if (assoc_req->mode == IW_MODE_INFRA) {
-		ret = lbs_try_associate(priv, assoc_req);//真正处理关联的地方
+		ret = lbs_try_associate(priv, assoc_req);
 		lbs_deb_assoc("ASSOC: lbs_try_associate(bssid) returned %d\n",
 			      ret);
 	} else if (assoc_req->mode == IW_MODE_ADHOC) {
@@ -678,16 +686,16 @@ static int assoc_helper_associate(struct lbs_private *priv,
 
 	/* If we're given and 'any' BSSID, try associating based on SSID */
 
-	if (test_bit(ASSOC_FLAG_BSSID, &assoc_req->flags)) {//bssid关联
+	if (test_bit(ASSOC_FLAG_BSSID, &assoc_req->flags)) {
 		if (compare_ether_addr(bssid_any, assoc_req->bssid)
-		    && compare_ether_addr(bssid_off, assoc_req->bssid)) {//不是任意的bssid，调用关联
+		    && compare_ether_addr(bssid_off, assoc_req->bssid)) {
 			ret = assoc_helper_bssid(priv, assoc_req);
 			done = 1;
 		}
 	}
 
 	if (!done && test_bit(ASSOC_FLAG_SSID, &assoc_req->flags)) {
-		ret = assoc_helper_essid(priv, assoc_req);//使用essid关联
+		ret = assoc_helper_essid(priv, assoc_req);
 	}
 
 	lbs_deb_leave_args(LBS_DEB_ASSOC, ret);
@@ -1086,21 +1094,21 @@ static int lbs_adhoc_join(struct lbs_private *priv,
 		if(1){
 			int i;
 			unsigned char *pchar=(unsigned char *)&cmd;
-			printf("join adhoc cmd(length=%d):\n",sizeof(struct cmd_ds_802_11_ad_hoc_join));
-			printf("struct cmd_header=%d\n",sizeof(struct cmd_header));
-			printf("struct adhoc_bssdesc=%d\n",sizeof(struct adhoc_bssdesc));
-			printf("struct ieee_ie_ds_param_set=%d\n",sizeof(struct ieee_ie_ds_param_set));
-	 		printf("struct ieee_ie_ibss_param_set=%d\n",sizeof(struct ieee_ie_ibss_param_set));
-			printf("le16=%d\n",sizeof(__le16));
-			printf("le64=%d\n",sizeof(__le64));
-			printf("struct ieee_ie_header=%d\n",sizeof(struct ieee_ie_header));
+			_hx_printf("join adhoc cmd(length=%d):\n",sizeof(struct cmd_ds_802_11_ad_hoc_join));
+			_hx_printf("struct cmd_header=%d\n",sizeof(struct cmd_header));
+			_hx_printf("struct adhoc_bssdesc=%d\n",sizeof(struct adhoc_bssdesc));
+			_hx_printf("struct ieee_ie_ds_param_set=%d\n",sizeof(struct ieee_ie_ds_param_set));
+	 		_hx_printf("struct ieee_ie_ibss_param_set=%d\n",sizeof(struct ieee_ie_ibss_param_set));
+			_hx_printf("le16=%d\n",sizeof(__le16));
+			_hx_printf("le64=%d\n",sizeof(__le64));
+			_hx_printf("struct ieee_ie_header=%d\n",sizeof(struct ieee_ie_header));
 			for(i=0;i<sizeof(struct cmd_ds_802_11_ad_hoc_join);i++)
 			{	
 				if((!(i%10))&&(i))
-					printf("\n");
-				printf("0x%2x     ",*pchar++);			
+					_hx_printf("\n");
+				_hx_printf("0x%2x     ",*pchar++);			
 			}
-			printf("\n");
+			_hx_printf("\n");
 		}
 	
 	ret = lbs_cmd_with_response(priv, CMD_802_11_AD_HOC_JOIN, &cmd);
@@ -1656,8 +1664,8 @@ static void init_marvel_adhoc_assoc(struct assoc_request *assoc,char *ssid,char 
 	assoc->flags|=(1<<ASSOC_FLAG_SSID);
 	printk("please input essid:%s\n",ssid);
 	printk("please input wep key:%s\n",key);
-    memcpy(assoc->ssid,ssid,strlen(ssid));
-    assoc->ssid_len=strlen((const char *)assoc->ssid);
+  memcpy(assoc->ssid,ssid,strlen(ssid));
+  assoc->ssid_len=strlen((const char *)assoc->ssid);
 	if(strlen(key)){
 		assoc->wep_keys[0].len=strlen(key);
 		memcpy(assoc->wep_keys[0].key,key,strlen(key));
@@ -1667,11 +1675,11 @@ static void init_marvel_adhoc_assoc(struct assoc_request *assoc,char *ssid,char 
 		(1<<ASSOC_FLAG_SECINFO)|
 		(1<<ASSOC_FLAG_MODE));
 	}
-     assoc->channel=1;
-   	 assoc->band=0;
-   	 assoc->mode=(mode=='0')?IW_MODE_INFRA:IW_MODE_ADHOC;
-     memset(assoc->bssid,0,6);
-     assoc->secinfo.auth_mode=1;
+  assoc->channel=1;
+  assoc->band=0;
+  assoc->mode=(mode=='0')?IW_MODE_INFRA:IW_MODE_ADHOC;
+  memset(assoc->bssid,0,6);
+  assoc->secinfo.auth_mode=1;
 }
 
 
@@ -1794,7 +1802,6 @@ void lbs_association_worker(struct lbs_private *priv)
 				lbs_deb_assoc("Teardown of AdHoc network due to "
 					"new configuration request failed: %d\n",ret);
 			}
-
 		}
 	}
 	/* Send the various configuration bits to the firmware */

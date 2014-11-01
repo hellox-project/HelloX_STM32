@@ -9,6 +9,7 @@
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\..\arch\stm32\syn_mech.h
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\objqueue.h
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\ktmgr.h
+.\obj&lst\fs.o: HXOS\shell\..\INCLUDE\ktmgr2.h
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\RINGBUFF.H
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\system.h
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\devmgr.h
@@ -22,10 +23,12 @@
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\buffmgr.h
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\kmemmgr.h
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\ktmsg.h
+.\obj&lst\fs.o: HXOS\shell\..\INCLUDE\sysnet.h
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\globvar.h
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\..\arch\stm32\arch.h
 .\obj&lst\fs.o: HXOS\shell\shell.h
 .\obj&lst\fs.o: HXOS\shell\FS.H
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\KAPI.H
 .\obj&lst\fs.o: HXOS\shell\..\INCLUDE\COMQUEUE.H
+.\obj&lst\fs.o: HXOS\shell\..\INCLUDE\..\include\debug.h
 .\obj&lst\fs.o: HXOS\shell\..\lib\stdio.h

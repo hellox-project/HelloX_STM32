@@ -341,17 +341,26 @@ static int if_sdio_host_to_card(struct lbs_private *priv,
 		u8 type, u8 *buf, u16 nb)
 {
 	int ret;
-	struct if_sdio_packet host_tx_pktbuf;
+	struct if_sdio_packet* host_tx_pktbuf;
 	struct if_sdio_card *card;
 	struct if_sdio_packet *packet, *cur;
 	u16 size;
 
+	//Allocate memory for host_tx_pktbuf.
+	host_tx_pktbuf = (struct if_sdio_packet*)KMemAlloc(sizeof(struct if_sdio_packet),KMEM_SIZE_TYPE_ANY);
+	if(NULL == host_tx_pktbuf)
+	{
+		_hx_printf("SDIO->if_sdio_host_to_card: Failed to allocate memory for pkt buffer.\r\n");
+		ret = -EINVAL;
+		goto out;
+	}
 	lbs_deb_cmd_enter_args("enter if_sdio_host_to_card type %d, bytes %d", type);
 
 	card = priv->card;
 
 	if (nb > (65536 - sizeof(struct if_sdio_packet) - 4)) {
 		ret = -EINVAL;
+		KMemFree(host_tx_pktbuf,KMEM_SIZE_TYPE_ANY,0);
 		goto out;
 	}
 
@@ -368,7 +377,7 @@ static int if_sdio_host_to_card(struct lbs_private *priv,
 		ret = -ENOMEM;
 		goto out;
 	}*/
-	packet=&host_tx_pktbuf;
+	packet=host_tx_pktbuf;
 //	memset(packet,0,sizeof(struct if_sdio_packet));
 
 	packet->next = NULL;
@@ -410,7 +419,7 @@ static int if_sdio_host_to_card(struct lbs_private *priv,
 
 out:
 	lbs_deb_cmd_leave_args("leave if_sdio_host_to_card(ret=%d)\n", ret);
-
+	KMemFree(host_tx_pktbuf,KMEM_SIZE_TYPE_ANY,0);
 	return ret;
 }
 
@@ -473,29 +482,34 @@ out:
 	card = sdio_get_drvdata(func);
 
 	cause = sdio_readb(card->func, IF_SDIO_H_INT_STATUS, &ret);
-	//读取中断状态，这个是网卡内部的中断状态寄存器,和sdio控制器的中断状态寄存器没有关系
-	if (ret)
+	if (ret) //If the interrupt is not raised by this function,just ignore it.
+	{
 		goto out;
+	}
 
 	pr_sdio_interrupt("interrupt: 0x%X\n", (unsigned)cause);
 
-	sdio_writeb(card->func, ~cause, IF_SDIO_H_INT_STATUS, &ret);//请中断挂起标志位
+	sdio_writeb(card->func, ~cause, IF_SDIO_H_INT_STATUS, &ret); //Clear interrupt bit.
 	if (ret)
+	{
 		goto out;
+	}
 
 	/*
 	 * Ignore the define name, this really means the card has
 	 * successfully received the command.
 	 */
-	 if (cause & IF_SDIO_H_INT_DNLD)//卡响应命令产生的中断，表明卡正常接收到命令
+	if (cause & IF_SDIO_H_INT_DNLD)  //Data download interrupt.
+	{
 		lbs_host_to_card_done(pgmarvel_priv);
+	}
 
-
-	if (cause & IF_SDIO_H_INT_UPLD) {//卡要求传输数据产生的中断
-		ret = if_sdio_card_to_host(card);//读取数据进行相应的处理
-		//还有个if_sdio_host_to_card与之对应，用来向设备发送数据，他的处理是依靠packet_worker工作队列
+	if (cause & IF_SDIO_H_INT_UPLD) { //Data available in card,transfer to host.
+		ret = if_sdio_card_to_host(card);
 		if (ret)
+		{
 			goto out;
+		}
 	}
 
 	ret = 0;
@@ -803,7 +817,7 @@ struct lbs_private *if_sdio_probe(struct sdio_func *func,struct sdio_device_id *
 	if (ret)
 		goto release;
 
-	ret = sdio_claim_irq(func, if_sdio_interrupt);//申请SDIO中断，很重要(继续跟进if_sdio_interrupt)
+	ret = sdio_claim_irq(func, if_sdio_interrupt); //Claim function's interrupt.
 	if (ret)
 		goto disable;
 

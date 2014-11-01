@@ -9,6 +9,7 @@
 .\obj&lst\idle.o: HXOS\kthread\..\include\..\arch\stm32\syn_mech.h
 .\obj&lst\idle.o: HXOS\kthread\..\include\objqueue.h
 .\obj&lst\idle.o: HXOS\kthread\..\include\ktmgr.h
+.\obj&lst\idle.o: HXOS\kthread\..\include\ktmgr2.h
 .\obj&lst\idle.o: HXOS\kthread\..\include\RINGBUFF.H
 .\obj&lst\idle.o: HXOS\kthread\..\include\system.h
 .\obj&lst\idle.o: HXOS\kthread\..\include\devmgr.h
@@ -22,6 +23,7 @@
 .\obj&lst\idle.o: HXOS\kthread\..\include\buffmgr.h
 .\obj&lst\idle.o: HXOS\kthread\..\include\kmemmgr.h
 .\obj&lst\idle.o: HXOS\kthread\..\include\ktmsg.h
+.\obj&lst\idle.o: HXOS\kthread\..\include\sysnet.h
 .\obj&lst\idle.o: HXOS\kthread\..\include\globvar.h
 .\obj&lst\idle.o: HXOS\kthread\..\include\..\arch\stm32\arch.h
 .\obj&lst\idle.o: HXOS\kthread\idle.h

@@ -11,7 +11,6 @@
 #include "sdio_ids.h"
 #include "if_sdio.h"
 
-
 static int ffs(int x)
 {
     int r = 1;
@@ -398,16 +397,18 @@ static void mmc_wait_done(void *data)
  */
 void mmc_wait_for_req(struct mmc_host *host, struct mmc_request *mrq)
 {
-    //DECLARE_COMPLETION_ONSTACK(complete);
-    unsigned char complete=0;
-    //sdio_deb_enter;
-    mrq->done_data = (void *)&complete;
-    mrq->done = mmc_wait_done;
+	//DECLARE_COMPLETION_ONSTACK(complete);
+	unsigned char complete=0;
 
-    mmc_start_request(host, mrq);
-    while(!complete);//等待命令完成
-    //sdio_deb_leave;
-    //wait_for_completion(&complete);
+	mrq->done_data = (void *)&complete;
+	mrq->done = mmc_wait_done;
+	mmc_start_request(host, mrq);
+	
+#ifdef __HX_SDIO_DEBUG
+	_hx_printf("SDIO dbg: mmc_wait_for_req,begin to wait complete...\r\n");
+#endif
+	
+	while(!complete);  //Wait the MMC request to end.
 }
 
 /**
@@ -447,7 +448,6 @@ void mmc_set_timing(struct mmc_host *host, unsigned int timing)
     host->ios.timing = timing;
     mmc_set_ios(host);
 }
-
 
 /*
  * Apply power to the MMC stack.  This is a two-stage process.
@@ -507,7 +507,6 @@ static void mmc_power_up(struct mmc_host *host)
 
     //	pr_debug("mmc power up ok!current realy clock=%dk(SDICON=%d)\n",50000/(rSDIPRE+1),rSDICON);
 }
-
 
 int mmc_go_idle(struct mmc_host *host)
 {
@@ -604,8 +603,6 @@ void  mmc_rescan(struct mmc_host *host)
     }
 
 }
-
-
 
 /*sdio_add_func
  * Allocate and initialise a new MMC card structure.
@@ -735,8 +732,6 @@ struct sdio_func *sdio_alloc_func(struct mmc_card *card)
     return func;
 }
 
-
-
 /*
  * Register a new SDIO function with the driver model.
  */
@@ -807,8 +802,6 @@ int sdio_enable_func(struct sdio_func *func)
     return ret;
 }
 
-
-
 static int sdio_card_irq_get(struct mmc_card *card)
 {
     struct mmc_host *host = card->host;
@@ -833,9 +826,6 @@ static int sdio_card_irq_get(struct mmc_card *card)
 
     return 0;
 }
-
-
-
 
 /**
  *	sdio_claim_irq - claim the IRQ for a SDIO function
@@ -874,18 +864,13 @@ int sdio_claim_irq(struct sdio_func *func, sdio_irq_handler_t *handler)
     if (ret)
         return ret;
 
-    func->irq_handler = handler;//安装中断向量，中断时会被调用
+    func->irq_handler = handler; //Install irq handler.
     ret = sdio_card_irq_get(func->card);
     if (ret)
         func->irq_handler = NULL;
 
     return ret;
 }
-
-
-
-
-
 
 /******************************************sdio bus *******************************/
 static const struct sdio_device_id *sdio_match_one(struct sdio_func *func,
@@ -985,5 +970,3 @@ struct lbs_private *sdio_bus_probe(struct sdio_func *func)
         return (struct lbs_private *)NULL;
     return if_sdio_probe(func,id);
 }
-
-

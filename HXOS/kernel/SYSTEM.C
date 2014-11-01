@@ -548,7 +548,7 @@ static VOID DispatchInterrupt(__COMMON_OBJECT* lpThis,
 {
 	__INTERRUPT_OBJECT*    lpIntObject  = NULL;
 	__SYSTEM*              lpSystem     = NULL;
-	CHAR                   strError[64];    //To print out the BUG information.
+	//CHAR                   strError[64];    //To print out the BUG information.
 
 	if((NULL == lpThis) || (NULL == lpEsp))
 	{
@@ -571,6 +571,18 @@ static VOID DispatchInterrupt(__COMMON_OBJECT* lpThis,
 				KernelThreadManager.lpCurrentKernelThread,
 				NULL);
 		}
+	}
+	//For debugging.
+	else
+	{
+#ifdef __CFG_SYS_INTNEST  //Interupt nest is enabled.
+		//Do nothing.
+#else
+		_hx_printf("Fatal error,interrupt nested(enter-int,vector = %d,nestlevel = %d)\r\n",
+			ucVector,
+			lpSystem->ucIntNestLevel);
+		BUG();
+#endif
 	}
 	lpIntObject = lpSystem->lpInterruptVector[ucVector];
 
@@ -599,11 +611,14 @@ __RETFROMINT:
 	}
 	else
 	{
-		BUG();  //In current version(V1.5),interrupt nesting is not supportted yet.
-		_hx_sprintf(strError,"The BUG information(vector,nestlevel):%d,%d",
+#ifdef __CFG_SYS_INTNEST  //Interrupt nest is enabled.
+		//Do nothing.
+#else
+		_hx_printf("Fatal error,interrupt nested(leave-int,vector = %d,nestlevel = %d)\r\n",
 			ucVector,
 			lpSystem->ucIntNestLevel);
-		PrintLine(strError);
+		BUG();
+#endif  //__CFG_SYS_INTNEST
 	}
 	return;
 }

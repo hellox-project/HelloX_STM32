@@ -9,6 +9,7 @@
 .\obj&lst\drventry.o: HXOS\osentry\..\include\..\arch\stm32\syn_mech.h
 .\obj&lst\drventry.o: HXOS\osentry\..\include\objqueue.h
 .\obj&lst\drventry.o: HXOS\osentry\..\include\ktmgr.h
+.\obj&lst\drventry.o: HXOS\osentry\..\include\ktmgr2.h
 .\obj&lst\drventry.o: HXOS\osentry\..\include\RINGBUFF.H
 .\obj&lst\drventry.o: HXOS\osentry\..\include\system.h
 .\obj&lst\drventry.o: HXOS\osentry\..\include\devmgr.h
@@ -22,7 +23,8 @@
 .\obj&lst\drventry.o: HXOS\osentry\..\include\buffmgr.h
 .\obj&lst\drventry.o: HXOS\osentry\..\include\kmemmgr.h
 .\obj&lst\drventry.o: HXOS\osentry\..\include\ktmsg.h
+.\obj&lst\drventry.o: HXOS\osentry\..\include\sysnet.h
 .\obj&lst\drventry.o: HXOS\osentry\..\include\globvar.h
 .\obj&lst\drventry.o: HXOS\osentry\..\include\..\arch\stm32\arch.h
 .\obj&lst\drventry.o: HXOS\osentry\..\drivers\stm32\usart.h
-.\obj&lst\drventry.o: HXOS\osentry\..\drivers\stm32\led.h
+.\obj&lst\drventry.o: HXOS\osentry\..\drivers\stm32\sdio_drv.h

@@ -9,6 +9,7 @@
 .\obj&lst\stat_s.o: HXOS\shell\..\include\..\arch\stm32\syn_mech.h
 .\obj&lst\stat_s.o: HXOS\shell\..\include\objqueue.h
 .\obj&lst\stat_s.o: HXOS\shell\..\include\ktmgr.h
+.\obj&lst\stat_s.o: HXOS\shell\..\include\ktmgr2.h
 .\obj&lst\stat_s.o: HXOS\shell\..\include\RINGBUFF.H
 .\obj&lst\stat_s.o: HXOS\shell\..\include\system.h
 .\obj&lst\stat_s.o: HXOS\shell\..\include\devmgr.h
@@ -22,6 +23,7 @@
 .\obj&lst\stat_s.o: HXOS\shell\..\include\buffmgr.h
 .\obj&lst\stat_s.o: HXOS\shell\..\include\kmemmgr.h
 .\obj&lst\stat_s.o: HXOS\shell\..\include\ktmsg.h
+.\obj&lst\stat_s.o: HXOS\shell\..\include\sysnet.h
 .\obj&lst\stat_s.o: HXOS\shell\..\include\globvar.h
 .\obj&lst\stat_s.o: HXOS\shell\..\include\..\arch\stm32\arch.h
 .\obj&lst\stat_s.o: HXOS\shell\..\include\STATCPU.H

@@ -30,6 +30,7 @@
 #include "..\kthread\idle.h"
 #include "..\include\MODMGR.H"
 #include "..\include\console.h"
+#include "lwip\tcpip.h"
 #include "nicdrv\ethif.h"
 
 #include "..\lib\stdio.h"

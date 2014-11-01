@@ -200,7 +200,6 @@ typedef unsigned int		__be32;
 #define	ERESTART	116	/* Interrupted syscall should be restarted */
 #endif
 
-
 #define	EUCLEAN		117	/* Structure needs cleaning */
 #define	ENOTNAM		118	/* Not a XENIX named type file */
 #define	ENAVAIL		119	/* No XENIX semaphores available */

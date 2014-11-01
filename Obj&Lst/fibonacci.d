@@ -9,6 +9,7 @@
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\..\arch\stm32\syn_mech.h
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\objqueue.h
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\ktmgr.h
+.\obj&lst\fibonacci.o: HXOS\shell\..\include\ktmgr2.h
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\RINGBUFF.H
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\system.h
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\devmgr.h
@@ -22,8 +23,10 @@
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\buffmgr.h
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\kmemmgr.h
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\ktmsg.h
+.\obj&lst\fibonacci.o: HXOS\shell\..\include\sysnet.h
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\globvar.h
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\..\arch\stm32\arch.h
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\KAPI.H
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\COMQUEUE.H
+.\obj&lst\fibonacci.o: HXOS\shell\..\include\..\include\debug.h
 .\obj&lst\fibonacci.o: HXOS\shell\fibonacci.h

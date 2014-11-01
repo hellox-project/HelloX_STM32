@@ -23,7 +23,7 @@
 //
 //************************************************************************
 
-#define VERSION_INFO "    HelloX [Version 1.760,build in 2014/08/31,by Garry.Xin]"
+#define VERSION_INFO "    HelloX [Version 1.770(Beta),build in 2014/10/31,by Garry.Xin]"
 #define SLOGAN_INFO  "    HelloX OS,through which you can talk to everything."
 
 //************************************************************************
@@ -97,6 +97,10 @@
 //Include virtual memory management functions in OS.
 //#define __CFG_SYS_VMM
 
+//Enable or disable interrupt nest.It should be disabled under x86 platform,
+//and maybe enabled on ARM platform.
+#define __CFG_SYS_INTNEST
+
 //Include thread heap functions.
 //#define __CFG_SYS_HEAP
 
@@ -115,7 +119,7 @@
 #define __CFG_SYS_DDF
 
 //Include CPU statistics functions in OS.
-#define __CFG_SYS_CPUSTAT
+//#define __CFG_SYS_CPUSTAT
 
 //Include the default user shell thread in OS,only enable it when character
 //output device is ready.
@@ -142,6 +146,9 @@
 
 //Include USART driver in OS,specific for STM32 or ARM platform.
 #define __CFG_DRV_USART
+
+//Include SDIO driver support in OS,only available for STM32.
+#define __CFG_DRV_SDIO
 
 //Include MOUSE driver in OS.
 //#define __CFG_DRV_MOUSE

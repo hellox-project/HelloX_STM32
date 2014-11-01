@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "stdio.h"
+#include "stdlib.h"
 #include "reg_sdio.h"
 #include "type.h"
 #include "common.h"
@@ -68,9 +68,6 @@ void DisableIrq(u32 irq)
   NVIC_Init(&NVIC_InitStructure);
 }
 
-
-
-
 /*typedef void __irq sido_irq_proc(void);//中断处理函数
 
  void setup_sdio_irq(sido_irq_proc *phandle)
@@ -135,7 +132,7 @@ static void clear_imask(struct stm32_host *host)
 	u32 mask = SDIO->MASK;
 	/* preserve the SDIO IRQ mask state */
 	mask &= SDIO_IT_SDIOIT;
-	SDIO->MASK=mask;
+	SDIO->MASK = mask;
 }
 
 /**
@@ -225,7 +222,6 @@ static u32 fifo_free(struct stm32_host *host)
  */
 static void stm32_enable_irq(struct stm32_host *host, bool more)
 {
-
 	bool enable = false;
 	host->irq_enabled = more;
 	host->irq_disabled = false;
@@ -494,17 +490,17 @@ static int stm32_setup_data(struct stm32_host *host, struct mmc_data *data)
 		}
 	}
 	//reset data config	
-	  SDIO_DataInitStructure.SDIO_DataTimeOut = SD_DATATIMEOUT;
-	  SDIO_DataInitStructure.SDIO_DataLength = 0;
-	  SDIO_DataInitStructure.SDIO_DataBlockSize = SDIO_DataBlockSize_1b;
-	  SDIO_DataInitStructure.SDIO_TransferDir = SDIO_TransferDir_ToCard;
-	  SDIO_DataInitStructure.SDIO_TransferMode = SDIO_TransferMode_Block;
-	  SDIO_DataInitStructure.SDIO_DPSM = SDIO_DPSM_Disable;
-	  SDIO_DataConfig(&SDIO_DataInitStructure);
-	  SDIO_DMACmd(DISABLE);
-      //reset state 
-      	 SDIO_ClearFlag(SDIO_ICR_MASK);
-	if (host->bus_width == MMC_BUS_WIDTH_4){//设置sdio总线宽度
+	SDIO_DataInitStructure.SDIO_DataTimeOut = SD_DATATIMEOUT;
+	SDIO_DataInitStructure.SDIO_DataLength = 0;
+	SDIO_DataInitStructure.SDIO_DataBlockSize = SDIO_DataBlockSize_1b;
+	SDIO_DataInitStructure.SDIO_TransferDir = SDIO_TransferDir_ToCard;
+	SDIO_DataInitStructure.SDIO_TransferMode = SDIO_TransferMode_Block;
+	SDIO_DataInitStructure.SDIO_DPSM = SDIO_DPSM_Disable;
+	SDIO_DataConfig(&SDIO_DataInitStructure);
+	SDIO_DMACmd(DISABLE);
+  //reset state 
+  SDIO_ClearFlag(SDIO_ICR_MASK);
+	if (host->bus_width == MMC_BUS_WIDTH_4){//Set SDIO bus bandwidth.
 		SDIO->CLKCR&=~(3<<11);
 		SDIO->CLKCR|=SDIO_BusWide_4b;
 	}
@@ -512,40 +508,48 @@ static int stm32_setup_data(struct stm32_host *host, struct mmc_data *data)
 	/*if (data->flags & MMC_DATA_READ)
 		SDIO->CLKCR|=0xff;*/
 
-  
-      if ((blksz > 0) && (blksz <= 2048) && (0 == (blksz & (blksz - 1)))){//必须是整数块
-	    power = convert_from_bytes_to_power_of_two(blksz);
-	    total_len=blksz*blocks;
-  	}
-     else
+  if ((blksz > 0) && (blksz <= 2048) && (0 == (blksz & (blksz - 1)))){
+	  power = convert_from_bytes_to_power_of_two(blksz);
+	  total_len=blksz*blocks;
+  }     
+	else
+	{
    	   return -EINVAL;
+	}
   
-    /* Common to all modes */
+	/* Common to all modes */
   if (total_len > SD_MAX_DATA_LENGTH)
+	{
  		 return -EINVAL;
-    SDIO_DataInitStructure.SDIO_DataTimeOut = SD_DATATIMEOUT;
-    SDIO_DataInitStructure.SDIO_DataLength = total_len;
-    SDIO_DataInitStructure.SDIO_DataBlockSize = (u32) power << 4;
-    if (data->flags & MMC_DATA_WRITE)
-    		SDIO_DataInitStructure.SDIO_TransferDir = SDIO_TransferDir_ToCard;
-    else if (data->flags & MMC_DATA_READ)
+	}
+  
+	SDIO_DataInitStructure.SDIO_DataTimeOut = SD_DATATIMEOUT;
+  SDIO_DataInitStructure.SDIO_DataLength = total_len;
+  SDIO_DataInitStructure.SDIO_DataBlockSize = (u32) power << 4;
+  if (data->flags & MMC_DATA_WRITE)
+	{
+		SDIO_DataInitStructure.SDIO_TransferDir = SDIO_TransferDir_ToCard;
+	}
+  else if (data->flags & MMC_DATA_READ)
+	{
 		SDIO_DataInitStructure.SDIO_TransferDir = SDIO_TransferDir_ToSDIO;
-    SDIO_DataInitStructure.SDIO_TransferMode = SDIO_TransferMode_Block;
-    SDIO_DataInitStructure.SDIO_DPSM = SDIO_DPSM_Disable;//暂时不使能DPSM
-    SDIO_DataConfig(&SDIO_DataInitStructure);//DMA disable
-    if (data->flags & MMC_DATA_READ){
-	 	DMA_RxConfiguration((u32 *)data->sg,total_len);//安装DMA参数
+	}
+	SDIO_DataInitStructure.SDIO_TransferMode = SDIO_TransferMode_Block;
+  SDIO_DataInitStructure.SDIO_DPSM = SDIO_DPSM_Disable;//暂时不使能DPSM
+  SDIO_DataConfig(&SDIO_DataInitStructure);//DMA disable
+  if (data->flags & MMC_DATA_READ){
+		DMA_RxConfiguration((u32 *)data->sg,total_len);//安装DMA参数
 	 	SDIO->DCTRL|=((1<<3)|SDIO_DPSM_Enable);//接收时先使能DMA和数据状态机
-    	}	 	
+   }	 	
    else  if (data->flags & MMC_DATA_WRITE)
+	 {
 		DMA_TxConfiguration((u32 *)data->sg,total_len);
-	 imask=SDIO_IT_DCRCFAIL | SDIO_IT_DTIMEOUT | SDIO_IT_DATAEND; //data interrupt
-	 enable_imask(host, imask);//需要读取的中断
-     sdio_deb_leave();
+	 }
+	imask = SDIO_IT_DCRCFAIL | SDIO_IT_DTIMEOUT | SDIO_IT_DATAEND; //data interrupt
+	enable_imask(host, imask); //Enable all these interrupts.
+  sdio_deb_leave();
 	return 0;
 }
-
-
 
 static void  stm32_enable_dma(void)
 {      
@@ -604,7 +608,7 @@ static void stm32_send_request(struct mmc_host *mmc)
 	cmd=host->cmd_is_stop ? mrq->stop : mrq->cmd;
 	host->ccnt++;
 	SDIO_ClearFlag(SDIO_ICR_MASK);
-	 if (cmd->data) {//有数据阶段就安装数据
+	if (cmd->data) {
 		int res = stm32_setup_data(host, cmd->data);
 		host->dcnt++;
 		if (res) {
@@ -852,7 +856,7 @@ static void stm32_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 	default:
 		SDIO_SetPowerState(SDIO_PowerState_OFF);
 		SDIO_ClockCmd(DISABLE);
-		printf("stm32 power off sdio!\n");
+		_hx_printf("stm32 power off sdio!\n");
 	}
 	if ((ios->power_mode == MMC_POWER_ON) ||
 	    (ios->power_mode == MMC_POWER_UP)) {
@@ -938,27 +942,28 @@ void  stm32_irq(void)
 {
 	struct stm32_host *host = gpstm32_host;
 	struct mmc_request *mrq = host->mrq;
-	struct mmc_command *cmd=host->cmd_is_stop ? mrq->stop : mrq->cmd;
+	struct mmc_command *cmd = host->cmd_is_stop ? mrq->stop : mrq->cmd;
 	struct mmc_data *data=cmd->data;
 	u32 stm_sta, stm_imsk;
 	u32 stm_clear = 0;
 	sdio_deb_enter();
-	stm_sta = SDIO->STA;//SDI Data Status Register (SDIDatSta)
-	stm_imsk =SDIO->MASK;
-	/*设备中断*/
-	if (stm_sta & SDIO_IT_SDIOIT) {//检查到sdio中断
+	stm_sta  = SDIO->STA;    //SDI Data Status Register (SDIDatSta)
+	stm_imsk = SDIO->MASK;
+	
+	if (stm_sta & SDIO_IT_SDIOIT) { //Interrupted by functional devices.
 		if (stm_imsk & SDIO_IT_SDIOIT) {
-			printk("card sdio interupt!\n");
-			stm_clear= SDIO_IT_SDIOIT;
-			SDIO->ICR=stm_clear;//清标准位
-			mmc_signal_sdio_irq(host->mmc);//调用线程处理SDIO设备中断,当前处理的是SDIO控制器自身的中断
+			//_hx_printf("card sdio interupt!\r\n");
+			host->status = "card sdio interrupt.";
+			stm_clear = SDIO_IT_SDIOIT;
+			SDIO->ICR = stm_clear;
+			mmc_signal_sdio_irq(host->mmc);
 			//ClearPending(BIT_SDI);
-			return;
+			goto irq_out;
 		}
 	}
 
 	if ((host->complete_what == COMPLETION_NONE) ||
-	    (host->complete_what == COMPLETION_FINALIZE)) {//没有发送命令或者数据，不期待的中断。说明异常
+	    (host->complete_what == COMPLETION_FINALIZE)) {
 		host->status = "nothing to complete";
 		clear_imask(host);
 		goto irq_out;
@@ -977,15 +982,15 @@ void  stm32_irq(void)
 		clear_imask(host);
 		goto irq_out;
 	}
-/*******************************命令传输控制*******************************************************/
-	if (stm_sta & SDIO_IT_CTIMEOUT) {//命令超时
+
+	if (stm_sta & SDIO_IT_CTIMEOUT) {
 		printk( "CMDSTAT: error CMDTIMEOUT\n");
 		cmd->error = -ETIMEDOUT;
 		host->status = "error: command timeout";
 		goto fail_transfer;
 	}
 
-	if (stm_sta & SDIO_IT_CMDSENT) {//命令发送成功
+	if (stm_sta & SDIO_IT_CMDSENT) {
 		if (host->complete_what == COMPLETION_CMDSENT) {
 			host->status = "ok: command sent";
 			goto close_transfer;
@@ -994,8 +999,8 @@ void  stm32_irq(void)
 		stm_clear |= SDIO_IT_CMDSENT;
 	}
 
-	if (stm_sta & SDIO_IT_CCRCFAIL) {//命令CRC校验失败，这就是个bug
-		if (cmd->flags & MMC_RSP_CRC) { //看命令是否在乎crc
+	if (stm_sta & SDIO_IT_CCRCFAIL) {
+		if (cmd->flags & MMC_RSP_CRC) {
 			if (host->mrq->cmd->flags & MMC_RSP_136) {
 				printk("fixup: ignore CRC fail with long rsp\n");
 			} else {
@@ -1012,16 +1017,16 @@ void  stm32_irq(void)
 		stm_clear |= SDIO_IT_CCRCFAIL;
 	}
 
-	if (stm_sta & SDIO_IT_CMDREND) {//命令响应完成
+	if (stm_sta & SDIO_IT_CMDREND) {
 		stm_clear |= SDIO_IT_CMDREND;
-		if (host->complete_what == COMPLETION_RSPFIN) {//带有应答的命令响应到此结束
+		if (host->complete_what == COMPLETION_RSPFIN) {
 			host->status = "ok: command response received";
 			goto close_transfer;
 		}
-			if (host->complete_what == COMPLETION_XFERFINISH_RSPFIN){//还有一种情况就是传输完成以后也会使用rsp应答
+		if (host->complete_what == COMPLETION_XFERFINISH_RSPFIN){
 				host->complete_what = COMPLETION_XFERFINISH;
-				if(data->flags&MMC_DATA_WRITE){//命令响应
-					stm32_enable_dma();//发送数据
+				if(data->flags&MMC_DATA_WRITE){
+					stm32_enable_dma();
 					return;
 					}				
 			}	
@@ -1039,6 +1044,7 @@ void  stm32_irq(void)
 		host->status = "error: bad data crc (outgoing)";
 		goto fail_transfer;
 	}
+	
 	if (stm_sta & SDIO_IT_DTIMEOUT) {
 		printk( "data timeout\n");
 		cmd->data->error = -ETIMEDOUT;
@@ -1047,17 +1053,17 @@ void  stm32_irq(void)
 	}
 
 	if (stm_sta & SDIO_IT_DATAEND) {
-		if (host->complete_what == COMPLETION_XFERFINISH) {//发送通道
+		if (host->complete_what == COMPLETION_XFERFINISH) {
 			host->status = "ok: data transfer completed";
-			data->bytes_xfered=data->sg_len;
+			data->bytes_xfered = data->sg_len;
 			host->pio_active = XFER_NONE;
 			goto close_transfer;
 		}
 
-		if (host->complete_what == COMPLETION_XFERFINISH_RSPFIN){//数据接收通道
+		if (host->complete_what == COMPLETION_XFERFINISH_RSPFIN){
 			host->complete_what = COMPLETION_RSPFIN;
-			while (DMA_GetFlagStatus(DMA2_FLAG_TC4) == RESET);//等待DMA通道无效
-			data->bytes_xfered=data->sg_len;
+			while (DMA_GetFlagStatus(DMA2_FLAG_TC4) == RESET);
+			data->bytes_xfered = data->sg_len;
 			host->pio_active = XFER_NONE;
 			host->status = "ok: data transfer completed";
 			SDIO_ClearFlag(SDIO_IT_DATAEND);		
@@ -1067,7 +1073,7 @@ void  stm32_irq(void)
 	}
 
 clear_status_bits:
-	SDIO->ICR=stm_clear;
+	SDIO->ICR = stm_clear;
 	goto irq_out;
 
 fail_transfer:
@@ -1075,48 +1081,41 @@ fail_transfer:
 close_transfer:
 	host->complete_what = COMPLETION_FINALIZE;
 	clear_imask(host);
-	pio_tasklet((unsigned long)host);//调用PIO模式处理数据及命令的善后工作
+	pio_tasklet((unsigned long)host);
 	goto irq_out;
 irq_out:
-	pr_debug("stm state:0x%08x status:%s.\n", stm_sta,host->status);	
+	//_hx_printf("  stm state:0x%08x status:%s.\n", stm_sta,host->status);	
 	sdio_deb_leave();
 	return ;
-
 }
-
-
 
  static void init_stm32_struct(struct mmc_host_ops *phost_ops)
 {
-	//static struct s3c24xx_mci_pdata mini2440_mmc_cfg初始化
-        //pmci_cfg->set_power =NULL;
-        //pmci_cfg->ocr_avail=MMC_VDD_32_33|MMC_VDD_33_34;
-	//static struct mmc_host_ops stm32_ops初始化
-
 	phost_ops->request	= stm32_request;
 	phost_ops->set_ios	= stm32_set_ios;
 	phost_ops->get_ro	 	= stm32_get_ro;
 	phost_ops->get_cd		= stm32_card_present;
 	phost_ops->enable_sdio_irq = stm32_enable_sdio_irq;
-
 }
+
 struct mmc_host * stm32_probe(void)
 {
 	struct mmc_host	*mmc;
 	struct stm32_host *host;
-        init_stm32_struct(&stm32_ops);  //注册主机接口
-        mmc = mmc_alloc_host();         //分配mmc_host，里面内嵌stm32_host 结构
+	
+  init_stm32_struct(&stm32_ops);  //Initialize STM32 SDIO operations.
+  mmc = mmc_alloc_host();
 	host = mmc_priv(mmc);
-        gpstm32_host=host;              //主要给中断服务程序使用
+  gpstm32_host=host;              //A global variables may used by interrupt ISR.Fuck implementation.
         host->mmc = mmc;
 	host->complete_what = COMPLETION_NONE;
-	host->pio_active 	= XFER_NONE;
+	host->pio_active 	= XFER_NONE; 
 	host->irq=SDIO_IRQChannel;
-        EnableIrq(host->irq);           //Enable sdio irq
+  EnableIrq(host->irq);           //Enable sdio irq
 	host->irq_state = false;
-        host->irq_cd = -1;              //不检测
+  host->irq_cd = -1;              //Without any detection.
 	host->clk_div=1;
-	host->clk_rate =128000000;//50Mhz
+	host->clk_rate =128000000;      //50Mhz
 	mmc->ops 	= &stm32_ops;
 	mmc->ocr_avail	= MMC_VDD_32_33 | MMC_VDD_33_34;
 #ifdef CONFIG_MMC_S3C_HW_SDIO_IRQ

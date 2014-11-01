@@ -134,12 +134,9 @@ struct mmc_command {
 	struct mmc_request	*mrq;		/* associated request */
 };
 
-
 #define MMC_DATA_WRITE	(1 << 8)
 #define MMC_DATA_READ	(1 << 9)
 #define MMC_DATA_STREAM	(1 << 10)
-
-
 
 void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq);
 void mmc_set_chip_select(struct mmc_host *host, int mode);
@@ -158,7 +155,7 @@ struct mmc_host *mmc_alloc_host(void);
 struct sdio_func *sdio_alloc_func(struct mmc_card *card);
 int sdio_add_func(struct sdio_func *func);
 
-	/**sdio bus mach and probe**/
+/**sdio bus mach and probe**/
 struct sdio_func;
 struct sdio_driver;
 int sdio_bus_match(struct sdio_func *func ,struct sdio_driver *sdrv );
@@ -168,7 +165,5 @@ int sdio_enable_func(struct sdio_func *func);
 unsigned int mmc_align_data_size(struct mmc_card *card, unsigned int sz);
 void mmc_set_data_timeout(struct mmc_data *data, const struct mmc_card *card);
 int sdio_claim_irq(struct sdio_func *func, sdio_irq_handler_t *handler);
-
-
 
 #endif

@@ -9,6 +9,7 @@
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\..\arch\stm32\syn_mech.h
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\objqueue.h
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\ktmgr.h
+.\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\ktmgr2.h
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\RINGBUFF.H
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\system.h
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\devmgr.h
@@ -22,10 +23,12 @@
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\buffmgr.h
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\kmemmgr.h
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\ktmsg.h
+.\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\sysnet.h
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\globvar.h
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\..\arch\stm32\arch.h
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\KAPI.H
 .\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\COMQUEUE.H
+.\obj&lst\hedit.o: HXOS\shell\..\INCLUDE\..\include\debug.h
 .\obj&lst\hedit.o: HXOS\shell\shell.h
 .\obj&lst\hedit.o: HXOS\shell\HEDIT.H
 .\obj&lst\hedit.o: HXOS\shell\..\lib\stdio.h

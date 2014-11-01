@@ -9,6 +9,7 @@
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\..\arch\stm32\syn_mech.h
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\objqueue.h
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\ktmgr.h
+.\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\ktmgr2.h
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\RINGBUFF.H
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\system.h
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\devmgr.h
@@ -22,11 +23,13 @@
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\buffmgr.h
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\kmemmgr.h
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\ktmsg.h
+.\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\sysnet.h
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\globvar.h
 .\obj&lst\arch_stm.o: HXOS\arch\stm32\..\..\INCLUDE\..\arch\stm32\arch.h
-.\obj&lst\arch_stm.o: C:\Keil\ARM\Inc\ST\STM32F10x\stm32f10x.h
+.\obj&lst\arch_stm.o: C:\Keil\ARM\INC\ST\STM32F10x\stm32f10x.h
 .\obj&lst\arch_stm.o: C:\Keil\ARM\CMSIS\Include\core_cm3.h
 .\obj&lst\arch_stm.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
 .\obj&lst\arch_stm.o: C:\Keil\ARM\CMSIS\Include\core_cmInstr.h
 .\obj&lst\arch_stm.o: C:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\obj&lst\arch_stm.o: C:\Keil\ARM\Inc\ST\STM32F10x\system_stm32f10x.h
+.\obj&lst\arch_stm.o: C:\Keil\ARM\INC\ST\STM32F10x\system_stm32f10x.h
+.\obj&lst\arch_stm.o: .\HXOS\lib\stdio.h

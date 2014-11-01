@@ -136,9 +136,6 @@ enum ieee80211_key_len {
 	WLAN_KEY_LEN_AES_CMAC = 16,
 };
 
-
-
-
 /* Authentication algorithms */
 #define WLAN_AUTH_OPEN 0
 #define WLAN_AUTH_SHARED_KEY 1
@@ -275,22 +272,15 @@ enum ieee80211_reasoncode {
         IEEE80211_CCK_RATE_5MB_MASK | \
         IEEE80211_CCK_RATE_11MB_MASK)
 
-
-
 #define IEEE80211_NUM_OFDM_RATES	    8
 #define IEEE80211_NUM_CCK_RATES	            4
 #define IEEE80211_OFDM_SHIFT_MASK_A         4
-
 
 /* this is stolen and modified from the madwifi driver*/
 #define IEEE80211_FC0_TYPE_MASK		0x0c
 #define IEEE80211_FC0_TYPE_DATA		0x08
 #define IEEE80211_FC0_SUBTYPE_MASK	0xB0
 #define IEEE80211_FC0_SUBTYPE_QOS	0x80
-
-
-
-
 
 #define WLAN_CAPABILITY_ESS		(1<<0)
 #define WLAN_CAPABILITY_IBSS		(1<<1)
@@ -301,27 +291,4 @@ enum ieee80211_reasoncode {
 #define WLAN_CAPABILITY_PBCC		(1<<6)
 #define WLAN_CAPABILITY_CHANNEL_AGILITY	(1<<7)
 
-
-
-
-
-
-
-
-
 #endif /* LINUX_IEEE80211_H */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

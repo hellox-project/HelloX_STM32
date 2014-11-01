@@ -48,6 +48,10 @@
 #include "..\drivers\stm32\usart.h"
 #endif
 
+#ifndef __SDIO_DRV_H__
+#include "..\drivers\stm32\sdio_drv.h"
+#endif
+
 //
 //Driver entry array for all inline device drivers.
 //Inline device drivers means these drivers' source code is put together
@@ -87,6 +91,10 @@ __DRIVER_ENTRY DriverEntryArray[] = {
 
 #ifdef __CFG_DRV_USART //Only available under STM32.
 	UsartDrvEntry,
+#endif
+
+#ifdef __CFG_DRV_SDIO //Only available under STM32.
+  SDIODriverEntry,
 #endif
 	NULL               //Terminator of the driver entry array.
 };

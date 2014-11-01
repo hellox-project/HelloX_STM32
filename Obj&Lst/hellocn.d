@@ -9,6 +9,7 @@
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\..\arch\stm32\syn_mech.h
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\objqueue.h
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\ktmgr.h
+.\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\ktmgr2.h
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\RINGBUFF.H
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\system.h
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\devmgr.h
@@ -22,6 +23,7 @@
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\buffmgr.h
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\kmemmgr.h
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\ktmsg.h
+.\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\sysnet.h
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\globvar.h
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\INCLUDE\..\arch\stm32\arch.h
 .\obj&lst\hellocn.o: HXOS\arch\stm32\..\..\include\console.h

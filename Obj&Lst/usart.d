@@ -1,10 +1,10 @@
 .\obj&lst\usart.o: HXOS\drivers\stm32\usart.c
-.\obj&lst\usart.o: C:\Keil\ARM\Inc\ST\STM32F10x\stm32f10x.h
+.\obj&lst\usart.o: C:\Keil\ARM\INC\ST\STM32F10x\stm32f10x.h
 .\obj&lst\usart.o: C:\Keil\ARM\CMSIS\Include\core_cm3.h
 .\obj&lst\usart.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
 .\obj&lst\usart.o: C:\Keil\ARM\CMSIS\Include\core_cmInstr.h
 .\obj&lst\usart.o: C:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-.\obj&lst\usart.o: C:\Keil\ARM\Inc\ST\STM32F10x\system_stm32f10x.h
+.\obj&lst\usart.o: C:\Keil\ARM\INC\ST\STM32F10x\system_stm32f10x.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\StdAfx.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\..\config\config.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\TYPES.H
@@ -15,6 +15,7 @@
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\..\arch\stm32\syn_mech.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\objqueue.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\ktmgr.h
+.\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\ktmgr2.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\RINGBUFF.H
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\system.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\devmgr.h
@@ -28,6 +29,7 @@
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\buffmgr.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\kmemmgr.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\ktmsg.h
+.\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\sysnet.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\globvar.h
 .\obj&lst\usart.o: HXOS\drivers\stm32\..\..\include\..\arch\stm32\arch.h
 .\obj&lst\usart.o: C:\Keil\ARM\ARMCC\bin\..\include\stdio.h

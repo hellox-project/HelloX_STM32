@@ -3,50 +3,967 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
-F:\MDK\wkspace\HXV176\HXV176.uvproj
-Project File Date:  04/26/2014
+E:\ARM\HelloX_v176_MDK\HXV176.uvproj
+Project File Date:  10/26/2014
 
 <h2>Output:</h2>
 Build target 'HXOS_V176'
-compiling DRVENTRY.C...
-compiling SHELL.C...
-compiling led.c...
-HXOS\drivers\stm32\led.c(56): error:  #513: a value of type "HANDLE" cannot be assigned to an entity of type "__DEVICE_OBJECT *"
-".\Obj&Lst\HXV176.axf" - 1 Errors, 0 Warning(s).
+compiling s3cmci.c...
+HXOS\drivers\stm32\s3cmci.c(229): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(231): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(253): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(492): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(492): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(611): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(611): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(621): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(640): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(640): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(730): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(752): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(755): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(766): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(772): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(772): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(862): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(891): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(900): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(951): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(982): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1000): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1037): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1043): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1116): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(1140): warning:  #174-D: expression has no effect
+linking...
+Program Size: Code=154576 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 33 Warning(s).
+Build target 'HXOS_V176'
+compiling s3cmci.c...
+HXOS\drivers\stm32\s3cmci.c(229): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(231): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(253): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(492): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(492): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(611): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(611): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(621): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(640): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(640): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(730): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(752): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(755): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(766): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(772): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(772): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(862): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(891): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(900): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(951): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(982): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1000): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1037): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1043): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1115): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(1139): warning:  #174-D: expression has no effect
+linking...
+Program Size: Code=154616 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 33 Warning(s).
+Build target 'HXOS_V176'
+compiling SYSTEM.C...
+HXOS\kernel\SYSTEM.C(623): warning:  #177-D: variable "excepAddr" was declared but never referenced
+HXOS\kernel\SYSTEM.C(684): warning:  #111-D: statement is unreachable
+HXOS\kernel\SYSTEM.C(842): warning:  #1295-D: Deprecated declaration HardwareInitialize - give arg types
+compiling s3cmci.c...
+HXOS\drivers\stm32\s3cmci.c(229): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(231): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(253): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(492): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(492): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(611): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(611): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(621): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(640): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(640): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(730): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(752): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(755): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(766): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(772): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(772): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(862): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(891): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(900): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(951): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(982): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1000): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1037): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1044): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1110): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(1134): warning:  #174-D: expression has no effect
+linking...
+Program Size: Code=154612 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 36 Warning(s).
+Build target 'HXOS_V176'
+compiling SYSTEM.C...
+HXOS\kernel\SYSTEM.C(622): warning:  #177-D: variable "excepAddr" was declared but never referenced
+HXOS\kernel\SYSTEM.C(683): warning:  #111-D: statement is unreachable
+HXOS\kernel\SYSTEM.C(841): warning:  #1295-D: Deprecated declaration HardwareInitialize - give arg types
+linking...
+Program Size: Code=154600 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 3 Warning(s).
+Build target 'HXOS_V176'
+compiling s3cmci.c...
+HXOS\drivers\stm32\s3cmci.c(229): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(231): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(253): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(492): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(492): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(611): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(611): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(621): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(640): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(640): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(730): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(743): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(752): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(755): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(766): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(772): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(772): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(859): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(862): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(891): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(900): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(983): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1001): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1038): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1045): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1111): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(1135): warning:  #174-D: expression has no effect
+linking...
+Program Size: Code=154632 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 32 Warning(s).
+Build target 'HXOS_V176'
+compiling s3cmci.c...
+HXOS\drivers\stm32\s3cmci.c(225): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(227): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(249): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(488): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(488): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(615): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(615): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(625): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(644): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(644): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(734): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(756): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(759): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(770): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(776): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(776): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(866): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(895): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(904): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(987): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1005): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1042): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1049): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1115): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(1139): warning:  #174-D: expression has no effect
+compiling sdio.c...
+HXOS\drivers\stm32\sdio.c(216): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(216): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(216): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(578): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(578): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(596): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(619): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(621): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(623): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(623): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(623): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(705): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(705): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(705): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(1080): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(1080): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(1080): warning:  #174-D: expression has no effect
+linking...
+Program Size: Code=154632 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 49 Warning(s).
+Build target 'HXOS_V176'
+compiling core.c...
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(179): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(179): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(179): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(179): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(333): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(333): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(333): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(333): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(333): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(347): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(347): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(347): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(347): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(347): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(493): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(493): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(568): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(568): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(571): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(571): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(588): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(590): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(597): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(597): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(602): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(768): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(768): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(796): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(796): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(801): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(801): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(809): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(848): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(848): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(851): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(851): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(896): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(896): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(896): warning:  #174-D: expression has no effect
+compiling s3cmci.c...
+HXOS\drivers\stm32\s3cmci.c(225): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(227): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(249): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(488): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(488): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(615): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(615): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(625): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(644): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(644): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(734): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(756): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(759): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(770): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(776): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(776): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(866): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(895): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(904): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(987): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1005): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1042): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1049): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1115): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(1139): warning:  #174-D: expression has no effect
+compiling sdio.c...
+HXOS\drivers\stm32\sdio.c(216): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(216): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(216): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(578): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(578): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(596): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(619): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(621): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(623): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(623): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(623): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(705): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(705): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(705): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(1080): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(1080): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(1080): warning:  #174-D: expression has no effect
+compiling sdio_cis.c...
+HXOS\drivers\stm32\sdio_cis.c(61): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio_cis.c(61): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio_cis.c(61): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio_cis.c(63): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio_cis.c(63): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio_cis.c(63): warning:  #174-D: expression has no effect
+compiling assoc.c...
+HXOS\network\nicdrv\assoc.c(74): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(74): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(113): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(113): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(113): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(139): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(139): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(139): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(159): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(189): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(192): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(196): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(200): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(204): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(204): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(210): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(210): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(215): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(215): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(215): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(306): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(306): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(339): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(339): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(359): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(359): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(359): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(278): warning:  #177-D: variable "rsn" was declared but never referenced
+HXOS\network\nicdrv\assoc.c(516): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(516): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(524): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(524): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(633): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(633): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(646): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(660): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(665): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(744): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(760): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(760): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(760): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(765): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(772): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(777): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(777): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(875): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(875): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(973): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(973): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(973): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(976): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(976): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(976): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(989): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1006): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1014): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1014): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1015): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1015): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1036): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1036): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1036): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1040): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1040): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1040): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1056): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1147): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1161): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1161): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1161): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1188): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1191): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1211): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1211): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1211): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1211): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1211): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1220): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1220): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1220): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1275): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1286): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1286): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1289): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1319): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1319): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1319): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1319): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1454): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1454): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1454): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1454): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1587): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1594): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1601): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1607): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1615): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1665): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1665): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1666): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1666): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1692): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1771): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1793): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1793): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1802): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1802): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1854): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1854): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1860): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1880): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1880): warning:  #174-D: expression has no effect
+compiling if_sdio.c...
+HXOS\network\nicdrv\if_sdio.c(123): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(123): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(146): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(146): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(213): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(213): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(247): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(247): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(247): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(251): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(251): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(251): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(258): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(258): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(258): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(291): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(293): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(293): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(329): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(415): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(415): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(537): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(565): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(565): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(579): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(596): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(596): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(610): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(611): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(613): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(642): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(642): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(668): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(668): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(670): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(676): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(688): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(688): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(688): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(701): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(711): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(725): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(726): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(728): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(742): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(742): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(745): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(751): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(756): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(781): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(781): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(781): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(793): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(858): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(862): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(862): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(864): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(865): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(870): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(876): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(876): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(877): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(901): warning:  #174-D: expression has no effect
+compiling marvell_ops.c...
+HXOS\network\nicdrv\marvell_ops.c(28): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvell_ops.c(34): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvell_ops.c(38): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvell_ops.c(41): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvell_ops.c(88): warning:  #174-D: expression has no effect
+compiling scan.c...
+HXOS\network\nicdrv\scan.c(324): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(324): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(352): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(364): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(364): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(376): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(376): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(380): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(382): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(385): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(390): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(394): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(394): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(400): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(409): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(409): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(409): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(419): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(425): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(438): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(445): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(450): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(453): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(453): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(453): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(453): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(473): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(475): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(493): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(499): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(510): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(518): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(518): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(518): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(600): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(600): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(600): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(607): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(607): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(610): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(610): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(640): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(640): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(707): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(707): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(707): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(707): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(838): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(838): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(838): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(867): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(867): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(867): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(883): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(883): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(883): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(888): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(917): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(919): warning:  #174-D: expression has no effect
+compiling marvel_main.c...
+HXOS\network\nicdrv\marvel_main.c(244): warning:  #9-D: nested comment is not allowed
+HXOS\network\nicdrv\marvel_main.c(246): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(275): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(279): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(284): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(289): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(294): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(298): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(308): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(313): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(316): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(330): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(336): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(341): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(346): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(349): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(352): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(355): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(358): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(361): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(364): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(367): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(388): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(388): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(649): warning:  #174-D: expression has no effect
+compiling rx.c...
+HXOS\network\nicdrv\rx.c(71): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\rx.c(159): warning:  #174-D: expression has no effect
+compiling cmd.c...
+HXOS\network\nicdrv\cmd.c(405): warning:  #223-D: function "memmove" declared implicitly
+HXOS\network\nicdrv\cmd.c(510): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(531): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(531): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(531): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(557): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(735): warning:  #223-D: function "memmove" declared implicitly
+HXOS\network\nicdrv\cmd.c(750): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(795): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(795): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(1048): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(1494): warning:  #223-D: function "memmove" declared implicitly
+HXOS\network\nicdrv\cmd.c(1558): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(1558): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(1586): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(1737): warning:  #223-D: function "memmove" declared implicitly
+compiling 11d.c...
+HXOS\network\nicdrv\11d.c(48): warning:  #223-D: function "toupper" declared implicitly
+compiling marvelif.c...
+.\HXOS\drivers\stm32\type.h(208): warning:  #47-D: incompatible redefinition of macro "EILSEQ" (declared at line 164 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(209): warning:  #47-D: incompatible redefinition of macro "ELIBMAX" (declared at line 162 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(210): warning:  #47-D: incompatible redefinition of macro "ELIBSCN" (declared at line 161 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(212): warning:  #47-D: incompatible redefinition of macro "ENOMEDIUM" (declared at line 204 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(213): warning:  #47-D: incompatible redefinition of macro "EMEDIUMTYPE" (declared at line 205 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(225): warning:  #47-D: incompatible redefinition of macro "ENETUNREACH" (declared at line 181 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(226): warning:  #47-D: incompatible redefinition of macro "ENOBUFS" (declared at line 185 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(227): warning:  #47-D: incompatible redefinition of macro "ETIMEDOUT" (declared at line 190 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(228): warning:  #47-D: incompatible redefinition of macro "ETIME" (declared at line 142 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\common.h(33): warning:  #47-D: incompatible redefinition of macro "offsetof" (declared at line 76 of "C:\Keil\ARM\ARMCC\bin\..\include\stddef.h")
+linking...
+Program Size: Code=154632 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 475 Warning(s).
+Build target 'HXOS_V176'
+compiling ethif.c...
+compiling s3cmci.c...
+HXOS\drivers\stm32\s3cmci.c(225): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(227): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(249): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(488): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(488): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(615): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(615): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(625): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(644): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(644): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(734): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(756): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(759): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(770): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(776): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(776): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(866): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(895): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(904): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(987): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1005): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1042): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1049): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1115): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(1139): warning:  #174-D: expression has no effect
+compiling marvel_main.c...
+HXOS\network\nicdrv\marvel_main.c(242): warning:  #9-D: nested comment is not allowed
+HXOS\network\nicdrv\marvel_main.c(244): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(272): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(276): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(281): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(286): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(291): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(295): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(305): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(310): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(313): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(327): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(333): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(338): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(343): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(346): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(349): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(352): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(355): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(358): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(361): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(364): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(385): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(385): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(629): warning:  #174-D: expression has no effect
+linking...
+Program Size: Code=154664 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 57 Warning(s).
+Build target 'HXOS_V176'
+linking...
+Program Size: Code=154664 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
+Build target 'HXOS_V176'
+compiling s3cmci.c...
+HXOS\drivers\stm32\s3cmci.c(225): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(227): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(249): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(488): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(488): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(615): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(615): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(625): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(644): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(644): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(734): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(756): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(759): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(770): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(776): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(776): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(866): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(895): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(904): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(987): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1005): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1042): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1049): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1115): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(1139): warning:  #174-D: expression has no effect
+linking...
+Program Size: Code=154592 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 32 Warning(s).
+Build target 'HXOS_V176'
+compiling ethif.c...
+linking...
+Program Size: Code=154596 RO-data=133392 RW-data=10184 ZI-data=20328  
+FromELF: creating hex file...
+".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
+Build target 'HXOS_V176'
+compiling OS_ENTRY.C...
+compiling EXTCMD.C...
+compiling api_lib.c...
+compiling api_msg.c...
+compiling err.c...
+compiling netbuf.c...
+compiling netdb.c...
+compiling netifapi.c...
+compiling sockets.c...
+compiling tcpip.c...
+compiling sys_arch.c...
+compiling autoip.c...
+compiling def.c...
+compiling dhcp.c...
+compiling dns.c...
+compiling icmp.c...
+compiling igmp.c...
+compiling inet.c...
+compiling inet_chksum.c...
+compiling init.c...
+HXOS\network\core\init.c(152): error:  #35: #error directive: "MEMP_NUM_SYS_TIMEOUT is too low to accomodate all required timeouts"
+compiling ip.c...
+HXOS\network\core\ip.c(820): warning:  #550-D: variable "payload" was set but never used
+compiling ip_addr.c...
+compiling ip_frag.c...
+compiling mem.c...
+compiling memp.c...
+compiling netif.c...
+compiling pbuf.c...
+compiling raw.c...
+compiling stats.c...
+compiling sys.c...
+compiling tcp.c...
+compiling tcp_in.c...
+compiling tcp_out.c...
+compiling timers.c...
+compiling udp.c...
+compiling ethernetif.c...
+compiling slipif.c...
+compiling etharp.c...
+compiling network2.c...
+HXOS\shell\network2.c(74): warning:  #177-D: variable "ping_pcb" was declared but never referenced
+compiling network.c...
+compiling ethif.c...
+compiling stm32sys.c...
+compiling marvelif.c...
+.\HXOS\drivers\stm32\type.h(208): warning:  #47-D: incompatible redefinition of macro "EILSEQ" (declared at line 164 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(209): warning:  #47-D: incompatible redefinition of macro "ELIBMAX" (declared at line 162 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(210): warning:  #47-D: incompatible redefinition of macro "ELIBSCN" (declared at line 161 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(212): warning:  #47-D: incompatible redefinition of macro "ENOMEDIUM" (declared at line 204 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(213): warning:  #47-D: incompatible redefinition of macro "EMEDIUMTYPE" (declared at line 205 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(225): warning:  #47-D: incompatible redefinition of macro "ENETUNREACH" (declared at line 181 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(226): warning:  #47-D: incompatible redefinition of macro "ENOBUFS" (declared at line 185 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(227): warning:  #47-D: incompatible redefinition of macro "ETIMEDOUT" (declared at line 190 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(228): warning:  #47-D: incompatible redefinition of macro "ETIME" (declared at line 142 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\common.h(33): warning:  #47-D: incompatible redefinition of macro "offsetof" (declared at line 76 of "C:\Keil\ARM\ARMCC\bin\..\include\stddef.h")
+".\Obj&Lst\HXV176.axf" - 1 Errors, 12 Warning(s).
 Target not created
 Build target 'HXOS_V176'
-compiling led.c...
-HXOS\drivers\stm32\led.c(56): error:  #513: a value of type "HANDLE" cannot be assigned to an entity of type "HANDLE *"
-".\Obj&Lst\HXV176.axf" - 1 Errors, 0 Warning(s).
-Target not created
-Build target 'HXOS_V176'
-compiling led.c...
+compiling OS_ENTRY.C...
+compiling EXTCMD.C...
+compiling api_lib.c...
+compiling api_msg.c...
+compiling err.c...
+compiling netbuf.c...
+compiling netdb.c...
+compiling netifapi.c...
+compiling sockets.c...
+compiling tcpip.c...
+compiling sys_arch.c...
+compiling autoip.c...
+compiling def.c...
+compiling dhcp.c...
+compiling dns.c...
+compiling icmp.c...
+compiling igmp.c...
+compiling inet.c...
+compiling inet_chksum.c...
+compiling init.c...
+compiling ip.c...
+HXOS\network\core\ip.c(820): warning:  #550-D: variable "payload" was set but never used
+compiling ip_addr.c...
+compiling ip_frag.c...
+compiling mem.c...
+compiling memp.c...
+compiling netif.c...
+compiling pbuf.c...
+compiling raw.c...
+compiling stats.c...
+compiling sys.c...
+compiling tcp.c...
+compiling tcp_in.c...
+compiling tcp_out.c...
+compiling timers.c...
+compiling udp.c...
+compiling ethernetif.c...
+compiling slipif.c...
+compiling etharp.c...
+compiling network2.c...
+HXOS\shell\network2.c(74): warning:  #177-D: variable "ping_pcb" was declared but never referenced
+compiling network.c...
+compiling ethif.c...
+compiling stm32sys.c...
+compiling marvelif.c...
+.\HXOS\drivers\stm32\type.h(208): warning:  #47-D: incompatible redefinition of macro "EILSEQ" (declared at line 164 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(209): warning:  #47-D: incompatible redefinition of macro "ELIBMAX" (declared at line 162 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(210): warning:  #47-D: incompatible redefinition of macro "ELIBSCN" (declared at line 161 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(212): warning:  #47-D: incompatible redefinition of macro "ENOMEDIUM" (declared at line 204 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(213): warning:  #47-D: incompatible redefinition of macro "EMEDIUMTYPE" (declared at line 205 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(225): warning:  #47-D: incompatible redefinition of macro "ENETUNREACH" (declared at line 181 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(226): warning:  #47-D: incompatible redefinition of macro "ENOBUFS" (declared at line 185 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(227): warning:  #47-D: incompatible redefinition of macro "ETIMEDOUT" (declared at line 190 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(228): warning:  #47-D: incompatible redefinition of macro "ETIME" (declared at line 142 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\common.h(33): warning:  #47-D: incompatible redefinition of macro "offsetof" (declared at line 76 of "C:\Keil\ARM\ARMCC\bin\..\include\stddef.h")
 linking...
-Program Size: Code=54520 RO-data=6112 RW-data=9664 ZI-data=4240  
+Program Size: Code=156944 RO-data=133396 RW-data=10204 ZI-data=21956  
 FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
-Build target 'HXOS_V176'
-compiling SYSD_S.C...
-compiling led.c...
-linking...
-Program Size: Code=54548 RO-data=6112 RW-data=9664 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
-Build target 'HXOS_V176'
-compiling SYSD_S.C...
-linking...
-Program Size: Code=54612 RO-data=6112 RW-data=9664 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
+".\Obj&Lst\HXV176.axf" - 0 Errors, 12 Warning(s).
 Build target 'HXOS_V176'
 compiling arch_stm.c...
 compiling HELLOCN.C...
-HXOS\arch\stm32\HELLOCN.C(365): warning:  #111-D: statement is unreachable
+HXOS\arch\stm32\HELLOCN.C(353): warning:  #550-D: variable "dwFlags" was set but never used
 compiling usart.c...
 compiling COMQUEUE.C...
 compiling console.c...
-HXOS\kernel\console.c(94): warning:  #111-D: statement is unreachable
-HXOS\kernel\console.c(325): warning:  #68-D: integer conversion resulted in a change of sign
 compiling DEVMGR.C...
 compiling DIM.C...
 compiling HEAP.C...
@@ -58,7 +975,6 @@ compiling KMEMMGR.C...
 compiling KTMGR.C...
 compiling KTMGR2.C...
 compiling MEM_FBL.C...
-HXOS\kernel\MEM_FBL.C(407): warning:  #177-D: variable "dwFlags" was declared but never referenced
 compiling MEMMGR.C...
 compiling MODMGR.C...
 compiling OBJMGR.C...
@@ -69,27 +985,75 @@ compiling PERF.C...
 compiling STATCPU.C...
 compiling SYNOBJ.C...
 compiling SYSCALL.C...
-HXOS\kernel\SYSCALL.C(202): warning:  #767-D: conversion from pointer to smaller integer
-HXOS\kernel\SYSCALL.C(338): warning:  #767-D: conversion from pointer to smaller integer
+HXOS\kernel\SYSCALL.C(193): warning:  #767-D: conversion from pointer to smaller integer
+HXOS\kernel\SYSCALL.C(329): warning:  #767-D: conversion from pointer to smaller integer
 compiling SYSTEM.C...
-HXOS\kernel\SYSTEM.C(622): warning:  #177-D: variable "excepAddr" was declared but never referenced
-HXOS\kernel\SYSTEM.C(683): warning:  #111-D: statement is unreachable
-HXOS\kernel\SYSTEM.C(841): warning:  #1295-D: Deprecated declaration HardwareInitialize - give arg types
+HXOS\kernel\SYSTEM.C(631): warning:  #177-D: variable "excepAddr" was declared but never referenced
+HXOS\kernel\SYSTEM.C(692): warning:  #111-D: statement is unreachable
+HXOS\kernel\SYSTEM.C(850): warning:  #1295-D: Deprecated declaration HardwareInitialize - give arg types
 compiling TYPES.C...
 compiling VMM.C...
 compiling idle.c...
+compiling stdio.c...
+HXOS\lib\stdio.c(641): warning:  #550-D: variable "n" was set but never used
 compiling string.c...
-HXOS\lib\string.c(55): warning:  #68-D: integer conversion resulted in a change of sign
+HXOS\lib\string.c(99): warning:  #68-D: integer conversion resulted in a change of sign
+HXOS\lib\string.c(401): warning:  #1293-D: assignment in condition
+HXOS\lib\string.c(432): warning:  #1293-D: assignment in condition
+HXOS\lib\string.c(447): warning:  #1293-D: assignment in condition
 compiling DRVENTRY.C...
 compiling mem_scat.c...
 compiling OS_ENTRY.C...
 compiling EXTCMD.C...
-compiling FDISK.C...
-HXOS\shell\FDISK.C(605): warning:  #177-D: variable "fstype" was declared but never referenced
+compiling SHELL.C...
+compiling SHELL1.C...
+compiling led.c...
+compiling synobj2.c...
+compiling api_lib.c...
+compiling api_msg.c...
+compiling err.c...
+compiling netbuf.c...
+compiling netdb.c...
+compiling netifapi.c...
+compiling sockets.c...
+compiling tcpip.c...
+compiling sys_arch.c...
+compiling autoip.c...
+compiling def.c...
+compiling dhcp.c...
+compiling dns.c...
+compiling icmp.c...
+compiling igmp.c...
+compiling inet.c...
+compiling inet_chksum.c...
+compiling init.c...
+compiling ip.c...
+HXOS\network\core\ip.c(820): warning:  #550-D: variable "payload" was set but never used
+compiling ip_addr.c...
+compiling ip_frag.c...
+compiling mem.c...
+compiling memp.c...
+compiling netif.c...
+compiling pbuf.c...
+compiling raw.c...
+compiling stats.c...
+compiling sys.c...
+compiling tcp.c...
+compiling tcp_in.c...
+compiling tcp_out.c...
+compiling timers.c...
+compiling udp.c...
+compiling ethernetif.c...
+compiling slipif.c...
+compiling etharp.c...
+compiling sysmem.c...
+compiling atox.c...
 compiling FDISK2.C...
 HXOS\shell\FDISK2.C(280): warning:  #177-D: variable "bResult" was declared but never referenced
 HXOS\shell\FDISK2.C(458): warning:  #111-D: statement is unreachable
 HXOS\shell\FDISK2.C(155): warning:  #177-D: function "ReadDeviceSector" was declared but never referenced
+compiling FDISK.C...
+HXOS\shell\FDISK.C(605): warning:  #177-D: variable "fstype" was declared but never referenced
 compiling FIBONACCI.C...
 HXOS\shell\FIBONACCI.C(77): warning:  #174-D: expression has no effect
 compiling FS.C...
@@ -106,125 +1070,517 @@ HXOS\shell\HYPERTRM.C(337): warning:  #177-D: function "ComRecvByte2" was declar
 compiling IOCTRL_S.C...
 HXOS\shell\IOCTRL_S.C(321): warning:  #550-D: variable "wPort" was set but never used
 HXOS\shell\IOCTRL_S.C(446): warning:  #550-D: variable "wPort" was set but never used
-compiling SHELL.C...
-compiling SHELL1.C...
+compiling network2.c...
+HXOS\shell\network2.c(74): warning:  #177-D: variable "ping_pcb" was declared but never referenced
+compiling network.c...
 compiling STAT_S.C...
 compiling SYSD_S.C...
-compiling led.c...
+compiling ethif.c...
 compiling usermain.c...
 User\usermain.c(99): warning:  #177-D: variable "strInfo" was declared but never referenced
-linking...
-Program Size: Code=54612 RO-data=6112 RW-data=9664 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 26 Warning(s).
-Build target 'HXOS_V176'
-compiling SYSD_S.C...
-linking...
-Program Size: Code=54696 RO-data=6112 RW-data=9664 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
-Build target 'HXOS_V176'
-compiling SYSD_S.C...
-linking...
-Program Size: Code=54736 RO-data=6112 RW-data=9664 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
-Build target 'HXOS_V176'
-compiling SHELL.C...
-linking...
-Program Size: Code=54736 RO-data=6112 RW-data=9664 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
-Build target 'HXOS_V176'
-compiling SYSD_S.C...
-compiling led.c...
-linking...
-Program Size: Code=54580 RO-data=6112 RW-data=9664 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
-Build target 'HXOS_V176'
-compiling led.c...
-linking...
-Program Size: Code=54580 RO-data=6112 RW-data=9664 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
-Build target 'HXOS_V176'
-compiling STAT_S.C...
-compiling led.c...
-linking...
-Program Size: Code=54576 RO-data=6112 RW-data=9664 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
-Build target 'HXOS_V176'
-compiling EXTCMD.C...
 compiling ledctrl.c...
-User\ledctrl.c(15): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(22): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(27): warning:  #223-D: function "PrintLine" declared implicitly
+compiling common.c...
+HXOS\drivers\stm32\common.c(26): warning:  #550-D: variable "ap" was set but never used
+HXOS\drivers\stm32\common.c(73): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\common.c(73): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\common.c(110): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\common.c(112): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\common.c(135): warning:  #223-D: function "isprint" declared implicitly
+compiling core.c...
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(136): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(173): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(179): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(179): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(179): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(179): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(185): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(333): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(333): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(333): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(333): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(333): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(338): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(347): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(347): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(347): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(347): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(347): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(493): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(493): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(568): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(568): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(571): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(571): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(588): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(590): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(597): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(597): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(602): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(768): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(768): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(796): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(796): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(801): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(801): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(809): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(848): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(848): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(851): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(851): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(896): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(896): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\core.c(896): warning:  #174-D: expression has no effect
+compiling s3cmci.c...
+HXOS\drivers\stm32\s3cmci.c(225): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(227): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(249): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(488): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(488): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(615): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(615): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(625): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(644): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(644): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(734): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(747): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(756): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(759): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(770): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(776): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(776): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(863): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(866): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(895): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(904): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(987): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1005): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1042): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1049): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\s3cmci.c(1115): warning:  #188-D: enumerated type mixed with another type
+HXOS\drivers\stm32\s3cmci.c(1139): warning:  #174-D: expression has no effect
+compiling sdio.c...
+HXOS\drivers\stm32\sdio.c(216): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(216): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(216): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(578): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(578): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(596): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(619): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(621): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(623): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(623): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(623): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(705): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(705): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(705): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(1080): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(1080): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio.c(1080): warning:  #174-D: expression has no effect
+compiling sdio_cis.c...
+HXOS\drivers\stm32\sdio_cis.c(61): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio_cis.c(61): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio_cis.c(61): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio_cis.c(63): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio_cis.c(63): warning:  #174-D: expression has no effect
+HXOS\drivers\stm32\sdio_cis.c(63): warning:  #174-D: expression has no effect
+compiling stm32sys.c...
+compiling sdio_drv.c...
+compiling 8686.c...
+compiling assoc.c...
+HXOS\network\nicdrv\assoc.c(74): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(74): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(113): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(113): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(113): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(139): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(139): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(139): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(159): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(189): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(192): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(196): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(200): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(204): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(204): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(210): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(210): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(215): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(215): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(215): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(306): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(306): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(339): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(339): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(359): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(359): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(359): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(278): warning:  #177-D: variable "rsn" was declared but never referenced
+HXOS\network\nicdrv\assoc.c(516): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(516): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(524): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(524): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(633): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(633): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(646): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(660): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(665): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(744): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(760): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(760): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(760): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(765): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(772): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(777): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(777): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(875): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(875): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(973): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(973): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(973): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(976): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(976): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(976): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(989): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1006): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1014): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1014): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1015): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1015): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1036): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1036): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1036): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1040): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1040): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1040): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1056): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1147): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1161): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1161): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1161): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1188): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1191): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1211): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1211): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1211): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1211): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1211): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1220): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1220): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1220): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1275): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1286): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1286): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1289): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1319): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1319): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1319): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1319): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1443): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1454): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1454): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1454): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1454): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1462): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1587): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1594): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1601): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1607): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1615): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1665): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1665): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1666): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1666): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1692): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1771): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1793): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1793): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1802): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1802): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1854): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1854): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1860): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1866): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1880): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\assoc.c(1880): warning:  #174-D: expression has no effect
+compiling help.c...
+compiling help_firmware.c...
+compiling if_sdio.c...
+HXOS\network\nicdrv\if_sdio.c(123): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(123): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(146): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(146): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(213): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(213): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(247): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(247): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(247): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(251): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(251): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(251): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(258): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(258): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(258): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(291): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(293): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(293): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(329): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(415): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(415): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(537): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(565): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(565): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(579): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(596): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(596): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(610): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(611): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(613): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(642): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(642): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(668): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(668): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(670): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(676): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(688): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(688): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(688): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(701): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(711): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(725): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(726): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(728): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(742): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(742): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(745): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(751): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(756): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(781): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(781): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(781): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(793): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(836): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(858): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(862): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(862): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(864): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(865): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(870): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(876): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(876): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(877): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\if_sdio.c(901): warning:  #174-D: expression has no effect
+compiling marvel8385_firmware.c...
+compiling marvell_ops.c...
+HXOS\network\nicdrv\marvell_ops.c(28): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvell_ops.c(34): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvell_ops.c(38): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvell_ops.c(41): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvell_ops.c(88): warning:  #174-D: expression has no effect
+compiling scan.c...
+HXOS\network\nicdrv\scan.c(324): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(324): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(345): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(352): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(364): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(364): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(376): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(376): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(380): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(382): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(385): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(390): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(394): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(394): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(400): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(409): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(409): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(409): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(419): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(425): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(432): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(438): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(445): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(450): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(453): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(453): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(453): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(453): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(473): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(475): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(493): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(499): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(502): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(510): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(518): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(518): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(518): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(600): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(600): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(600): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(607): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(607): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(610): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(610): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(640): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(640): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(673): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(707): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(707): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(707): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(707): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(838): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(838): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(838): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(867): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(867): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(867): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(883): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(883): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(883): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(888): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(917): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\scan.c(919): warning:  #174-D: expression has no effect
+compiling marvel_main.c...
+HXOS\network\nicdrv\marvel_main.c(242): warning:  #9-D: nested comment is not allowed
+HXOS\network\nicdrv\marvel_main.c(244): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(272): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(276): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(281): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(286): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(291): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(295): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(305): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(310): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(313): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(327): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(333): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(338): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(343): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(346): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(349): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(352): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(355): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(358): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(361): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(364): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(385): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(385): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\marvel_main.c(629): warning:  #174-D: expression has no effect
+compiling rx.c...
+HXOS\network\nicdrv\rx.c(71): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\rx.c(159): warning:  #174-D: expression has no effect
+compiling cmd.c...
+HXOS\network\nicdrv\cmd.c(405): warning:  #223-D: function "memmove" declared implicitly
+HXOS\network\nicdrv\cmd.c(510): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(531): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(531): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(531): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(557): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(735): warning:  #223-D: function "memmove" declared implicitly
+HXOS\network\nicdrv\cmd.c(750): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(795): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(795): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(1048): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(1494): warning:  #223-D: function "memmove" declared implicitly
+HXOS\network\nicdrv\cmd.c(1558): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(1558): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(1586): warning:  #174-D: expression has no effect
+HXOS\network\nicdrv\cmd.c(1737): warning:  #223-D: function "memmove" declared implicitly
+compiling 11d.c...
+HXOS\network\nicdrv\11d.c(48): warning:  #223-D: function "toupper" declared implicitly
+compiling marvelif.c...
+.\HXOS\drivers\stm32\type.h(208): warning:  #47-D: incompatible redefinition of macro "EILSEQ" (declared at line 164 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(209): warning:  #47-D: incompatible redefinition of macro "ELIBMAX" (declared at line 162 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(210): warning:  #47-D: incompatible redefinition of macro "ELIBSCN" (declared at line 161 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(212): warning:  #47-D: incompatible redefinition of macro "ENOMEDIUM" (declared at line 204 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(213): warning:  #47-D: incompatible redefinition of macro "EMEDIUMTYPE" (declared at line 205 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(225): warning:  #47-D: incompatible redefinition of macro "ENETUNREACH" (declared at line 181 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(226): warning:  #47-D: incompatible redefinition of macro "ENOBUFS" (declared at line 185 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(227): warning:  #47-D: incompatible redefinition of macro "ETIMEDOUT" (declared at line 190 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\type.h(228): warning:  #47-D: incompatible redefinition of macro "ETIME" (declared at line 142 of ".\HXOS\include\lwip/arch.h")
+.\HXOS\drivers\stm32\common.h(33): warning:  #47-D: incompatible redefinition of macro "offsetof" (declared at line 76 of "C:\Keil\ARM\ARMCC\bin\..\include\stddef.h")
 linking...
-Program Size: Code=54760 RO-data=6116 RW-data=9680 ZI-data=4240  
+Program Size: Code=156736 RO-data=133464 RW-data=10204 ZI-data=21956  
 FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 3 Warning(s).
-Build target 'HXOS_V176'
-compiling ledctrl.c...
-User\ledctrl.c(8): error:  #20: identifier "HANDLE" is undefined
-User\ledctrl.c(12): warning:  #223-D: function "CreateFile" declared implicitly
-User\ledctrl.c(20): warning:  #223-D: function "WriteFile" declared implicitly
-User\ledctrl.c(32): warning:  #223-D: function "CloseFile" declared implicitly
-".\Obj&Lst\HXV176.axf" - 1 Errors, 3 Warning(s).
-Target not created
-Build target 'HXOS_V176'
-compiling ledctrl.c...
-User\ledctrl.c(15): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(22): warning:  #223-D: function "PrintLine" declared implicitly
-linking...
-Program Size: Code=54728 RO-data=6116 RW-data=9680 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 2 Warning(s).
-Build target 'HXOS_V176'
-compiling ledctrl.c...
-User\ledctrl.c(16): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(21): error:  #167: argument of type "DWORD" is incompatible with parameter of type "DWORD *"
-User\ledctrl.c(23): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(28): warning:  #223-D: function "PrintLine" declared implicitly
-".\Obj&Lst\HXV176.axf" - 1 Errors, 3 Warning(s).
-Target not created
-Build target 'HXOS_V176'
-compiling ledctrl.c...
-User\ledctrl.c(16): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(23): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(28): warning:  #223-D: function "PrintLine" declared implicitly
-linking...
-Program Size: Code=54764 RO-data=6116 RW-data=9680 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 3 Warning(s).
-Build target 'HXOS_V176'
-compiling ledctrl.c...
-User\ledctrl.c(16): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(23): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(28): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(50): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(57): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(62): warning:  #223-D: function "PrintLine" declared implicitly
-linking...
-Program Size: Code=54872 RO-data=6116 RW-data=9680 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 6 Warning(s).
-Build target 'HXOS_V176'
-compiling EXTCMD.C...
-compiling ledctrl.c...
-User\ledctrl.c(16): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(23): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(28): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(50): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(57): warning:  #223-D: function "PrintLine" declared implicitly
-User\ledctrl.c(62): warning:  #223-D: function "PrintLine" declared implicitly
-linking...
-Program Size: Code=54872 RO-data=6124 RW-data=9696 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 6 Warning(s).
-Build target 'HXOS_V176'
-linking...
-Program Size: Code=54872 RO-data=6124 RW-data=9696 ZI-data=4240  
-FromELF: creating hex file...
-".\Obj&Lst\HXV176.axf" - 0 Errors, 0 Warning(s).
+".\Obj&Lst\HXV176.axf" - 0 Errors, 510 Warning(s).

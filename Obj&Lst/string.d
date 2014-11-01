@@ -9,6 +9,7 @@
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\..\arch\stm32\syn_mech.h
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\objqueue.h
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\ktmgr.h
+.\obj&lst\string.o: HXOS\lib\..\INCLUDE\ktmgr2.h
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\RINGBUFF.H
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\system.h
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\devmgr.h
@@ -22,5 +23,6 @@
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\buffmgr.h
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\kmemmgr.h
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\ktmsg.h
+.\obj&lst\string.o: HXOS\lib\..\INCLUDE\sysnet.h
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\globvar.h
 .\obj&lst\string.o: HXOS\lib\..\INCLUDE\..\arch\stm32\arch.h

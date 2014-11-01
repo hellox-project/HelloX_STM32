@@ -1,0 +1,1832 @@
+
+wifi: starting CMD52 arg 00021200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001080 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 00021400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001080 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 00021600 flags 00000195
+stm32_requestesponse received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01010000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001021 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01010200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001002 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01010400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000100c 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01010600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01010800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001022 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01010a00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000101c 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01010c00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01010e00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01011000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001010 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01011200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01011400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01011600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01011800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01011a00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01011c00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01011e00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01012000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01012200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01012400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01012600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01012800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01012a00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01012c00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01012e00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01013000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01013200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01013400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01013600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01013800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01013a00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01013c00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01013e00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01014000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01014200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01014400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 000010ff 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+function vendor=0x2df	device=0x9103
+Device function inital [ok]!
+
+wifi: new SDIO card at address 0001
+SD card probe [ok]!
+init marvel driver ok!
+function vendor=0x2df	device=0x9103
+wifi: starting CMD52 arg 80022000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 80022201 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+card infomation string(0):Marvell 
+card infomation string(1):802.11 SDIO ID: 0B 
+SDIO: Enabling device 80211card...
+wifi: starting CMD52 arg 00000400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 80000402 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001002 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 00000600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001002 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+SDIO: Enabled device 80211card
+SDIO: Enabling IRQ for 80211card...
+wifi: starting CMD52 arg 00000800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 80000803 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001003 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+setup sdio irq success!
+wifi: starting CMD52 arg 10000000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 10000200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 10000400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+class = 0x7, vendor = 0x2DF, device = 0x9103, model = 0xB, ioport = 0x10000
+wifi: starting CMD52 arg 10006800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 10006a00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+enter if_sdio_prog_helper
+wifi: starting CMD52 arg 80022020 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001020 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 80022200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+sending 60 bytes chunk
+really size=64(64)
+wifi: starting CMD53 arg 92000040 flags 000001b5
+wifi:     blksz 64 blocks 1 flags 00000100 tsac 1000 ms nsac 0
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD53): 0: 00002000 00000000 00000000 00000000
+wifi:     64 bytes transferred: 0
+stm state:0x00000500 status:ok: data transfer completed.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+sending 60 bytes chunk
+really size=64(64)
+wifi: starting CMD53 arg 92000040 flags 000001b5
+wifi:     blksz 64 blocks 1 flags 00000100 tsac 1000 ms nsac 0
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD53): 0: 00002000 00000000 00000000 00000000
+wifi:     64 bytes transferred: 0
+stm state:0x00000500 status:ok: data transfer completed.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+sending 60 bytes chunk
+really size=64(64)
+wifi: starting CMD53 arg 92000040 flags 000001b5
+wifi:     blksz 64 blocks 1 flags 00000100 tsac 1000 ms nsac 0
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD53): 0: 00002000 00000000 00000000 00000000
+wifi:     64 bytes transferred: 0
+stm state:0x00000500 status:ok: data transfer completed.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+sending 60 bytes chunk
+really size=64(64)
+wifi: starting CMD53 arg 92000040 flags 000001b5
+wifi:     blksz 64 blocks 1 flags 00000100 tsac 1000 ms nsac 0
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD53): 0: 00002000 00000000 00000000 00000000
+wifi:     64 bytes transferred: 0
+stm state:0x00000500 status:ok: data transfer completed.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+sending 60 bytes chunk
+really size=64(64)
+wifi: starting CMD53 arg 92000040 flags 000001b5
+wifi:     blksz 64 blocks 1 flags 00000100 tsac 1000 ms nsac 0
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD53): 0: 00002000 00000000 00000000 00000000
+wifi:     64 bytes transferred: 0
+stm state:0x00000500 status:ok: data transfer completed.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+
+sending 60 bytes chunk
+really size=64(64)
+wifi: sta
+HardFault_Handler
+  ---- Thread Info ---- 
+  Thread name: CPU STAT
+  Thread Status:  RUNNING.
+ESP = 2000AFC0
+MSP = 2000AFB0
+xPSR = 2000A500
+PC = 10000000
+LR = 2000A5CC
+R12 = 0
+  ---- Exception Info ---- 
+MSP = 2000AFB0
+D1 = 2050534D
+D2 = 35303220
+D3 = 32323330
+D4 = A0D30
+D5 = 20000000
+D6 = 10000000
+D7 = 2000A5CC
+D8 = 0
+D9 = 4003
+hina is running now.If you have any question,please send email to : garryxin@yahoo.com.cn.
+Any help please press 'help' + return.
+  TCP/IP: low_level_output routine is called.
+
+  ----------------  Ethernet Frame ----------------  
+
+  DMAC addr       : 0xFFFFFFFFFFFF 
+
+  SMAC addr       : 0x000000000000 
+
+  Frame type      : 0x0100                     
+
+
+
+S[system-view]DIO dbg: begin to call init_marvell_driver...
+
+probe:stm32f103rc sdio!
+wifi: Minimum clock frequency too high for identification mode
+wifi: clock 498054Hz busmode 1 powermode 2 cs 0 Vdd 21 width 0 timing 0
+running at 501kHz (requested: 498kHz).
+wifi: clock 498054Hz busmode 1 powermode 2 cs 1 Vdd 21 width 0 timing 0
+running at 501kHz (requested: 498kHz).
+wifi: starting CMD0 arg 00000000 flags 000000c0
+stm32_request!
+S
+BUG: Enter-Int,The BUG information(vector,nestlevel):65,2SDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD0): 0: 00000000 00000000 00000000 00000000
+stm state:0x00000080 status:ok: command sent.
+SDIO dbg: SDIO interrupt handler run end.
+
+
+BUG: Lev-Int,The BUG information(vector,nestlevel):65,1DIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: clock 498054Hz busmode 1 powermode 2 cs 0 Vdd 21 width 0 timing 0
+running at 501kHz (requested: 498kHz).
+wifi: starting CMD8 arg 000001aa flags 000002f5
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+CMDSTAT: error CMDTIMEOUT
+wifi: req done (CMD8): -60: 00000000 00000000 00000000 00000000
+stm state:0x00000004 status:error: command timeout.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+mmc card support SD 1.0 cards !
+wifi: starting CMD5 arg 00000000 flags 000002e1
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD5): 0: 90ff8000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+IO op cond=0x90ff8000
+support vdd=20wifi: clock 498054Hz busmode 1 powermode 2 cs 0 Vdd 20 width 0 timing 0
+running at 501kHz (requested: 498kHz).
+wifi: starting CMD5 arg 00300000 flags 000002e1
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD5): 0: 90300000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD3 arg 00000000 flags 00000075
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD3): 0: 00011e00 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: clock 498054Hz busmode 2 powermode 2 cs 0 Vdd 20 width 0 timing 0
+running at 501kHz (requested: 498kHz).
+wifi: starting CMD7 arg 00010000 flags 00000015
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD7): 0: 00001e00 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 00000000 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 00001000 flags 00000195
+stm32_request!
+SSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001003 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+DIO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 00001200 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 00001400 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001080 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 00001600 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01000000 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001015 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01000200 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000101f 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01000400 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01000600 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01000800 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000104d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01000a00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001061 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01000c00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001072 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01000e00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001076 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01001000 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001065 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01001200 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000106c 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01001400 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000106c 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01001600 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01001800 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001038 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01001a00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001030 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01001c00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001032 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01001e00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000102e 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01002000 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001031 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01002200 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001031 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01002400 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001020 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01002600 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001053 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01002800 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001044 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01002a00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001049 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01002c00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000104f 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01002e00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001020 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01003000 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001049 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01003200 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001044 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01003400 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 0000103a 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01003600 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001020 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01003800 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001030 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01003a00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001042 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01003c00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01003e00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+
+IO dbg: mmc_wait_for_req,begin to wait complete...
+
+wifi: starting CMD52 arg 01004000 flags 00000195
+st:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+card infomation string(0):Marvell 
+card infomation string(1):802.11 SDIO ID: 0B 
+card infomation string(2): 
+wifi: starting CMD52 arg 01004200 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001020 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01004400 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001004 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01004600 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 000010df 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01004800 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001002 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01004a00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001003 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01004c00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001091 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01004e00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001021 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01005000 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001002 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01005200 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 0000100c 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01005400 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01005600 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001022 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01005800 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001004 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01005a00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01005c00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01005e00 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01006000 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001032 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01006200 flags 00000195
+stm32_request!
+SDSDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 000010ff 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+IO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: clock 25000000Hz busmode 2 powermode 2 cs 0 Vdd 20 width 0 timing 0
+running at 21333kHz (requested: 25000kHz).
+wifi: starting CMD52 arg 00000e00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 80000e02 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001002 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: clock 25000000Hz busmode 2 powermode 2 cs 0 Vdd 20 width 2 timing 0
+running at 21333kHz (requested: 25000kHz).
+SD support 1 function 
+Device function count = 1 
+wifi: starting CMD52 arg 00020000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001007 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 00021200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001080 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 00021400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001080 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 00021600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01010000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001021 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01010200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001002 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01010400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 0000100c 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01010600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01010800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001022 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01010a00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 0000101c 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01010c00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01010e00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01011000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001010 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01011200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01011400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01011600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01011800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01011a00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01011c00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01011e00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01012000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01012200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01012400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01012600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01012800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01012a00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01012c00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01012e00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01013000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01013200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01013400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01013600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01013800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01013a00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01013c00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01013e00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01014000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01014200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 01014400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 000010ff 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+function vendor=0x2df	device=0x9103
+Device function inital [ok]!
+wifi: new SDIO card at address 0001
+SD card probe [ok]!
+init marvel driver ok!
+function vendor=0x2df	device=0x9103
+wifi: starting CMD52 arg 80022000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 80022201 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+card infomation string(0):Marvell 
+card infomation string(1):802.11 SDIO ID: 0B 
+SDIO: Enabling device 80211card...
+wifi: starting CMD52 arg 00000400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 80000402 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001002 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 00000600 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001002 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+SDIO: Enabled device 80211card
+SDIO: Enabling IRQ for 80211card...
+wifi: starting CMD52 arg 00000800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 80000803 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001003 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+setup sdio irq success!
+wifi: starting CMD52 arg 10000000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 10000200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 10000400 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001001 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+class = 0x7, vendor = 0x2DF, device = 0x9103, model = 0xB, ioport = 0x10000
+wifi: starting CMD52 arg 10006800 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 10006a00 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+enter if_sdio_prog_helper
+wifi: starting CMD52 arg 80022020 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001020 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 80022200 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 00001000 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+sending 60 bytes chunk
+really size=64(64)
+wifi: starting CMD53 arg 92000040 flags 000001b5
+wifi:     blksz 64 blocks 1 flags 00000100 tsac 1000 ms nsac 0
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD53): 0: 00002000 00000000 00000000 00000000
+wifi:     64 bytes transferred: 0
+stm state:0x00000500 status:ok: data transfer completed.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+sending 60 bytes chunk
+really size=64(64)
+wifi: starting CMD53 arg 92000040 flags 000001b5
+wifi:     blksz 64 blocks 1 flags 00000100 tsac 1000 ms nsac 0
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD53): 0: 00002000 00000000 00000000 00000000
+wifi:     64 bytes transferred: 0
+stm state:0x00000500 status:ok: data transfer completed.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+sending 60 bytes chunk
+really size=64(64)
+wifi: starting CMD53 arg 92000040 flags 000001b5
+wifi:     blksz 64 blocks 1 flags 00000100 tsac 1000 ms nsac 0
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD53): 0: 00002000 00000000 00000000 00000000
+wifi:     64 bytes transferred: 0
+stm state:0x00000500 status:ok: data transfer completed.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+sending 60 bytes chunk
+really size=64(64)
+wifi: starting CMD53 arg 92000040 flags 000001b5
+wifi:     blksz 64 blocks 1 flags 00000100 tsac 1000 ms nsac 0
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD53): 0: 00002000 00000000 00000000 00000000
+wifi:     64 bytes transferred: 0
+stm state:0x00000500 status:ok: data transfer completed.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+sending 60 bytes chunk
+really size=64(64)
+wifi: starting CMD53 arg 92000040 flags 000001b5
+wifi:     blksz 64 blocks 1 flags 00000100 tsac 1000 ms nsac 0
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD53): 0: 00002000 00000000 00000000 00000000
+wifi:     64 bytes transferred: 0
+stm state:0x00000500 status:ok: data transfer completed.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+wifi: starting CMD52 arg 10004000 flags 00000195
+stm32_request!
+SDIO dbg: SDIO interrupt handler begins to run.
+wifi: req done (CMD52): 0: 0000100d 00000000 00000000 00000000
+stm state:0x00000040 status:ok: command response received.
+SDIO dbg: SDIO interrupt handler run end.
+SDIO dbg: mmc_wait_for_req,begin to wait complete...
+sending 60 bytes chunk
+really size=64(64)
+wifi: sta
+HardFault_Handler
+  ---- Thread Info ---- 
+  Thread name: CPU STAT
+  Thread Status:  RUNNING.
+ESP = 2000AFC0
+MSP = 2000AFB0
+xPSR = 2000A500
+PC = 10000000
+LR = 2000A5CC
+R12 = 0
+  ---- Exception Info ---- 
+MSP = 2000AFB0
+D1 = 2050534D
+D2 = 35303220
+D3 = 32323330
+D4 = A0D30
+D5 = 20000000
+D6 = 10000000
+D7 = 2000A5CC
+D8 = 0
+D9 = 4003
+

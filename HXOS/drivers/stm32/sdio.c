@@ -665,7 +665,7 @@ int sdio_irq_thread(void *_host)
 {
 	struct mmc_host *host = _host;
 	//struct sched_param param = { .sched_priority = 1 };
-//	unsigned long period, idle_period;
+  //unsigned long period, idle_period;
 	int ret;
 
 		/*
@@ -681,7 +681,8 @@ int sdio_irq_thread(void *_host)
 		 * holding of the host lock does not cover too much work
 		 * that doesn't require that lock to be held.
 		 */
-		ret = process_sdio_pending_irqs(host->card);
+	ret = process_sdio_pending_irqs(host->card);
+	
 		/*
 		 * Adaptive polling frequency based on the assumption
 		 * that an interrupt will be closely followed by more.
@@ -696,14 +697,13 @@ int sdio_irq_thread(void *_host)
 					period = idle_period;
 			}
 		}*/
-		if (host->caps & MMC_CAP_SDIO_IRQ)
-			host->ops->enable_sdio_irq(host, 1);
-		/*	if (host->caps & MMC_CAP_SDIO_IRQ)
-			host->ops->enable_sdio_irq(host, 0);*/
+	if (host->caps & MMC_CAP_SDIO_IRQ)
+		host->ops->enable_sdio_irq(host, 1);
+	/*	if (host->caps & MMC_CAP_SDIO_IRQ)
+		host->ops->enable_sdio_irq(host, 0);*/
 
 	pr_debug("%s: IRQ thread exiting with code %d\n",
 		 mmc_hostname(host), ret);
-
 	return ret;
 }
 
@@ -763,8 +763,6 @@ void sdio_writeb(struct sdio_func *func, u8 b, unsigned int addr, int *err_ret)
 		*err_ret = ret;
 }
 
-
-
 /*
  * Calculate the maximum byte mode transfer size
  */
@@ -798,8 +796,6 @@ static u16 align_power2(u16 size)
 	}
 	return i;			
 }
-
-
 
 unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz)
 {
@@ -886,7 +882,6 @@ unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz)
 	 */
 	return orig_sz;
 }
-
 
 int mmc_io_rw_extended(struct mmc_card *card, int write, unsigned fn,
 	unsigned addr, int incr_addr, u8 *buf, unsigned blocks, unsigned blksz)
@@ -1028,12 +1023,20 @@ static int sdio_io_rw_ext_helper(struct sdio_func *func, int write,
 int sdio_io_rw_ext_helper(struct sdio_func *func, int write,
 	unsigned addr, int incr_addr, u8 *buf, unsigned size)
 {
-	u8 alig_bug_buf[3*1024];//作为数据的缓冲区
+	u8* alig_bug_buf = NULL;
 	unsigned remainder = size;
 	u8 *pbuf=buf;
 	unsigned max_blocks;
 	unsigned blocks;
 	int ret;
+	
+	//Allocate memory for temporary buffer.
+	alig_bug_buf = (u8*)KMemAlloc(size,KMEM_SIZE_TYPE_ANY);
+	if(NULL == alig_bug_buf)
+	{
+		_hx_printf("SDIO->sdio_io_rw_ext_helper: KMemAlloc failed.\r\n");
+		return 0;
+	}
 	if(write){
 		memcpy(alig_bug_buf,buf,size);
 		pbuf=alig_bug_buf;
@@ -1057,7 +1060,10 @@ int sdio_io_rw_ext_helper(struct sdio_func *func, int write,
 				func->num, addr, incr_addr, pbuf,
 				blocks, func->cur_blksize);
 			if (ret)
+			{
+				KMemFree(alig_bug_buf,KMEM_SIZE_TYPE_ANY,0);
 				return ret;
+			}
 
 			remainder -= size;
 			pbuf += size;
@@ -1070,22 +1076,24 @@ int sdio_io_rw_ext_helper(struct sdio_func *func, int write,
 	while (remainder > 0) {
 		u16 tmp;
 		size = min(remainder, sdio_max_byte_size(func));
-		tmp=align_power2(size);	//必须按标准长度对齐
+		tmp=align_power2(size);	//Align.
 		pr_debug("really size=%d(%d)\n",size,tmp);
 		
 		ret = mmc_io_rw_extended(func->card, write, func->num, addr,
 			 incr_addr,pbuf, 1, tmp);
 		if (ret)
+		{
+			KMemFree(alig_bug_buf,KMEM_SIZE_TYPE_ANY,0);
 			return ret;
+		}
 		remainder -= size;
 		pbuf += size;
 		if (incr_addr)
 			addr += size;
 	}
+	KMemFree(alig_bug_buf,KMEM_SIZE_TYPE_ANY,0);
 	return 0;
 }
-
-
 
 /**
  *	sdio_readsb - read from a FIFO on a SDIO function
@@ -1107,13 +1115,6 @@ int sdio_readsb(struct sdio_func *func, void *dst, unsigned int addr,
 	return ret;
 }
 
-
-
-
-
-
-
-
 /**
  *	sdio_writesb - write to a FIFO of a SDIO function
  *	@func: SDIO function to access
@@ -1131,7 +1132,4 @@ int sdio_writesb(struct sdio_func *func, unsigned int addr, void *src,
 	return sdio_io_rw_ext_helper(func, 1, addr, 0, src, count);
 }
 
-
-
 #endif
-
