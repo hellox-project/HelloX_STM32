@@ -101,17 +101,16 @@ int DoPhysicalSend(struct netif* outif,struct pbuf* p)
 #endif
 			priv->dnld_sent = DNLD_RES_RECEIVED;
 	  }
+		else
+		{
+			//Update interface statistics info.
+			pIfState->dwFrameSendSuccess += 1;
+#ifdef __WIFI_DEBUG
+			_hx_printf("  WiFi debugging: host_to_card successfully.\r\n");
+#endif
+		}
 		priv->resp_len[0] = 0;
 	}
-	else
-	{
-		//Update interface statistics info.
-		pIfState->dwFrameSendSuccess += 1;
-#ifdef __WIFI_DEBUG
-		_hx_printf("  WiFi debugging: host_to_card successfully.\r\n");
-#endif
-	}
-	//wait_for_data_end();  //Wait for sending over.
 	sdio_sys_wait=1;
 	return ret;
 }

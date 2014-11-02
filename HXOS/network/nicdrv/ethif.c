@@ -298,6 +298,7 @@ static DWORD WiFiDriverThreadEntry(LPVOID pData)
 					break;
 					
 				case WIFI_MSG_SHOWINT:             //Show interface's statistics info.
+					_hx_printf("\r\n");
 					_hx_printf("  Ethernet statistics information:\r\n");
 				  _hx_printf("    Send frame #       : %d\r\n",ifState.dwFrameSend);
 				  _hx_printf("    Success send #     : %d\r\n",ifState.dwFrameSendSuccess);
