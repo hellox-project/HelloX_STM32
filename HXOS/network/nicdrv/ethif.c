@@ -287,6 +287,7 @@ static DWORD WiFiDriverThreadEntry(LPVOID pData)
 						_hx_printf("  A valid association info object must be specified.\r\n");
 						break;
 					}
+					_hx_printf("\r\n");
 				  _hx_printf("  Try to associate to [%s] in [%s] mode...\r\n", \
 					    pAssocInfo->ssid, \
 					    (0 == pAssocInfo->mode) ? "INFRA" : "ADHOC");
