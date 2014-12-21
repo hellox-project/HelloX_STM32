@@ -24,10 +24,10 @@ DWORD SysDiagStart(LPVOID);    //Entry point of the sys diag application.
 //The following constants are returned by CommandParser.
 //
 
-#define SYS_DIAG_CMD_PARSER_TERMINAL      0x00000000
+/*#define SYS_DIAG_CMD_PARSER_TERMINAL      0x00000000
 #define SYS_DIAG_CMD_PARSER_SUCCESS       0x00000001
 #define SYS_DIAG_CMD_PARSER_INVALID       0x00000002
 #define SYS_DIAG_CMD_PARSER_PROCESSING    0x00000003
-#define SYS_DIAG_CMD_PARSER_FAILED        0x00000004
+#define SYS_DIAG_CMD_PARSER_FAILED        0x00000004*/
 
 #endif

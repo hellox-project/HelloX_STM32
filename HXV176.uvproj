@@ -907,6 +907,21 @@
               <FileType>5</FileType>
               <FilePath>.\HXOS\network\nicdrv\ethif.h</FilePath>
             </File>
+            <File>
+              <FileName>SHELL_HELP_SMT32.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\shell\SHELL_HELP_SMT32.C</FilePath>
+            </File>
+            <File>
+              <FileName>CharDisplay.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\kernel\CharDisplay.C</FilePath>
+            </File>
+            <File>
+              <FileName>HISCMD .C</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\shell\HISCMD .C</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

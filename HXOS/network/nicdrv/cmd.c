@@ -172,7 +172,6 @@ static void lbs_submit_command(struct lbs_private *priv,
 		timeo = 5 * HZ;	  */
 
 	//lbs_deb_hex(LBS_DEB_CMD, "DNLD_CMD", (void *) cmdnode->cmdbuf, cmdsize);
-	//调用将命令写入设备 if_sdio_host_to_card
 	ret = priv->hw_host_to_card(priv, MVMS_CMD, (u8 *) cmd, cmdsize);
 
 	if (ret) {
@@ -473,7 +472,6 @@ static struct cmd_ctrl_node *__lbs_cmd_async(struct lbs_private *priv,
 	//wake_up_interruptible(&priv->waitq);//唤醒主服务线程执行命令
 	lbs_thread(priv);//命令处理阶段
 	
-
  done:
 	lbs_deb_cmd_leave_args( "ret %p", cmdnode->cmdwaitqwoken);
 	return cmdnode;
@@ -505,7 +503,7 @@ int __lbs_cmd(struct lbs_private *priv, uint16_t command,
 	time_out=1000;
 	while(1){
 		
-		ret=pool_sdio_interrupt(card->func);
+		ret = poll_sdio_interrupt(card->func);
 		if(ret<0){
 			lbs_pr_err("read interrupt error!\n");
 			try_bug(0);
@@ -552,7 +550,7 @@ void lbs_cmd_async(struct lbs_private *priv, uint16_t command,
 	/*这是一个bug的修复，本来lbs_cmd_async提交的命令是不用等待他返回的，但是卡还是
 	会返回一个状态码，所以这里必须同步读取*/
 	while(1){
-		ret=pool_sdio_interrupt(card->func);
+		ret = poll_sdio_interrupt(card->func);
 		if(ret<0){
 			lbs_pr_err("read interrupt error!\n");
 			try_bug(0);
@@ -1581,7 +1579,7 @@ int lbs_prepare_and_send_command(struct lbs_private *priv,
 					 cmdnode->cmdwaitqwoken);*/
 	while(1){
 		
-		ret=pool_sdio_interrupt(card->func);
+		ret = poll_sdio_interrupt(card->func);
 		if(ret<0){
 			lbs_pr_err("read interrupt error!\n");
 			try_bug(0);
@@ -1617,11 +1615,6 @@ done:
 	lbs_deb_cmd_leave_args(LBS_DEB_HOST, ret);
 	return ret;
 }
-
-
-
-
-
 
 /**
  *  @brief Get the radio channel
@@ -1669,8 +1662,6 @@ int lbs_update_channel(struct lbs_private *priv)
 	return ret;
 }
 
-
-
 /**
  *  @brief Set the radio channel
  *
@@ -1703,7 +1694,6 @@ out:
 	lbs_deb_cmd_leave_args(LBS_DEB_CMD,  ret);
 	return ret;
 }
-
 
 
 int lbs_cmd_802_11_set_wep(struct lbs_private *priv, uint16_t cmd_action,
@@ -1767,9 +1757,6 @@ done:
 	return ret;
 }
 
-
-
-
 int lbs_cmd_802_11_enable_rsn(struct lbs_private *priv, uint16_t cmd_action,
 			      uint16_t *enable)
 {
@@ -1798,6 +1785,7 @@ int lbs_cmd_802_11_enable_rsn(struct lbs_private *priv, uint16_t cmd_action,
 	lbs_deb_cmd_leave_args(LBS_DEB_CMD, ret);
 	return ret;
 }
+
 static void set_one_wpa_key(struct MrvlIEtype_keyParamSet *keyparam,
                             struct enc_key *key)
 {
@@ -1899,10 +1887,6 @@ int lbs_cmd_802_11_key_material(struct lbs_private *priv, uint16_t cmd_action,
 	return ret;
 }
 
-
-
-
-
 int lbs_set_radio(struct lbs_private *priv, u8 preamble, u8 radio_on)
 {
 	struct cmd_ds_802_11_radio_control cmd;
@@ -1948,16 +1932,6 @@ out:
 	return ret;
 }
 
-
-
-
-
-
-
-
-
-
-
 #ifdef MASK_DEBUG//这个部分网卡不会响应
 
 static int __lbs_mesh_config_send(struct lbs_private *priv,
@@ -1989,7 +1963,6 @@ static int __lbs_mesh_config_send(struct lbs_private *priv,
 	lbs_deb_cmd_leave(LBS_DEB_CMD);
 	return ret;
 }
-
 
 #define IEEE80211_MAX_SSID_LEN		32
 
@@ -2038,10 +2011,7 @@ int lbs_mesh_config(struct lbs_private *priv, uint16_t action, uint16_t chan)
 	return __lbs_mesh_config_send(priv, &cmd, action, priv->mesh_tlv);
 }
 
-
 #endif
-
-
 
 /**
  *  @brief Set an SNMP MIB value
@@ -2101,12 +2071,7 @@ int __inline lbs_cmd(struct lbs_private *priv, uint16_t cmdnr, struct void_cmd_h
 	return __lbs_cmd(priv, cmdnr, &(cmd)->hdr, __sz, callback, callback_arg);
 }
 
-
 int __inline lbs_cmd_with_response(struct lbs_private *priv, uint16_t cmdnr,void *cmd)
 {
 	return lbs_cmd(priv, cmdnr, (struct void_cmd_head*)cmd, lbs_cmd_copyback, (unsigned long) (cmd));
 }
-
-
-
-

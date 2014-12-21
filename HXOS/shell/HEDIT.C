@@ -173,33 +173,23 @@ static VOID __VersionInfo()
 DWORD heditEntry(LPVOID lpParam)
 {
 #ifdef __CFG_SYS_DDF
-	LPSTR       lpszParam     = (LPSTR)lpParam;
+	__CMD_PARA_OBJ* pCmdParaObj = (__CMD_PARA_OBJ*)lpParam;
+	//LPSTR       lpszParam     = (LPSTR)lpParam;
 	HANDLE      hFile         = NULL;
 	LPSTR       lpszNoTarget  = "  Please specify the target file to write.";
 	LPSTR       lpszFileName  = NULL;
 
-	if(NULL == lpszParam)
+	if(NULL == pCmdParaObj || pCmdParaObj->byParameterNum < 2)
 	{
 		PrintLine(lpszNoTarget);
 		goto __TERMINAL;
-	}
-	if(0 == lpszParam[0])
-	{
-		PrintLine(lpszNoTarget);
-		goto __TERMINAL;
-	}
-	//Skip the space before file name in parameter string.
-	lpszFileName = lpszParam;
-	while(' ' == *lpszFileName)
-	{
-		lpszFileName ++;
 	}
 
-	hFile = CreateEditFile(lpszFileName);
+	hFile = CreateEditFile(pCmdParaObj->Parameter[1]);
 	if(NULL == hFile)  //Can not create the target file.
 	{
 		PrintLine("  Can not create the target file.");
-		PrintLine(lpszParam);  //For debugging.
+		PrintLine(pCmdParaObj->Parameter[1]);  //For debugging.
 		goto __TERMINAL;
 	}
 	//Process user input and save to file.

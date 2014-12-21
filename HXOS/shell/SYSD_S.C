@@ -27,6 +27,9 @@
 #include "..\INCLUDE\PCI_DRV.H"
 #endif
 
+
+#define  SYSD_PROMPT_STR   "[sysdiag_view]"
+
 //
 //Pre-declare routines.
 //
@@ -45,7 +48,7 @@ static DWORD devlist(__CMD_PARA_OBJ*);
 //
 //The following is a map between command and it's handler.
 //
-static struct __SYS_DIAG_CMD_MAP{
+static struct __SHELL_CMD_MAP{
 	LPSTR                lpszCommand;
 	DWORD                (*CommandHandler)(__CMD_PARA_OBJ*);
 	LPSTR                lpszHelpInfo;
@@ -66,104 +69,10 @@ static struct __SYS_DIAG_CMD_MAP{
 //
 //The following is a helper routine,it only prints out a "#" character as prompt.
 //
-
-static VOID PrintPound()
-{
-	WORD  wr = 0x0700;
-	
-	wr += '#';
-	GotoHome();
-	ChangeLine();
-	PrintCh(wr);
-}
-
 //
 //This is the application's entry point.
 //
 
-DWORD SysDiagStart(LPVOID p)
-{
-	CHAR                        strCmdBuffer[MAX_BUFFER_LEN];
-	BYTE                        ucCurrentPtr                  = 0;
-	BYTE                        bt;
-	WORD                        wr                            = 0x0700;
-	__KERNEL_THREAD_MESSAGE     Msg;
-	DWORD                       dwRetVal;
-
-	PrintPound();    //Print out the prompt.
-
-	while(TRUE)
-	{
-		if(KernelThreadManager.GetMessage((__COMMON_OBJECT*)KernelThreadManager.lpCurrentKernelThread,&Msg))
-		{
-			if(MSG_KEY_DOWN == Msg.wCommand)    //This is a key down message.
-			{
-				bt = (BYTE)(Msg.dwParam);
-				switch(bt)
-				{
-				case VK_RETURN:                //This is a return key.
-					if(0 == ucCurrentPtr)      //There is not any character before this key.
-					{
-						PrintPound();
-						break;
-					}
-					else
-					{
-						strCmdBuffer[ucCurrentPtr] = 0;    //Set the terminal flag.
-						dwRetVal = CommandParser(strCmdBuffer);
-						switch(dwRetVal)
-						{
-						case SYS_DIAG_CMD_PARSER_TERMINAL: //Exit command is entered.
-							goto __TERMINAL;
-						case SYS_DIAG_CMD_PARSER_INVALID:  //Can not parse the command.
-							PrintLine("    Invalid command.");
-							//PrintPound();
-							break;
-						case SYS_DIAG_CMD_PARSER_FAILED:
-							PrintLine("Failed to process the command.");
-							break;
-						case SYS_DIAG_CMD_PARSER_SUCCESS:      //Process the command successfully.
-							//PrintPound();
-							break;
-						default:
-							break;
-						}
-						ucCurrentPtr = 0;    //Re-initialize the buffer pointer.
-						PrintPound();
-					}
-					break;
-				case VK_BACKSPACE:
-					if(ucCurrentPtr)
-					{
-						ucCurrentPtr --;
-						GotoPrev();
-					}
-					break;
-				default:
-					if(ucCurrentPtr < MAX_BUFFER_LEN)    //The command buffer is not overflow.
-					{
-						strCmdBuffer[ucCurrentPtr] = bt;
-						ucCurrentPtr ++;
-						wr += bt;
-						PrintCh(wr);
-						wr  = 0x0700;
-					}
-					break;
-				}
-			}
-			else
-			{
-				if(Msg.wCommand == KERNEL_MESSAGE_TIMER)
-				{
-					PrintLine("Timer message received.");
-				}
-			}
-		}
-	}
-
-__TERMINAL:
-	return 0;
-}
 
 //
 //The following routine processes the input command string.
@@ -172,34 +81,34 @@ __TERMINAL:
 
 static DWORD CommandParser(LPSTR lpszCmdLine)
 {
-	DWORD                  dwRetVal          = SYS_DIAG_CMD_PARSER_INVALID;
+	DWORD                  dwRetVal          = SHELL_CMD_PARSER_INVALID;
 	DWORD                  dwIndex           = 0;
 	__CMD_PARA_OBJ*        lpCmdParamObj     = NULL;
 
 	if((NULL == lpszCmdLine) || (0 == lpszCmdLine[0]))    //Parameter check
-		return SYS_DIAG_CMD_PARSER_INVALID;
+		return SHELL_CMD_PARSER_INVALID;
 
 	lpCmdParamObj = FormParameterObj(lpszCmdLine);
 	if(NULL == lpCmdParamObj)    //Can not form a valid command parameter object.
 	{
-		return SYS_DIAG_CMD_PARSER_FAILED;
+		return SHELL_CMD_PARSER_FAILED;
 	}
 
 	if(0 == lpCmdParamObj->byParameterNum)  //There is not any parameter.
 	{
-		return SYS_DIAG_CMD_PARSER_FAILED;
+		return SHELL_CMD_PARSER_FAILED;
 	}
 
 	//
 	//The following code looks up the command map,to find the correct handler that handle
-	//the current command.If find,then calls the handler,else,return SYS_DIAG_CMD_PARSER_INVALID
+	//the current command.If find,then calls the handler,else,return SHELL_CMD_PARSER_INVALID
 	//to indicate the failure.
 	//
 	while(TRUE)
 	{
 		if(NULL == SysDiagCmdMap[dwIndex].lpszCommand)
 		{
-			dwRetVal = SYS_DIAG_CMD_PARSER_INVALID;
+			dwRetVal = SHELL_CMD_PARSER_INVALID;
 			break;
 		}
 		if(StrCmp(SysDiagCmdMap[dwIndex].lpszCommand,lpCmdParamObj->Parameter[0]))  //Find the handler.
@@ -220,13 +129,40 @@ static DWORD CommandParser(LPSTR lpszCmdLine)
 	return dwRetVal;
 }
 
+static DWORD QueryCmdName(LPSTR pMatchBuf,INT nBufLen)
+{
+	static DWORD dwIndex = 0;
+
+	if(pMatchBuf == NULL)
+	{
+		dwIndex    = 0;	
+		return SHELL_QUERY_CONTINUE;
+	}
+
+	if(NULL == SysDiagCmdMap[dwIndex].lpszCommand)
+	{
+		dwIndex = 0;
+		return SHELL_QUERY_CANCEL;	
+	}
+
+	strncpy(pMatchBuf,SysDiagCmdMap[dwIndex].lpszCommand,nBufLen);
+	dwIndex ++;
+
+	return SHELL_QUERY_CONTINUE;	
+}
+
+
+DWORD SysDiagStart(LPVOID p)
+{	
+	Shell_Msg_Loop(SYSD_PROMPT_STR,CommandParser,QueryCmdName);	
+}
 //
 //The exit command's handler.
 //
 
 static DWORD exit(__CMD_PARA_OBJ* lpCmdObj)
 {
-	return SYS_DIAG_CMD_PARSER_TERMINAL;
+	return SHELL_CMD_PARSER_TERMINAL;
 }
 
 //
@@ -235,7 +171,7 @@ static DWORD exit(__CMD_PARA_OBJ* lpCmdObj)
 
 static DWORD memcheck(__CMD_PARA_OBJ* lpCmdObj)
 {
-	return SYS_DIAG_CMD_PARSER_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //
@@ -254,7 +190,7 @@ static DWORD help(__CMD_PARA_OBJ* lpCmdObj)
 		PrintLine(SysDiagCmdMap[dwIndex].lpszHelpInfo);
 		dwIndex ++;
 	}
-	return SYS_DIAG_CMD_PARSER_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //
@@ -278,7 +214,7 @@ static DWORD cintperf(__CMD_PARA_OBJ* lpCmdObj)
 	PrintLine("Max clock circle counter : ");
 	PrintLine(strBuffer);
 
-	return SYS_DIAG_CMD_PARSER_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //
@@ -295,13 +231,13 @@ static DWORD overload(__CMD_PARA_OBJ* lpCmdObj)
 	if((NULL == lpCmdObj) || (lpCmdObj->byParameterNum < 2))  //Parameter check.
 	{
 		PrintLine("  Please input the beep time,in millionsecond.");
-		return SYS_DIAG_CMD_PARSER_INVALID;
+		return SHELL_CMD_PARSER_INVALID;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwTimerNum))  //Get the time span to beep.
 	{
 		PrintLine("  Invalid time parameter.");
-		return SYS_DIAG_CMD_PARSER_INVALID;
+		return SHELL_CMD_PARSER_INVALID;
 	}
 
 	while(dwTimerNum)
@@ -316,12 +252,12 @@ static DWORD overload(__CMD_PARA_OBJ* lpCmdObj)
 		if(NULL == lpTimerObject)    //Failed to set timer.
 		{
 			PrintLine("  Can not set timer,please try again.");
-			return SYS_DIAG_CMD_PARSER_FAILED;
+			return SHELL_CMD_PARSER_FAILED;
 		}
 		dwTimerNum --;
 	}
 
-	return SYS_DIAG_CMD_PARSER_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //
@@ -339,13 +275,13 @@ static DWORD beep(__CMD_PARA_OBJ* lpCmdObj)
 	if((NULL == lpCmdObj) || (lpCmdObj->byParameterNum < 2))  //Parameter check.
 	{
 		PrintLine("  Please input the beep time,in millionsecond.");
-		return SYS_DIAG_CMD_PARSER_INVALID;
+		return SHELL_CMD_PARSER_INVALID;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwTimeSpan))  //Get the time span to beep.
 	{
 		PrintLine("  Invalid time parameter.");
-		return SYS_DIAG_CMD_PARSER_INVALID;
+		return SHELL_CMD_PARSER_INVALID;
 	}
 
 	//
@@ -361,7 +297,7 @@ static DWORD beep(__CMD_PARA_OBJ* lpCmdObj)
 	if(NULL == lpTimerObject)    //Failed to set timer.
 	{
 		PrintLine("  Can not set timer,please try again.");
-		return SYS_DIAG_CMD_PARSER_FAILED;
+		return SHELL_CMD_PARSER_FAILED;
 	}
 
 	//
@@ -390,7 +326,7 @@ static DWORD beep(__CMD_PARA_OBJ* lpCmdObj)
 	}
 
 __TERMINAL:
-	return SYS_DIAG_CMD_PARSER_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //
@@ -420,9 +356,9 @@ static DWORD pcilist(__CMD_PARA_OBJ* lpParamObj)
 			}
 		}
 	}
-	return SYS_DIAG_CMD_PARSER_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 #else
-	return SYS_DIAG_CMD_PARSER_FAILED;
+	return SHELL_CMD_PARSER_FAILED;
 #endif
 }
 
@@ -662,19 +598,19 @@ static DWORD devinfo(__CMD_PARA_OBJ* lpCmdObj)
 	if((NULL == lpCmdObj) || (lpCmdObj->byParameterNum < 3))  //Parameter check.
 	{
 		PrintLine("  Usage: devinfo vendor_id device_id.");
-		return SYS_DIAG_CMD_PARSER_INVALID;
+		goto _END;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwVendor))  //Get the time span to beep.
 	{
 		PrintLine("  Invalid vendor ID parameter.");
-		return SYS_DIAG_CMD_PARSER_INVALID;
+		goto _END;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[2],&dwDevice))  //Get the time span to beep.
 	{
 		PrintLine("  Invalid device ID parameter.");
-		return SYS_DIAG_CMD_PARSER_INVALID;
+		goto _END;
 	}
 	
 	DevId.dwBusType   = BUS_TYPE_PCI;
@@ -689,7 +625,7 @@ static DWORD devinfo(__CMD_PARA_OBJ* lpCmdObj)
 	if(NULL == lpPhyDev)
 	{
 		PrintLine("Can not find proper device.");
-		return SYS_DIAG_CMD_PARSER_SUCCESS;
+		goto _END;
 	}
 	while(lpPhyDev)
 	{
@@ -700,9 +636,11 @@ static DWORD devinfo(__CMD_PARA_OBJ* lpCmdObj)
 			&DevId,
 			lpPhyDev);
 	}
-	return SYS_DIAG_CMD_PARSER_SUCCESS;
+
+_END:
+	return SHELL_CMD_PARSER_SUCCESS;
 #else
-	return SYS_DIAG_CMD_PARSER_FAILED;
+	return SHELL_CMD_PARSER_FAILED;
 #endif
 }
 
@@ -713,7 +651,7 @@ static DWORD cpuload(__CMD_PARA_OBJ* pcpo)
 	msg.wCommand = STAT_MSG_SHOWSTATINFO;
 	KernelThreadManager.SendMessage((__COMMON_OBJECT*)lpStatKernelThread,
 		&msg);
-	return SYS_DIAG_CMD_PARSER_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD devlist(__CMD_PARA_OBJ* pcpo)
@@ -723,6 +661,6 @@ static DWORD devlist(__CMD_PARA_OBJ* pcpo)
 	msg.wCommand = STAT_MSG_LISTDEV;
 	KernelThreadManager.SendMessage((__COMMON_OBJECT*)lpStatKernelThread,
 		&msg);
-	return SYS_DIAG_CMD_PARSER_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 

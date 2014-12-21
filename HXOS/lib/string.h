@@ -52,6 +52,14 @@ char* strcpy(char* dst,const char* src);
 char* strchr(const char* string,int ch);
 int strcmp(const char* src,const char* dst);
 int strlen(const char* s);
+
+//清除空格符标志
+#define TRIM_LEFT    0x1
+#define TRIM_RIGHT   0x2
+
+//清除空格符
+void strtrim(char * dst,int flag);
+
 long atol(const char* nptr);
 int atoi(const char* nptr);
 

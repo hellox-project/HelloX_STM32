@@ -398,7 +398,13 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
  *  @param data    A pointer to lbs_thread structure
  *  @return 	   0
  */
- int lbs_thread(struct lbs_private *priv)
+//HelloX: This thread will be waken up by other routines through the calling of
+//wake_up_interruptible routine,in HelloX's implementation,this mechanism should be
+//replaced by event,a dedicated event object is defined under lbs_private structure,
+//the lbs_thread should wait on this event object when shouldsleep = 1.
+//Other routines who want to process lbs command,should set the event object status
+//to signal,thus lead the wake up of lbs_thread.
+int lbs_thread(struct lbs_private *priv)
 {
   //struct net_device *dev = data;
   //struct lbs_private *priv = dev->ml_priv;
@@ -417,7 +423,7 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 		set_current_state(TASK_INTERRUPTIBLE);
 		spin_lock_irq(&priv->driver_lock);
 
-		if (kthread_should_stop())//жуж╧
+		if (kthread_should_stop())
 			shouldsleep = 0;	*/
 		if (priv->surpriseremoved)
 			shouldsleep = 1;	/* We need to wait until we're _told_ to die */
@@ -449,7 +455,8 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 				priv->psmode, priv->psstate);*/
 			//spin_unlock_irq(&priv->driver_lock);
 			//schedule();
-			break;
+			break;  //HelloX: This break clause might be added by the modifier,to giveup execute.
+			        //Should remove this clause when implement this thread under HelloX.
 		} 
 		/*else
 			spin_unlock_irq(&priv->driver_lock);*/
@@ -459,6 +466,8 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 
 		/*set_current_state(TASK_RUNNING);
 		remove_wait_queue(&priv->waitq, &wait);*/
+		//HelloX: Should reset the event status to non-signaling here,to achieve sychronization
+		//purpose.
 
 		/*lbs_deb_thread("3: currenttxskb %p, dnld_sent %d\n",
 			       priv->currenttxskb, priv->dnld_sent);
@@ -600,7 +609,8 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
 		}
 #endif
 		//spin_unlock_irq(&priv->driver_lock);
-	}while(0);
+	}while(0);  //HelloX: Maybe modified by the previous author,should change to while(1) clause when
+	            //migrate to HelloX.
 
 	//del_timer(&priv->command_timer);
 	//wake_up_all(&priv->cmd_pending);

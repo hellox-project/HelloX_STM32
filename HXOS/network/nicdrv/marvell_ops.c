@@ -77,32 +77,33 @@ void lbs_scan_worker(struct lbs_private *priv)
 ***********************************************************************************************/
 u16 lbs_rev_pkt(void)
 {
-	struct lbs_private *priv=pgmarvel_priv;
-	struct if_sdio_card *card=priv->card;
-	struct eth_packet *rx_pkt=&priv->rx_pkt;
+	struct lbs_private *priv  = pgmarvel_priv;
+	struct if_sdio_card *card = priv->card;
+	struct eth_packet *rx_pkt = &priv->rx_pkt;
 	int ret;
-	sdio_sys_wait=0;
-	memset(rx_pkt,0,sizeof(struct eth_packet ));//清零以判断数据接收正常
-	ret=pool_sdio_interrupt(card->func);
-	if(ret<0){
+	sdio_sys_wait = 0;
+	memset(rx_pkt,0,sizeof(struct eth_packet ));
+	ret = poll_sdio_interrupt(card->func);
+	if(ret < 0){
 			lbs_pr_err("read interrupt error!\n");
 			try_bug(0);
 	}
-	else if(ret&(IF_SDIO_H_INT_UPLD|IF_SDIO_H_INT_DNLD)){//先判断数据
+	else
+		if(ret&(IF_SDIO_H_INT_UPLD|IF_SDIO_H_INT_DNLD)){
 		if_sdio_interrupt(card->func);
-		if(rx_pkt->len){//接收到数据
-			sdio_sys_wait=1;
+		if(rx_pkt->len){  //Data available.
+			sdio_sys_wait = 1;
 			return rx_pkt->len;
 		}
-			
 	}
 	else{
-		sdio_sys_wait=1;
+		sdio_sys_wait = 1;
 		return 0;
 	}
-	sdio_sys_wait=1;
+	sdio_sys_wait = 1;
 	return 0;
 }
+
 /***********************************************************************************************
 ****函数名:lbs_hard_start_xmit
 ****描述:发送以太网数据包，数据内容存放于tx_ethpkt中的data域

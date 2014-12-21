@@ -31,18 +31,20 @@
 #include "string.h"
 #include "stdio.h"
 
+#define  NETWORK_PROMPT_STR   "[network_view]"
+
 //
 //Pre-declare routines.
 //
-static DWORD CommandParser(LPSTR);
+static DWORD CommandParser(LPCSTR);
 static DWORD help(__CMD_PARA_OBJ*);        //help sub-command's handler.
 static DWORD exit(__CMD_PARA_OBJ*);        //exit sub-command's handler.
 static DWORD iflist(__CMD_PARA_OBJ*);
 static DWORD ping(__CMD_PARA_OBJ*);
+static DWORD route(__CMD_PARA_OBJ*);
 static DWORD showint(__CMD_PARA_OBJ*);    //Display ethernet interface's statistics information.
 static DWORD assoc(__CMD_PARA_OBJ*);      //Associate to a specified WiFi SSID.
 static DWORD scan(__CMD_PARA_OBJ*);       //Rescan the WiFi networks.
-static DWORD route(__CMD_PARA_OBJ*);
 
 //
 //The following is a map between command and it's handler.
@@ -53,140 +55,66 @@ static struct __FDISK_CMD_MAP{
 	LPSTR                lpszHelpInfo;
 }SysDiagCmdMap[] = {
 	{"iflist",     iflist,    "  iflist   : Show all network interface(s) in system."},
-  {"showint",    showint,   "  showint  : Display ethernet interface's statistics information."},
-  {"assoc",      assoc,     "  assoc    : Associate to a specified WiFi SSID."},
-  {"scan",       scan,      "  scan     : Scan WiFi networks and show result."},
 	{"ping",       ping,      "  ping     : Check a specified host's reachbility."},
 	{"route",      route,     "  route    : List all route entry(ies) in system."},
 	{"exit",       exit,      "  exit     : Exit the application."},
 	{"help",       help,      "  help     : Print out this screen."},
+  {"showint",    showint,   "  showint  : Display ethernet interface's statistics information."},
+  {"assoc",      assoc,     "  assoc    : Associate to a specified WiFi SSID."},
+  {"scan",       scan,      "  scan     : Scan WiFi networks and show result."},
 	{NULL,		   NULL,      NULL}
 };
 
-//
-//The following is a helper routine,it only prints out a "#" character as prompt.
-//
-static VOID PrintPound()
+
+static DWORD QueryCmdName(LPSTR pMatchBuf,INT nBufLen)
 {
-	WORD  wr = 0x0700;
-	
-	wr += '#';
-	GotoHome();
-	ChangeLine();
-	PrintCh(wr);
-}
+	static DWORD dwIndex = 0;
 
-//
-//This is the application's entry point.
-//
-DWORD networkEntry(LPVOID p)
-{
-	CHAR                        strCmdBuffer[MAX_BUFFER_LEN];
-	BYTE                        ucCurrentPtr                  = 0;
-	BYTE                        bt;
-	WORD                        wr                            = 0x0700;
-	__KERNEL_THREAD_MESSAGE     Msg;
-	DWORD                       dwRetVal;
-
-	PrintPound();    //Print out the prompt.
-
-	while(TRUE)
+	if(pMatchBuf == NULL)
 	{
-		if(GetMessage(&Msg))
-		{
-			if(MSG_KEY_DOWN == Msg.wCommand)    //This is a key down message.
-			{
-				bt = (BYTE)Msg.dwParam;
-				switch(bt)
-				{
-				case VK_RETURN:                //This is a return key.
-					if(0 == ucCurrentPtr)      //There is not any character before this key.
-					{
-						PrintPound();
-						break;
-					}
-					else
-					{
-						strCmdBuffer[ucCurrentPtr] = 0;    //Set the terminal flag.
-						dwRetVal = CommandParser(strCmdBuffer);
-						switch(dwRetVal)
-						{
-						case NET_CMD_TERMINAL: //Exit command is entered.
-							goto __TERMINAL;
-						case NET_CMD_INVALID:  //Can not parse the command.
-							PrintLine("    Invalid command.");
-							//PrintPound();
-							break;
-						case NET_CMD_FAILED:
-							PrintLine("  Failed to process the command.");
-							break;
-						case NET_CMD_SUCCESS:      //Process the command successfully.
-							//PrintPound();
-							break;
-						default:
-							break;
-						}
-						ucCurrentPtr = 0;    //Re-initialize the buffer pointer.
-						PrintPound();
-					}
-					break;
-				case VK_BACKSPACE:
-					if(ucCurrentPtr)
-					{
-						ucCurrentPtr --;
-						GotoPrev();
-					}
-					break;
-				default:
-					if(ucCurrentPtr < MAX_BUFFER_LEN)    //The command buffer is not overflow.
-					{
-						strCmdBuffer[ucCurrentPtr] = bt;
-						ucCurrentPtr ++;
-						wr += bt;
-						PrintCh(wr);
-						wr  = 0x0700;
-					}
-					break;
-				}
-			}
-			else
-			{
-				if(Msg.wCommand == KERNEL_MESSAGE_TIMER)
-				{
-					PrintLine("Timer message received.");
-				}
-			}
-		}
+		dwIndex    = 0;	
+		return SHELL_QUERY_CONTINUE;
 	}
 
-__TERMINAL:
-	return 0;
+	if(NULL == SysDiagCmdMap[dwIndex].lpszCommand)
+	{
+		dwIndex = 0;
+		return SHELL_QUERY_CANCEL;	
+	}
+
+	strncpy(pMatchBuf,SysDiagCmdMap[dwIndex].lpszCommand,nBufLen);
+	dwIndex ++;
+
+	return SHELL_QUERY_CONTINUE;	
 }
 
 //
 //The following routine processes the input command string.
 //
-static DWORD CommandParser(LPSTR lpszCmdLine)
+static DWORD CommandParser(LPCSTR lpszCmdLine)
 {
-	DWORD                  dwRetVal          = NET_CMD_INVALID;
+	DWORD                  dwRetVal          = SHELL_CMD_PARSER_INVALID;
 	DWORD                  dwIndex           = 0;
 	__CMD_PARA_OBJ*        lpCmdParamObj     = NULL;
 
 	if((NULL == lpszCmdLine) || (0 == lpszCmdLine[0]))    //Parameter check
 	{
-		return NET_CMD_INVALID;
+		return SHELL_CMD_PARSER_INVALID;
 	}
 
 	lpCmdParamObj = FormParameterObj(lpszCmdLine);
+	
+	
 	if(NULL == lpCmdParamObj)    //Can not form a valid command parameter object.
 	{
-		return NET_CMD_FAILED;
+		return SHELL_CMD_PARSER_FAILED;
 	}
 
-	if(0 == lpCmdParamObj->byParameterNum)  //There is not any parameter.
-	{
-		return NET_CMD_FAILED;
-	}
+	//if(0 == lpCmdParamObj->byParameterNum)  //There is not any parameter.
+	//{
+	//	return SHELL_CMD_PARSER_FAILED;
+	//}
+	//CD_PrintString(lpCmdParamObj->Parameter[0],TRUE);
 
 	//
 	//The following code looks up the command map,to find the correct handler that handle
@@ -197,7 +125,7 @@ static DWORD CommandParser(LPSTR lpszCmdLine)
 	{
 		if(NULL == SysDiagCmdMap[dwIndex].lpszCommand)
 		{
-			dwRetVal = NET_CMD_INVALID;
+			dwRetVal = SHELL_CMD_PARSER_INVALID;
 			break;
 		}
 		if(StrCmp(SysDiagCmdMap[dwIndex].lpszCommand,lpCmdParamObj->Parameter[0]))  //Find the handler.
@@ -221,11 +149,19 @@ static DWORD CommandParser(LPSTR lpszCmdLine)
 }
 
 //
+//This is the application's entry point.
+//
+DWORD networkEntry(LPVOID p)
+{
+	return Shell_Msg_Loop(NETWORK_PROMPT_STR,CommandParser,QueryCmdName);	
+}
+
+//
 //The exit command's handler.
 //
 static DWORD exit(__CMD_PARA_OBJ* lpCmdObj)
 {
-	return NET_CMD_TERMINAL;
+	return SHELL_CMD_PARSER_TERMINAL;
 }
 
 //
@@ -243,58 +179,63 @@ static DWORD help(__CMD_PARA_OBJ* lpCmdObj)
 		PrintLine(SysDiagCmdMap[dwIndex].lpszHelpInfo);
 		dwIndex ++;
 	}
-	return NET_CMD_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //route command's implementation.
 static DWORD route(__CMD_PARA_OBJ* lpCmdObj)
 {
-	return NET_CMD_FAILED;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //ping command's implementation.
 static DWORD ping(__CMD_PARA_OBJ* lpCmdObj)
-{
+{	
 	__PING_PARAM     PingParam;
-	int              count    = 3;    //Ping counter.
-	int              size     = 64;   //Ping packet size.
 	ip_addr_t        ipAddr;
-	DWORD            dwRetVal = NET_CMD_FAILED;
-	//__CMD_PARA_OBJ*  pNext  = NULL;
+	int              count      = 3;    //Ping counter.
+	int              size       = 64;   //Ping packet size.
+	BYTE             index      = 1;
+	DWORD            dwRetVal   = SHELL_CMD_PARSER_FAILED;
+	__CMD_PARA_OBJ*  pCurCmdObj = lpCmdObj;
+	
 
-	//Set default IP address if user does not specified.
-	//ipAddr.addr = inet_addr("127.0.0.1");
-
-	lpCmdObj = lpCmdObj->pNext;  //Skip the first parameter,since it is the command string itself.
-
-	while(lpCmdObj)
+	if(pCurCmdObj->byParameterNum <= 1)
 	{
-		if(lpCmdObj->byFunctionLabel == 0)  //Default parameter as IP address.
+		return dwRetVal;
+	}
+
+	while(index < lpCmdObj->byParameterNum)
+	{
+		if(strcmp(pCurCmdObj->Parameter[index],"/c") == 0)
 		{
-			ipAddr.addr = inet_addr(lpCmdObj->Parameter[0]);
-			//printf(" Ping target address is : %s\r\n",lpCmdObj->Parameter[0]);
-		}
-		if(lpCmdObj->byFunctionLabel == 'c')  //Ping counter.
-		{
-			if(NULL == lpCmdObj->pNext)
+			index ++;
+			if(index >= lpCmdObj->byParameterNum)
 			{
-				_hx_printf("  Invalid parameter.\r\n");
-				goto __TERMINAL;
+				break;
 			}
-			lpCmdObj = lpCmdObj->pNext;
-			count = atoi(lpCmdObj->Parameter[0]);
+			count    = atoi(pCurCmdObj->Parameter[index]);
 		}
-		if(lpCmdObj->byFunctionLabel == 'l')  //Packet size.
+		else if(strcmp(pCurCmdObj->Parameter[index],"/l") == 0)
 		{
-			if(NULL == lpCmdObj->pNext)
+			index ++;
+			if(index >= lpCmdObj->byParameterNum)
 			{
-				_hx_printf("  Invalid parameter.\r\n");
-				goto __TERMINAL;
+				break;
 			}
-			lpCmdObj = lpCmdObj->pNext;
-			size = atoi(lpCmdObj->Parameter[0]);
+			size   = atoi(pCurCmdObj->Parameter[index]);
 		}
-		lpCmdObj = lpCmdObj->pNext;
+		else
+		{
+			ipAddr.addr = inet_addr(pCurCmdObj->Parameter[index]);
+		}
+
+		index ++;
+	}
+	
+	if(ipAddr.addr != 0)
+	{
+		dwRetVal    = SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	PingParam.count      = count;
@@ -303,9 +244,7 @@ static DWORD ping(__CMD_PARA_OBJ* lpCmdObj)
 
 	//Call ping entry routine.
 	ping_Entry((void*)&PingParam);
-	dwRetVal = NET_CMD_SUCCESS;
-
-__TERMINAL:
+	
 	return dwRetVal;
 }
 
@@ -326,13 +265,6 @@ static void ShowIf(struct netif* pIf)
 	PrintLine(buff);
 	_hx_sprintf(buff,"      Interface MTU  : %d",pIf->mtu);
 	PrintLine(buff);
-	_hx_sprintf(buff,"      Hardware Addr  : %02X-%02X-%02X-%02X-%02X-%02X",pIf->hwaddr[0], \
-	    pIf->hwaddr[1], \
-	    pIf->hwaddr[2], \
-	    pIf->hwaddr[3], \
-	    pIf->hwaddr[4], \
-	    pIf->hwaddr[5]);
-	PrintLine(buff);
 }
 
 //iflist command's implementation.
@@ -346,7 +278,8 @@ static DWORD iflist(__CMD_PARA_OBJ* lpCmdObj)
 		ShowIf(pIfList);
 		pIfList = pIfList->next;
 	}
-	return NET_CMD_SUCCESS;
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //showint command,display statistics information of ethernet interface.
@@ -355,7 +288,7 @@ static DWORD showint(__CMD_PARA_OBJ* lpCmdObj)
 	__KERNEL_THREAD_MESSAGE msg;
 	
 	//Just send a message to ethernet main thread.
-	msg.wCommand = WIFI_MSG_SHOWINT;
+	msg.wCommand = ETH_MSG_SHOWINT;
 	msg.dwParam  = 0;
 	msg.wParam   = 0;
 	SendMessage((HANDLE)g_pWiFiDriverThread,&msg);
@@ -366,8 +299,9 @@ static DWORD showint(__CMD_PARA_OBJ* lpCmdObj)
 //WiFi association operation,associate to a specified WiFi SSID.
 static DWORD assoc(__CMD_PARA_OBJ* lpCmdObj)
 {
-	DWORD                   dwRetVal   = NET_CMD_FAILED;
-	__WIFI_ASSOC_INFO*      pAssocInfo = NULL;
+	 DWORD                   dwRetVal   = SHELL_CMD_PARSER_FAILED;
+	__WIFI_ASSOC_INFO*      pAssocInfo  = NULL;
+	BYTE                    index       = 1;
 	__KERNEL_THREAD_MESSAGE msg;
 
 	//Allocate a association information object,to contain user specified associating info.
@@ -383,51 +317,63 @@ static DWORD assoc(__CMD_PARA_OBJ* lpCmdObj)
 	pAssocInfo->key[0]  = 0;
 	pAssocInfo->mode    = 0;
 	
-	lpCmdObj = lpCmdObj->pNext;  //Skip the first parameter,since it is the command string itself.
-
-	while(lpCmdObj)
+	if(lpCmdObj->byParameterNum <= 1)
 	{
-		if(lpCmdObj->byFunctionLabel == 0)  //Default parameter as IP address.
+		goto __TERMINAL;
+	}
+
+	//lpCmdObj[0].Parameter
+	while(index < lpCmdObj->byParameterNum)
+	{		
+		if(strcmp(lpCmdObj->Parameter[index],"/k") == 0) //Key of association.		
 		{
-			if(strlen(lpCmdObj->Parameter[0]) >= 24)  //SSID too long.
-			{
-				_hx_printf("  Error: SSID you specified is too long.\r\n");
-				goto __TERMINAL;
-			}
-			//Copy the SSID into information object.
-			strcpy(pAssocInfo->ssid,lpCmdObj->Parameter[0]);
-		}
-		
-		if(lpCmdObj->byFunctionLabel == 'k')  //Key of association.
-		{
-			if(NULL == lpCmdObj->pNext)
+			index ++;
+			if(index >= lpCmdObj->byParameterNum)
 			{
 				_hx_printf("  Error: Invalid parameter.\r\n");
 				goto __TERMINAL;
 			}
-			lpCmdObj = lpCmdObj->pNext;
-			if(strlen(lpCmdObj->Parameter[0]) >= 24)  //Key is too long.
+			if(strlen(lpCmdObj->Parameter[index]) >= 24)  //Key is too long.
 			{
 				_hx_printf("  Error: The key you specified is too long.\r\n");
 				goto __TERMINAL;
 			}
 			//Copy the key into information object.
-			strcpy(pAssocInfo->key,lpCmdObj->Parameter[0]);
+			strcpy(pAssocInfo->key,lpCmdObj->Parameter[index]);
 		}
-		if(lpCmdObj->byFunctionLabel == 'm')  //Assoction mode.
+		else if(strcmp(lpCmdObj->Parameter[index],"/m") == 0) //Assoction mode.
 		{
-			if(NULL == lpCmdObj->pNext)
+			index ++;
+			if(index >= lpCmdObj->byParameterNum)
+			{
+				_hx_printf("  Error: Invalid parameter.\r\n");
+				goto __TERMINAL;
+			}						
+			if(strcmp(lpCmdObj->Parameter[index],"adhoc") == 0)  //AdHoc mode.
+			{
+				pAssocInfo->mode = 1;
+			}
+		}		
+		else
+		{
+			//Default parameter as IP address.			
+			//index ++;
+			if(index >= lpCmdObj->byParameterNum)
 			{
 				_hx_printf("  Error: Invalid parameter.\r\n");
 				goto __TERMINAL;
 			}
-			lpCmdObj = lpCmdObj->pNext;
-			if(strcmp(lpCmdObj->Parameter[0],"adhoc") == 0)  //AdHoc mode.
+
+			if(strlen(lpCmdObj->Parameter[index]) >= 24)  //SSID too long.
 			{
-				pAssocInfo->mode = 1;
+				_hx_printf("  Error: SSID you specified is too long.\r\n");
+				goto __TERMINAL;
 			}
+
+			//Copy the SSID into information object.
+			strcpy(pAssocInfo->ssid,lpCmdObj->Parameter[index]);		
 		}
-		lpCmdObj = lpCmdObj->pNext;
+		index ++;
 	}
 	
 	//Re-check the parameters.
@@ -438,17 +384,21 @@ static DWORD assoc(__CMD_PARA_OBJ* lpCmdObj)
 	}
 	
 	//Everything is OK,send a message to ethernet thread.
-	msg.wCommand = WIFI_MSG_ASSOC;
+	msg.wCommand = ETH_MSG_ASSOC;
 	msg.wParam   = 0;
 	msg.dwParam  = (DWORD)pAssocInfo;
 	SendMessage((HANDLE)g_pWiFiDriverThread,&msg);
 	
-	dwRetVal = NET_CMD_SUCCESS;
+	dwRetVal = SHELL_CMD_PARSER_SUCCESS;
 	
 __TERMINAL:
-	
+	if(dwRetVal != SHELL_CMD_PARSER_SUCCESS)  //Should release the Association object.
+	{
+		KMemFree(pAssocInfo,KMEM_SIZE_TYPE_ANY,0);
+	}
 	return dwRetVal;
 }
+
 
 //Scan WiFi networks and show the scanning result.
 static DWORD scan(__CMD_PARA_OBJ* lpCmdObj)
@@ -456,10 +406,11 @@ static DWORD scan(__CMD_PARA_OBJ* lpCmdObj)
 	__KERNEL_THREAD_MESSAGE msg;
 	
 	//Just send a message to ethernet main thread.
-	msg.wCommand = WIFI_MSG_SCAN;
+	msg.wCommand = ETH_MSG_SCAN;
 	msg.dwParam  = 0;
 	msg.wParam   = 0;
 	SendMessage((HANDLE)g_pWiFiDriverThread,&msg);
 	
 	return NET_CMD_SUCCESS;
 }
+

@@ -169,7 +169,6 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
         host->ops->request(host, mrq);
     } else {
         //led_trigger_event(host->led, LED_OFF);
-
         pr_debug("%s: req done (CMD%u): %d: %08x %08x %08x %08x\n",
                  mmc_hostname(host), cmd->opcode, err,
                  cmd->resp[0], cmd->resp[1],
@@ -193,7 +192,6 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
             mrq->done(mrq->done_data);
     }
 }
-
 
 /*
  * Control chip select pin on a host.
@@ -319,11 +317,7 @@ void mmc_set_data_timeout(struct mmc_data *data, const struct mmc_card *card)
     }
 }
 
-
-
-
-static void
-        mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
+static void mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
 {
 #ifdef CONFIG_MMC_DEBUG
     unsigned int i, sz;
@@ -380,12 +374,15 @@ static void
     //sdio_deb_leave;
 }
 
-
+//Should change to comply the sychronization mechenism of HelloX,a event may
+//used here to notify the completion.
+//Change point when migrate to HelloX.
 static void mmc_wait_done(void *data)
 {
-    unsigned char *p=data;
-    *p=1;
+    unsigned char *p = data;
+    *p = 1;
 }
+
 /**
  *	mmc_wait_for_req - start a request and wait for completion
  *	@host: MMC host to start command
@@ -808,6 +805,7 @@ static int sdio_card_irq_get(struct mmc_card *card)
     if (!host->sdio_irqs++)
         pr_debug("setup sdio irq success!\n");
 
+		//EnableIrq(SDIO_IRQChannel);
     //	WARN_ON(!host->claimed);
 
     //if (!host->sdio_irqs++) {
@@ -903,10 +901,6 @@ static struct sdio_device_id *sdio_match_device(struct sdio_func *func)
     }
     return NULL;
 }
-
-
-
-
 
 /**
  *	sdio_set_block_size - set the block size of an SDIO function

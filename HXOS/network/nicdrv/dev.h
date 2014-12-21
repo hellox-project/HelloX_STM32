@@ -306,7 +306,6 @@ struct bss_descriptor {
 	struct list_head list;
 };
 
-
 /** Association request
  *
  * Encapsulates all the options that describe a specific assocation request
@@ -324,10 +323,9 @@ struct bss_descriptor {
 #define ASSOC_FLAG_WPA_UCAST_KEY	9
 #define ASSOC_FLAG_SECINFO		10
 #define ASSOC_FLAG_WPA_IE		11
+
 struct assoc_request {
-
 	unsigned long flags;
-
 	u8 ssid[IW_ESSID_MAX_SIZE + 1];
 	u8 ssid_len;
 	u8 channel;

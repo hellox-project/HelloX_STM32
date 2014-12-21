@@ -100,11 +100,8 @@ struct sdio_driver {
 	//struct device_driver drv;
 };
 
-
-
 #define sdio_get_drvdata(f)	 		(f->if_card)
 #define sdio_set_drvdata(func, card) 	 func->if_card=card
-
 
 //#define to_sdio_driver(d)	container_of(d, struct sdio_driver, drv)
 

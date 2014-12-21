@@ -289,8 +289,7 @@ static __KERNEL_THREAD_OBJECT* CreateKernelThread(__COMMON_OBJECT*             l
 	__KERNEL_THREAD_MANAGER*            lpMgr               = NULL;
 	LPVOID                              lpStack             = NULL;
 	BOOL                                bSuccess            = FALSE;
-	//DWORD*                              lpStackPtr          = NULL;
-	DWORD                               i;
+	DWORD                               i                   = 0;
 
 	if((NULL == lpThis) || (NULL == lpStartRoutine))    //Parameter check.
 	{
@@ -365,6 +364,7 @@ static __KERNEL_THREAD_OBJECT* CreateKernelThread(__COMMON_OBJECT*             l
 	lpKernelThread->dwWaitingStatus       = OBJECT_WAIT_WAITING;
 
 	//Copy kernel thread name.
+	i = 0;
 	if(lpszName)
 	{
 		for(i = 0;i < MAX_THREAD_NAME - 1;i ++)

@@ -1,7 +1,12 @@
 All authors have contribution to the GUI module of HelloX operating system will be recorded here.
 
-   NAME           CONTRIBUTION              CONTACT              OTHER INFO
-----------   -----------------------   ----------------   -------------------------`
- Garry.Xin    Original author of this  garryxin@gmail.com        N/A
-              module.
+   NAME               CONTRIBUTION              CONTACT              OTHER INFO
+----------       -----------------------   ----------------   -------------------------`
+ Garry.Xin        Original author of this  garryxin@gmail.com        N/A
+                  module.
+
+ Tywind.huang     Enhanced HelloX's shell  370543742@qq.com          N/A
+                  functions,added history
+                  command recording and
+                  other functions.
 

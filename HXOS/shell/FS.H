@@ -20,9 +20,9 @@
 DWORD fsEntry(LPVOID);
 
 //Flags for command processing result.
-#define FS_CMD_TERMINAL     0x00000001
+/*#define FS_CMD_TERMINAL     0x00000001
 #define FS_CMD_INVALID      0x00000002
 #define FS_CMD_FAILED       0x00000004
-#define FS_CMD_SUCCESS      0x00000008
+#define FS_CMD_SUCCESS      0x00000008*/
 
 #endif //__FS_H__

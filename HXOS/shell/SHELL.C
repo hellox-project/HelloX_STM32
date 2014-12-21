@@ -20,9 +20,13 @@
 #endif
 
 #include "shell.h"
+
 #include "IOCTRL_S.H"
 #include "SYSD_S.H"
 #include "extcmd.h"
+
+//*******************
+#include "..\include\debug.h"
 
 #if defined(__I386__)
 #ifndef __BIOS_H__
@@ -33,151 +37,52 @@
 #include "..\INCLUDE\MODMGR.H"
 #include "..\include\console.h"
 #include "..\lib\stdio.h"
+
+//*******************
 #include "../include/debug.h"
+//*******************
+
+#define  DEF_PROMPT_STR   "[system-view]"
+#define  ERROR_STR        "You entered incorrect command name."
+
+//shell input pos
+#define  SHELL_INPUT_START_X       (strlen(s_szPrompt))   // 
+#define  SHELL_INPUT_START_Y       1 
+#define  SHELL_INPUT_START_Y_FIRST 4 
 
 //Host name array of the system.
-#define MAX_HOSTNAME_LEN  16
-CHAR    HostName[MAX_HOSTNAME_LEN] = {0};
+#define MAX_HOSTNAME_LEN     16
+CHAR    s_szPrompt[64]      = {0};
 
 //Shell thread's handle.
-__KERNEL_THREAD_OBJECT*  g_lpShellThread = NULL;
+__KERNEL_THREAD_OBJECT*  g_lpShellThread   = NULL;
+//static HISOBJ            s_hHiscmdInoObj   = NULL;
 
-//Command buffer and it's pointer.
-static CHAR        CmdBuffer[MAX_BUFFER_LEN] = {0};
-static WORD        BufferPtr = 0;  //Pointing to the first free byte of the CmdBuffer.
 
-//
-//The following function form the command parameter object link from the command
-//line string.
-//
-__CMD_PARA_OBJ* FormParameterObj(LPSTR pszCmd)
-{
-	__CMD_PARA_OBJ*     pObjBuffer = NULL;    //Local variables.
-	__CMD_PARA_OBJ*     pBasePtr   = NULL;
-	__CMD_PARA_OBJ*     pPrevObj   = NULL;
-	DWORD               dwCounter  = 0;
 
-	if(NULL == pszCmd)    //Parameter check.
-	{
-		return NULL;
-	}
 
-	while(*pszCmd)
-	{
-		if(' ' == *pszCmd)
-		{
-			pszCmd ++;  //Skip space.
-			continue; 
-		}
-
-		if(('-' == *pszCmd) || ('/' == *pszCmd))
-		{
-			pszCmd ++;
-			if(0 == *pszCmd)
-			{
-				break;
-			}
-			//Allocate a command parameter object to contain the command label.
-			pObjBuffer = (__CMD_PARA_OBJ*)KMemAlloc(sizeof(__CMD_PARA_OBJ),KMEM_SIZE_TYPE_ANY);
-			if(NULL == pObjBuffer)
-			{
-				break;
-			}
-			memzero(pObjBuffer,sizeof(__CMD_PARA_OBJ));
-			if(NULL == pPrevObj)  //First command parameter object,save it.
-			{
-				pPrevObj = pObjBuffer;
-				pBasePtr = pObjBuffer;
-			}
-			else
-			{
-				pPrevObj->pNext = pObjBuffer;  //Link the buffer to list.
-				pPrevObj        = pObjBuffer;
-			}
-			pObjBuffer->byFunctionLabel = *pszCmd;
-			pszCmd ++;                    //Skip the function label byte.
-			continue;
-		}
-		//Allocate a new command parameter object.
-		pObjBuffer = (__CMD_PARA_OBJ*)KMemAlloc(sizeof(__CMD_PARA_OBJ),KMEM_SIZE_TYPE_ANY);
-		if(NULL == pObjBuffer)
-		{
-			break;
-		}
-		memzero(pObjBuffer,sizeof(__CMD_PARA_OBJ));
-		if(NULL == pPrevObj)  //First command parameter object,save it.
-		{
-			pPrevObj = pObjBuffer;
-			pBasePtr = pObjBuffer;
-		}
-		else
-		{
-			pPrevObj->pNext = pObjBuffer;  //Link to list.
-			pPrevObj        = pObjBuffer;
-		}
-		while((' ' != *pszCmd) && ('-' != *pszCmd) && ('/' != *pszCmd) && (*pszCmd))
-		{
-			while((' ' != *pszCmd) && (*pszCmd) && (dwCounter <= CMD_PARAMETER_LEN))
-			{
-				pObjBuffer->Parameter[0][dwCounter] = *pszCmd;
-				pszCmd ++;
-				dwCounter ++;
-			}
-			pObjBuffer->Parameter[0][dwCounter] = 0;  //Set the terminal flag.
-			pObjBuffer->byParameterNum          = 1;
-			dwCounter = 0;
-
-			while((' ' != *pszCmd) && (*pszCmd))
-			{
-				//Skip the no space characters if the parameter's length 
-				//is longer than the const CMD_PARAMETER_LEN.
-				pszCmd ++;
-			}
-		}
-	}
-
-	return pBasePtr;
-}
-
-//
-//Releases the parameter object created by FormParameterObj routine.
-//
-VOID ReleaseParameterObj(__CMD_PARA_OBJ* lpParamObj)
-{
-	__CMD_PARA_OBJ*     pNext = NULL;
-
-	if(NULL == lpParamObj)  //Parameter check.
-	{
-		return;
-	}
-
-	do{
-		pNext = lpParamObj->pNext;
-		KMemFree((LPVOID)lpParamObj,KMEM_SIZE_TYPE_ANY,0);
-		lpParamObj = pNext;
-	}while(pNext);
-}
 
 //The following handlers are moved to shell1.cpp.
-extern VOID VerHandler(LPSTR);          //Handles the version command.
-extern VOID MemHandler(LPSTR);          //Handles the memory command.
-extern VOID SysInfoHandler(LPSTR);      //Handles the sysinfo command.
-extern VOID HlpHandler(LPSTR);
-extern VOID LoadappHandler(LPSTR);
-extern VOID GUIHandler(LPSTR);          //Handler for GUI command,resides in
+extern DWORD VerHandler(__CMD_PARA_OBJ* pCmdParaObj);          //Handles the version command.
+extern DWORD MemHandler(__CMD_PARA_OBJ* pCmdParaObj);          //Handles the memory command.
+extern DWORD SysInfoHandler(__CMD_PARA_OBJ* pCmdParaObj);      //Handles the sysinfo command.
+extern DWORD HlpHandler(__CMD_PARA_OBJ* pCmdParaObj);
+extern DWORD LoadappHandler(__CMD_PARA_OBJ* pCmdParaObj);
+extern DWORD GUIHandler(__CMD_PARA_OBJ* pCmdParaObj);          //Handler for GUI command,resides in
+extern DWORD FileWriteTest(__CMD_PARA_OBJ* pCmdParaObj); 
 //shell2.cpp file.
 
-static VOID CpuHandler(LPSTR);
-static VOID SptHandler(LPSTR);
-static VOID ClsHandler(LPSTR);
-static VOID RunTimeHandler(LPSTR);
-static VOID SysNameHandler(LPSTR);
-static VOID IoCtrlApp(LPSTR);
-static VOID SysDiagApp(LPSTR);
-static VOID Reboot(LPSTR);
-static VOID Poweroff(LPSTR);
-static VOID ComDebug(LPSTR);
-static VOID DebugHandler(LPSTR);
+static DWORD CpuHandler(__CMD_PARA_OBJ* pCmdParaObj);
+static DWORD SptHandler(__CMD_PARA_OBJ* pCmdParaObj);
+static DWORD ClsHandler(__CMD_PARA_OBJ* pCmdParaObj);
+static DWORD RunTimeHandler(__CMD_PARA_OBJ* pCmdParaObj);
+static DWORD SysNameHandler(__CMD_PARA_OBJ* pCmdParaObj);
+static DWORD IoCtrlApp(__CMD_PARA_OBJ* pCmdParaObj);
+static DWORD SysDiagApp(__CMD_PARA_OBJ* pCmdParaObj);
+static DWORD Reboot(__CMD_PARA_OBJ* pCmdParaObj);
+static DWORD Poweroff(__CMD_PARA_OBJ* pCmdParaObj);
+static DWORD ComDebug(__CMD_PARA_OBJ* pCmdParaObj);
+static DWORD DebugHandler(__CMD_PARA_OBJ* pCmdParaObj);
 
 //Internal command handler array.
 __CMD_OBJ  CmdObj[] = {
@@ -200,13 +105,13 @@ __CMD_OBJ  CmdObj[] = {
 	//You can add your specific command and it's handler here.
 	//{'yourcmd',    CmdHandler},
 	{"debug"    ,    DebugHandler},
-
+//	{"test"    ,    FileWriteTest},
 	//The last element of this array must be NULL.
 	{NULL       ,    NULL}
 };
 
 //Com interface debugging application.
-static VOID ComDebug(LPSTR pstr)
+static DWORD ComDebug(__CMD_PARA_OBJ* pCmdParaObj)
 {
 	HANDLE hCom1 = NULL;
 	CHAR   *pData = "Hello China V1.76";  //Data to write to COM1 interface.
@@ -261,51 +166,55 @@ __TERMINAL:
 		IOManager.CloseFile((__COMMON_OBJECT*)&IOManager,
 			hCom1);
 	}
-	return;
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //
 //sysname handler.
 //This handler changes the system name,and save it to system config database.
 //
-static VOID SaveSysName(LPSTR pstr)
+static DWORD SaveSysName(__CMD_PARA_OBJ* pCmdParaObj)
 {
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
-static VOID SysNameHandler(LPSTR pszSysName)
+static DWORD SysNameHandler(__CMD_PARA_OBJ* pCmdParaObj)
 {
-	__CMD_PARA_OBJ*    pCmdObj = NULL;
-
-	pCmdObj = FormParameterObj(pszSysName);
-	if(NULL == pCmdObj)
+	//__CMD_PARA_OBJ*    pCmdObj = NULL;
+	//pCmdParaObj = FormParameterObj(pszSysName);
+	if(NULL == pCmdParaObj)
 	{
 		PrintLine("Not enough system resource to interpret the command.");
 		goto __TERMINAL;
 	}
-	if((0 == pCmdObj->byParameterNum) || (0 == pCmdObj->Parameter[0][0]))
+	if((0 == pCmdParaObj->byParameterNum) || (0 == pCmdParaObj->Parameter[0][0]))
 	{
 		PrintLine("Invalid command parameter.");
 		goto __TERMINAL;
 	}
 
-	if(StrLen(pCmdObj->Parameter[0]) >= MAX_HOSTNAME_LEN)
+	if(StrLen(pCmdParaObj->Parameter[0]) >= MAX_HOSTNAME_LEN)
 	{
 		PrintLine("System name must not exceed 16 bytes.");
 		goto __TERMINAL;
 	}
 
-	SaveSysName(pCmdObj->Parameter[0]);
-	StrCpy(pCmdObj->Parameter[0],&HostName[0]);
-__TERMINAL:
-	if(NULL != pCmdObj)
+	//SaveSysName(pCmdParaObj->Parameter[0]);
+	//StrCpy(pCmdObj->Parameter[0],&s_szPrompt[0]);
+	_hx_sprintf(s_szPrompt,"[%s]",pCmdParaObj->Parameter[0]);
+	if(StrLen(s_szPrompt) <= 0)
 	{
-		ReleaseParameterObj(pCmdObj);
+		StrCpy(DEF_PROMPT_STR,&s_szPrompt[0]);
 	}
-	return;
+
+__TERMINAL:
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //Handler for 'ioctrl' command.
-VOID IoCtrlApp(LPSTR pstr)
+DWORD IoCtrlApp(__CMD_PARA_OBJ* pCmdParaObj)
 {
 	__KERNEL_THREAD_OBJECT*    lpIoCtrlThread    = NULL;
 
@@ -321,29 +230,28 @@ VOID IoCtrlApp(LPSTR pstr)
 	if(NULL == lpIoCtrlThread)    //Can not create the IO control thread.
 	{
 		PrintLine("Can not create IO control thread.");
-		return;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
-    //Set the current focus thread to IO control application.
 	DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
-		(__COMMON_OBJECT*)lpIoCtrlThread);
+		(__COMMON_OBJECT*)lpIoCtrlThread);    //Set the current focus to IO control
+	//application.
 
-	//Block the shell thread untile IoCtrlThread over.
-	lpIoCtrlThread->WaitForThisObject((__COMMON_OBJECT*)lpIoCtrlThread);
-
-	//Reset the current focus kernel thread to shell.
-	DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
-		NULL);
-
-	//Destroy the application thread object.
+	lpIoCtrlThread->WaitForThisObject((__COMMON_OBJECT*)lpIoCtrlThread);  //Block the shell
+	//thread until
+	//the IO control
+	//application end.
 	KernelThreadManager.DestroyKernelThread((__COMMON_OBJECT*)&KernelThreadManager,
-		(__COMMON_OBJECT*)lpIoCtrlThread);
+		(__COMMON_OBJECT*)lpIoCtrlThread);  //Destroy the thread object.
+
+	return SHELL_CMD_PARSER_SUCCESS;
+
 }
 
 //
 //System diag application's shell start code.
 //
-VOID SysDiagApp(LPSTR pstr)
+DWORD SysDiagApp(__CMD_PARA_OBJ* pCmdParaObj)
 {
 	__KERNEL_THREAD_OBJECT*        lpSysDiagThread    = NULL;
 
@@ -359,47 +267,44 @@ VOID SysDiagApp(LPSTR pstr)
 	if(NULL == lpSysDiagThread)    //Can not create the kernel thread.
 	{
 		PrintLine("Can not start system diag application,please retry again.");
-		return;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
-	//Set current focus kernel thread to diagnostic thread.
 	DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
 		(__COMMON_OBJECT*)lpSysDiagThread);
 
-	//Block current shell thread to wait the diagnostic application execute over.
 	lpSysDiagThread->WaitForThisObject((__COMMON_OBJECT*)lpSysDiagThread);
-
-	//Reset the current focus thread.
-	DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
-		NULL);
-
-	//Destroy the diagnostic thread object.
 	KernelThreadManager.DestroyKernelThread((__COMMON_OBJECT*)&KernelThreadManager,
-		(__COMMON_OBJECT*)lpSysDiagThread);
+		(__COMMON_OBJECT*)lpSysDiagThread);  //Destroy the kernel thread object.
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //Entry point of reboot.
-VOID Reboot(LPSTR pstr)
+DWORD Reboot(__CMD_PARA_OBJ* pCmdParaObj)
 {
 	ClsHandler(NULL); //Clear screen first.
 #ifdef __I386__
 	BIOSReboot();
 #endif
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //Entry point of poweroff.
-VOID Poweroff(LPSTR pstr)
+DWORD Poweroff(__CMD_PARA_OBJ* pCmdParaObj)
 {
 #ifdef __I386__
 	BIOSPoweroff();
 #endif
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //Handler for 'runtime' command.
-VOID RunTimeHandler(LPSTR pstr)
+DWORD RunTimeHandler(__CMD_PARA_OBJ* pCmdParaObj)
 {
-	char  Buffer[192];
+	CHAR  Buffer[190] = {0};
 	DWORD week = 0,day = 0,hour = 0,minute = 0,second = 0;
+	DWORD* Array[5] = {0};
 
 	second = System.GetSysTick(NULL);  //Get system tick counter.
 	//Convert to second.
@@ -427,28 +332,47 @@ VOID RunTimeHandler(LPSTR pstr)
 		day  = day % 7;
 	}
 
+	Array[0] = &week;
+	Array[1] = &day;
+	Array[2] = &hour;
+	Array[3] = &minute;
+	Array[4] = &second;	
+	FormString(Buffer,"System has running %d week(s), %d day(s), %d hour(s), %d minute(s), %d second(s).",(LPVOID*)Array);
+
 	//Show out the result.
-	_hx_sprintf(Buffer,"System has running %d week(s), %d day(s), %d hour(s), %d minute(s), %d second(s).",
-		week,day,hour,minute,second);
-	PrintLine(Buffer);
+	/*sprintf(Buffer,"System has running %d week(s), %d day(s), %d hour(s), %d minute(s), %d second(s).",
+		week,day,hour,minute,second);*/
+	//sprintf(Buffer,"System has running %d,%d",(INT)week,(INT)day);//(INT)hour,(INT)minute,(INT)second
+	//PrintLine(Buffer);
+	CD_PrintString(Buffer,TRUE);
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //Handler for 'cls' command.
-VOID ClsHandler(LPSTR pstr)
+DWORD ClsHandler(__CMD_PARA_OBJ* pCmdParaObj)
 {
 	ClearScreen();
+
+	CD_SetCursorPos(0,SHELL_INPUT_START_Y);
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //Handler for 'cpu' command.
-VOID CpuHandler(LPSTR pstr)
+DWORD CpuHandler(__CMD_PARA_OBJ* pCmdParaObj)
 {
-	GotoHome();
+	/*GotoHome();
 	ChangeLine();
-	PrintStr("Cpu Handler called.");
+	PrintStr("Cpu Handler called.");*/
+
+	CD_PrintString("Cpu Handler called.",TRUE);
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //Handler for 'support' command.
-VOID SptHandler(LPSTR pstr)
+DWORD SptHandler(__CMD_PARA_OBJ* pCmdParaObj)
 {
 	LPSTR strSupportInfo1 = "    For any technical support,send E-Mail to:";
 	LPSTR strSupportInfo2 = "    garryxin@yahoo.com.cn.";
@@ -457,17 +381,8 @@ VOID SptHandler(LPSTR pstr)
 	PrintLine(strSupportInfo1);
 	PrintLine(strSupportInfo2);
 	PrintLine(strSupportInfo3);
-	return;
-}
 
-//Default handler if no proper handler is located.
-VOID  DefaultHandler(LPSTR pstr)
-{
-	LPSTR strPrompt = "You entered incorrect command name.";
-	GotoHome();
-	ChangeLine();
-	PrintStr(strPrompt);
-	return;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //*********************************
@@ -476,11 +391,9 @@ VOID  DefaultHandler(LPSTR pstr)
 //Email  :	erwin.wang@qq.com
 //Date	 :  9th June, 2014
 //********************************
-VOID DebugHandler(LPSTR pstr)
+DWORD DebugHandler(__CMD_PARA_OBJ* pCmdParaObj)
 {
-#ifdef __CFG_SYS_LOGCAT //Only available when logging function is enabled.
-
-	char buf[256] = {'0'};
+	/*char buf[256] = {'0'};
 	int count = 0;
 	while(TRUE)
 	{
@@ -491,66 +404,92 @@ VOID DebugHandler(LPSTR pstr)
 		{
 			PrintLine(buf);
 		}
-		if(count == 5)
-		{
-			break;
-		}
-	}
-#endif //__CFG_SYS_LOGCAT.
+		if(count == 10)break;
+	}*/
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
+static DWORD QueryCmdName(LPSTR pMatchBuf,INT nBufLen)
+{
+	static DWORD dwIndex   = 0;
+	static DWORD dwExIndex = 0;
+
+	if(pMatchBuf == NULL)
+	{
+		dwIndex    = 0;
+		dwExIndex  = 0;
+		return SHELL_QUERY_CONTINUE;
+	}
+
+	if(NULL != CmdObj[dwIndex].CmdStr)
+	{
+		strncpy(pMatchBuf,CmdObj[dwIndex].CmdStr,nBufLen);
+		dwIndex ++;
+
+		return SHELL_QUERY_CONTINUE;
+	}
+
+	if(NULL != ExtCmdArray[dwExIndex].lpszCmdName)
+	{
+		strncpy(pMatchBuf,ExtCmdArray[dwExIndex].lpszCmdName,nBufLen);
+		dwExIndex ++;
+
+		return SHELL_QUERY_CONTINUE;
+	}
+
+	dwIndex    = 0;
+	dwExIndex  = 0;
+
+	return SHELL_QUERY_CANCEL;	
+}
 //Command analyzing routine,it analyzes user's input and search
 //command array to find a proper handler,then call it.
 //Default handler will be called if no proper command handler is
 //located.
-static VOID  DoCommand()
+static DWORD  CommandParser(LPCSTR pCmdBuf)
 {
-	DWORD wIndex = 0x0000;
-	BOOL bResult = FALSE;        //If find the correct command object,then
-	//This flag set to TRUE.
-	CHAR tmpBuffer[36];
-	DWORD dwIndex = 0;           //Used for 'for' loop.
 	__KERNEL_THREAD_OBJECT* hKernelThread = NULL;
+	__CMD_PARA_OBJ*         lpCmdParamObj = NULL;
+	DWORD   dwResult                      = SHELL_CMD_PARSER_INVALID;        //If find the correct command object,then
+	DWORD   dwIndex                       = 0;          //Used for 'for' loop.
+	
 
-	CmdBuffer[BufferPtr] = 0x00; //Prepare the command string.
-	BufferPtr = 0;
-
-	while((' ' != CmdBuffer[wIndex]) && CmdBuffer[wIndex] && (wIndex < 32))
+	lpCmdParamObj = FormParameterObj(pCmdBuf);
+	if(NULL == lpCmdParamObj || lpCmdParamObj->byParameterNum < 1)    //Can not form a valid command parameter object.
 	{
-		tmpBuffer[wIndex] = CmdBuffer[wIndex];
-		wIndex ++;
+		CD_PrintString(pCmdBuf,TRUE);
+		goto __END;
 	}
-	tmpBuffer[wIndex] = 0;
-
+	
 	dwIndex = 0;
-	//for(dwIndex = 0;dwIndex < CMD_OBJ_NUM;dwIndex ++)
 	while(CmdObj[dwIndex].CmdStr)
 	{
-		if(StrCmp(&tmpBuffer[0],CmdObj[dwIndex].CmdStr))
-		{
-			CmdObj[dwIndex].CmdHandler(&CmdBuffer[wIndex]);  //Call the command handler.
-			bResult = TRUE;      //Set the flag.
+		if(StrCmp(CmdObj[dwIndex].CmdStr,lpCmdParamObj->Parameter[0]))
+		{			
+			CmdObj[dwIndex].CmdHandler(lpCmdParamObj);  //Call the command handler.
+			dwResult = SHELL_CMD_PARSER_SUCCESS;
 			break;
 		}
 		dwIndex ++;
 	}
-	if(bResult)
+
+	if(dwResult == SHELL_CMD_PARSER_SUCCESS)
 	{
 		goto __END;
 	}
-
+	
 	dwIndex = 0;  //Now,should search external command array.
 	while(ExtCmdArray[dwIndex].lpszCmdName)
-	{
-		if(StrCmp(&tmpBuffer[0],ExtCmdArray[dwIndex].lpszCmdName))  //Found.
-		{
+	{		
+		if(StrCmp(ExtCmdArray[dwIndex].lpszCmdName,lpCmdParamObj->Parameter[0]))  //Found.
+		{	
 			hKernelThread = KernelThreadManager.CreateKernelThread(
 				(__COMMON_OBJECT*)&KernelThreadManager,
 				0,
 				KERNEL_THREAD_STATUS_READY,
 				PRIORITY_LEVEL_NORMAL,
 				ExtCmdArray[dwIndex].ExtCmdHandler,
-				(LPVOID)&CmdBuffer[wIndex],
+				(LPVOID)lpCmdParamObj, //?
 				NULL,
 				NULL);
 			if(!ExtCmdArray[dwIndex].bBackground)  //Should wait.
@@ -558,116 +497,41 @@ static VOID  DoCommand()
 				DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
 					(__COMMON_OBJECT*)hKernelThread);  //Give the current input focus to this thread.
 				hKernelThread->WaitForThisObject((__COMMON_OBJECT*)hKernelThread);
-				//Set focus thread to shell.
-				DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,
-					NULL);
-				//Destroy the kernel thread object.
+
 				KernelThreadManager.DestroyKernelThread(
 					(__COMMON_OBJECT*)&KernelThreadManager,
-					(__COMMON_OBJECT*)hKernelThread);
+					(__COMMON_OBJECT*)hKernelThread);  //Destroy it.
+				//Set focus thread to shell.
+				DeviceInputManager.SetFocusThread((__COMMON_OBJECT*)&DeviceInputManager,NULL);
 			}
-			bResult = TRUE;
+			
+			dwResult = SHELL_CMD_PARSER_SUCCESS;
 			goto __END;
 		}
 		dwIndex ++;
 	}
-
-	if(!bResult)
-	{
-		DefaultHandler(NULL);        //Call the default command handler.
-	}
-
+	
+	//DefaultHandler(NULL); //Call the default command handler.	
 __END:
-	return;
+
+	if(NULL != lpCmdParamObj)
+	{
+		ReleaseParameterObj(lpCmdParamObj);
+	}
+	
+	return dwResult;		
 }
 
-//Print out command prompt.
-static VOID  PrintPrompt()
-{
-	LPSTR pszSysName = "[system-view]";
-	if(HostName[0])
-	{
-		PrintLine(&HostName[0]);
-	}
-	else
-	{
-		PrintLine(pszSysName);
-	}
-	return;
-}
-
-//Shell thread's event handler.
-static BOOL EventHandler(WORD wCommand,WORD wParam,DWORD dwParam)
-{
-	WORD wr = 0x0700;
-	BYTE bt = 0x00;
-
-	switch(wCommand)
-	{
-	case MSG_KEY_DOWN:
-		bt = (BYTE)(dwParam);
-		if(VK_RETURN == bt)
-		{
-			if(BufferPtr)
-			{
-				DoCommand();
-			}
-			PrintPrompt();
-			break;
-		}
-		if(VK_BACKSPACE == bt)
-		{
-			if(0 != BufferPtr)
-			{
-				GotoPrev();
-				BufferPtr --;
-			}
-			break;
-		}
-		else
-		{
-			if(MAX_BUFFER_LEN - 1 > BufferPtr)
-			{
-				CmdBuffer[BufferPtr] = bt;
-				BufferPtr ++;
-				wr += (BYTE)(dwParam);
-				PrintCh(wr);
-			}
-		}
-		break;
-	case KERNEL_MESSAGE_TIMER:
-	default:
-		break;
-	}
-	return 0;
-}
-
-//
 //Entry point of the text mode shell.
 //
 DWORD ShellEntryPoint(LPVOID pData)
-{
-	__KERNEL_THREAD_MESSAGE KernelThreadMessage;
+{			
+	StrCpy(DEF_PROMPT_STR,&s_szPrompt[0]);
 
-	//Print out version and author information.
-	//GotoHome();
-	//ChangeLine();
-	//PrintStr(VERSION_INFO);
-	GotoHome();
-	ChangeLine();
-
-	PrintPrompt();
-	while(TRUE)
-	{
-		if(GetMessage(&KernelThreadMessage))
-		{
-			if(KERNEL_MESSAGE_TERMINAL == KernelThreadMessage.wCommand)
-			{
-				break;
-			}
-			DispatchMessage(&KernelThreadMessage,EventHandler);
-		}
-	}
+	CD_PrintString(VERSION_INFO,TRUE);
+	CD_SetCursorPos(0,SHELL_INPUT_START_Y_FIRST);
+	
+	Shell_Msg_Loop(s_szPrompt,CommandParser,QueryCmdName);
 
 	//When reach here,it means the shell thread will terminate.We will reboot
 	//the system in current version's implementation,since there is no interact
@@ -676,5 +540,6 @@ DWORD ShellEntryPoint(LPVOID pData)
 #ifdef __I386__
 	BIOSReboot();
 #endif
+
 	return 0;
 }

@@ -24,6 +24,7 @@
 #include "..\lib\string.h"
 #include "..\lib\stdio.h"
 
+#define  FDISK_PROMPT_STR   "[fdisk_view]"
 //
 //Pre-declare routines.
 //
@@ -41,7 +42,7 @@ extern DWORD format(__CMD_PARA_OBJ*);      //Implemented in FDISK2.CPP.
 //
 //The following is a map between command and it's handler.
 //
-static struct __FDISK_CMD_MAP{
+static struct __SHELL_CMD_PARSER_MAP{
 	LPSTR                lpszCommand;
 	DWORD                (*CommandHandler)(__CMD_PARA_OBJ*);
 	LPSTR                lpszHelpInfo;
@@ -106,19 +107,6 @@ static VOID LBAtoCHS(DWORD dwLbaAddr,UCHAR* pchs1,UCHAR* pchs2,UCHAR* pchs3)
 	*pchs2 =  (UCHAR)(s & 0x3F);  //Sector number,occupy low 6 bits.
 	*pchs2 &= (UCHAR)((c >> 2) & 0xC0);  //Cylinder number,high 2 bits.
 	*pchs3 =  (UCHAR)c;           //Cylinder number,low 8 bits.
-}
-
-//
-//The following is a helper routine,it only prints out a "#" character as prompt.
-//
-static VOID PrintPound()
-{
-	WORD  wr = 0x0700;
-	
-	wr += '#';
-	GotoHome();
-	ChangeLine();
-	PrintCh(wr);
 }
 
 //Two helper routines used to read or write sector(s) from or into disk.
@@ -226,115 +214,51 @@ __TERMINAL:
 	return bResult;
 }
 
-//
-//This is the application's entry point.
-//
-DWORD fdiskEntry(LPVOID pParam)
-{
-	CHAR                        strCmdBuffer[MAX_BUFFER_LEN];
-	BYTE                        ucCurrentPtr                  = 0;
-	BYTE                        bt;
-	WORD                        wr                            = 0x0700;
-	__KERNEL_THREAD_MESSAGE     Msg;
-	DWORD                       dwRetVal;
 
-	PrintPound();    //Print out the prompt.
-
-	while(TRUE)
-	{
-		if(GetMessage(&Msg))
-		{
-			if(MSG_KEY_DOWN == Msg.wCommand)    //This is a key down message.
-			{
-				bt = (BYTE)Msg.dwParam;
-				switch(bt)
-				{
-				case VK_RETURN:                //This is a return key.
-					if(0 == ucCurrentPtr)      //There is not any character before this key.
-					{
-						PrintPound();
-						break;
-					}
-					else
-					{
-						strCmdBuffer[ucCurrentPtr] = 0;    //Set the terminal flag.
-						dwRetVal = CommandParser(strCmdBuffer);
-						switch(dwRetVal)
-						{
-						case FDISK_CMD_TERMINAL: //Exit command is entered.
-							goto __TERMINAL;
-						case FDISK_CMD_INVALID:  //Can not parse the command.
-							PrintLine("    Invalid command.");
-							//PrintPound();
-							break;
-						case FDISK_CMD_FAILED:
-							PrintLine("Failed to process the command.");
-							break;
-						case FDISK_CMD_SUCCESS:      //Process the command successfully.
-							//PrintPound();
-							break;
-						default:
-							break;
-						}
-						ucCurrentPtr = 0;    //Re-initialize the buffer pointer.
-						PrintPound();
-					}
-					break;
-				case VK_BACKSPACE:
-					if(ucCurrentPtr)
-					{
-						ucCurrentPtr --;
-						GotoPrev();
-					}
-					break;
-				default:
-					if(ucCurrentPtr < MAX_BUFFER_LEN)    //The command buffer is not overflow.
-					{
-						strCmdBuffer[ucCurrentPtr] = bt;
-						ucCurrentPtr ++;
-						wr += bt;
-						PrintCh(wr);
-						wr  = 0x0700;
-					}
-					break;
-				}
-			}
-			else
-			{
-				if(Msg.wCommand == KERNEL_MESSAGE_TIMER)
-				{
-					PrintLine("Timer message received.");
-				}
-			}
-		}
-	}
-
-__TERMINAL:
-	return 0;
-}
 
 //
 //The following routine processes the input command string.
-//It is called by SysDiagStart.
+static DWORD QueryCmdName(LPSTR pMatchBuf,INT nBufLen)
+{
+	static DWORD dwIndex = 0;
+
+	if(pMatchBuf == NULL)
+	{
+		dwIndex    = 0;	
+		return SHELL_QUERY_CONTINUE;
+	}
+
+	if(NULL == SysDiagCmdMap[dwIndex].lpszCommand)
+	{
+		dwIndex = 0;
+		return SHELL_QUERY_CANCEL;	
+	}
+
+	strncpy(pMatchBuf,SysDiagCmdMap[dwIndex].lpszCommand,nBufLen);
+	dwIndex ++;
+
+	return SHELL_QUERY_CONTINUE;	
+}
+
 //
 static DWORD CommandParser(LPSTR lpszCmdLine)
 {
-	DWORD                  dwRetVal          = FDISK_CMD_INVALID;
+	DWORD                  dwRetVal          = SHELL_CMD_PARSER_INVALID;
 	DWORD                  dwIndex           = 0;
 	__CMD_PARA_OBJ*        lpCmdParamObj     = NULL;
 
 	if((NULL == lpszCmdLine) || (0 == lpszCmdLine[0]))    //Parameter check
-		return FDISK_CMD_INVALID;
+		return SHELL_CMD_PARSER_INVALID;
 
 	lpCmdParamObj = FormParameterObj(lpszCmdLine);
 	if(NULL == lpCmdParamObj)    //Can not form a valid command parameter object.
 	{
-		return FDISK_CMD_FAILED;
+		return SHELL_CMD_PARSER_FAILED;
 	}
 
 	if(0 == lpCmdParamObj->byParameterNum)  //There is not any parameter.
 	{
-		return FDISK_CMD_FAILED;
+		return SHELL_CMD_PARSER_FAILED;
 	}
 
 	//
@@ -346,7 +270,7 @@ static DWORD CommandParser(LPSTR lpszCmdLine)
 	{
 		if(NULL == SysDiagCmdMap[dwIndex].lpszCommand)
 		{
-			dwRetVal = FDISK_CMD_INVALID;
+			dwRetVal = SHELL_CMD_PARSER_INVALID;
 			break;
 		}
 		if(StrCmp(SysDiagCmdMap[dwIndex].lpszCommand,lpCmdParamObj->Parameter[0]))  //Find the handler.
@@ -368,6 +292,15 @@ static DWORD CommandParser(LPSTR lpszCmdLine)
 }
 
 //
+//This is the application's entry point.
+//
+DWORD fdiskEntry(LPVOID pParam)
+{
+	return Shell_Msg_Loop(FDISK_PROMPT_STR,CommandParser,QueryCmdName);	
+
+}
+
+//
 //The exit command's handler.
 //
 static DWORD exit(__CMD_PARA_OBJ* lpCmdObj)
@@ -379,9 +312,9 @@ static DWORD exit(__CMD_PARA_OBJ* lpCmdObj)
 			MbrControlBlock.pCurrentDisk);
 	}
 	memzero(&MbrControlBlock,sizeof(MbrControlBlock));  //Clear all global information.
-	return FDISK_CMD_TERMINAL;
+	return SHELL_CMD_PARSER_TERMINAL;
 #else
-	return FDISK_CMD_TERMINAL;
+	return SHELL_CMD_PARSER_TERMINAL;
 #endif
 }
 
@@ -400,7 +333,7 @@ static DWORD help(__CMD_PARA_OBJ* lpCmdObj)
 		PrintLine(SysDiagCmdMap[dwIndex].lpszHelpInfo);
 		dwIndex ++;
 	}
-	return FDISK_CMD_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //A helper routine to print out disk information.
@@ -440,9 +373,9 @@ static DWORD disklist(__CMD_PARA_OBJ* pcpo)
 		}
 		pDevList = pDevList->lpNext;
 	}
-	return FDISK_CMD_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 #else
-	return FDISK_CMD_FAILED;
+	return SHELL_CMD_PARSER_FAILED;
 #endif
 }
 
@@ -478,9 +411,9 @@ static DWORD pdevlist(__CMD_PARA_OBJ* pcpo)
 		}
 		pDevList = pDevList->lpNext;
 	}
-	return FDISK_CMD_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 #else
-	return FDISK_CMD_FAILED;
+	return SHELL_CMD_PARSER_FAILED;
 #endif
 }
 
@@ -509,7 +442,7 @@ static DWORD use(__CMD_PARA_OBJ* pCmdObj)
 	if(NULL != MbrControlBlock.pCurrentDisk)  //Opened yet.
 	{
 		PrintLine("  The disk already opened yet.");
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	//Try to open the disk whose name is MbrControlBlock.DevName.
 	MbrControlBlock.pCurrentDisk = IOManager.CreateFile(
@@ -521,7 +454,7 @@ static DWORD use(__CMD_PARA_OBJ* pCmdObj)
 	if(NULL == MbrControlBlock.pCurrentDisk)  //Failed to open the disk.
 	{
 		PrintLine("  Can not open the target disk object.");
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	//Try to read MBR of the disk.
 	if(!ReadDeviceSector(
@@ -534,7 +467,7 @@ static DWORD use(__CMD_PARA_OBJ* pCmdObj)
 		IOManager.DestroyDevice((__COMMON_OBJECT*)&IOManager,
 			(__DEVICE_OBJECT*)MbrControlBlock.pCurrentDisk);
 		MbrControlBlock.pCurrentDisk = NULL;
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	if((0x55 != MbrControlBlock.SectorBuffer[510]) || (0xAA != MbrControlBlock.SectorBuffer[511]))
 	{
@@ -551,9 +484,9 @@ static DWORD use(__CMD_PARA_OBJ* pCmdObj)
 		}
 		ppte += 1;
 	}
-	return FDISK_CMD_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 #else
-	return FDISK_CMD_FAILED;
+	return SHELL_CMD_PARSER_FAILED;
 #endif
 }
 
@@ -566,7 +499,7 @@ static DWORD partlist(__CMD_PARA_OBJ* pcpo)
 	if(NULL == MbrControlBlock.pCurrentDisk)
 	{
 		PrintLine("  Current disk is not specified yet.");
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	PrintLine("     partNum    startsector   totalsector   parttype     actflag");
 	for(i = 0;i < 4;i ++)
@@ -583,7 +516,7 @@ static DWORD partlist(__CMD_PARA_OBJ* pcpo)
 	PrintLine("    Comment: ");
 	PrintLine("      parttype: 0x0B/0x0C : FAT32, 0x07 : NTFS");
 	PrintLine("      actflag : 0x80 : partition is active, 0x00 : not active.");
-	return FDISK_CMD_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //Helper routine used by partadd command.
@@ -613,66 +546,66 @@ static DWORD partadd(__CMD_PARA_OBJ* pCmdParam)
 	if(pCmdParam->byParameterNum < 5)  //At least 4 parameter.
 	{
 		partaddusage();
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(NULL == MbrControlBlock.pCurrentDisk)
 	{
 		PrintLine("  Current disk is not specified yet.");
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	//Now try to interpret the parameters.
 	/*if(!Str2Hex(pCmdParam->Parameter[1],&dwPartNum))
 	{
 		partaddusage();
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}*/
 	dwPartNum = atoi(pCmdParam->Parameter[1]);
 	if(dwPartNum > 3)  //Invalid parameter.
 	{
 		partaddusage();
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	if(!StrCmp("fat32",pCmdParam->Parameter[2]))
 	{
 		partaddusage();
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	/*if(!Str2Hex(pCmdParam->Parameter[3],&dwStartSect))
 	{
 		partaddusage();
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}*/
 	dwStartSect = atoi(pCmdParam->Parameter[3]);
 	if(dwStartSect >= MbrControlBlock.dwDiskSector)
 	{
 		partaddusage();
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	/*
 	if(!Str2Hex(pCmdParam->Parameter[4],&dwSectorNum))
 	{
 		partaddusage();
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}*/
 	dwSectorNum = atoi(pCmdParam->Parameter[4]);
 	if(dwSectorNum > MbrControlBlock.dwDiskSector)  //Invalid sector number.
 	{
 		partaddusage();
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	if(dwStartSect + dwSectorNum > MbrControlBlock.dwDiskSector)
 	{
 		partaddusage();
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	if(pCmdParam->byParameterNum == 6)  //primary maybe specified.
 	{
 		if('p' != pCmdParam->Parameter[5][0])
 		{
 			partaddusage();
-			return FDISK_CMD_SUCCESS;
+			return SHELL_CMD_PARSER_SUCCESS;
 		}
 		bIsActive = TRUE;
 	}
@@ -698,7 +631,7 @@ static DWORD partadd(__CMD_PARA_OBJ* pCmdParam)
 		(BYTE*)MbrControlBlock.SectorBuffer))
 	{
 		PrintLine("  Add partition failed,please try again.");
-		return FDISK_CMD_SUCCESS;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	//Now overwrite the first sector of the partition created just now.
 	if(!WriteDeviceSector(MbrControlBlock.pCurrentDisk,
@@ -712,12 +645,12 @@ static DWORD partadd(__CMD_PARA_OBJ* pCmdParam)
 	PrintLine("  Add partition successfully.");
 	//Save to global variable.
 	MbrControlBlock.TableEntry[dwPartNum] = *ppte;
-	return FDISK_CMD_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //partdel sub-command's handler.
 static DWORD partdel(__CMD_PARA_OBJ* pcpo)
 {
-	return FDISK_CMD_SUCCESS;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 

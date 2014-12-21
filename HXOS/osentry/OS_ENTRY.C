@@ -316,7 +316,7 @@ void __OS_Entry()
 	g_lpShellThread = lpShellThread;     //Initialize the shell thread global variable.
 
 	//Print out the default system prompt,which can be changed by 'sysname' command.
-	strcpy(&HostName[0],"[system-view]");
+  //strcpy(&HostName[0],"[system-view]");
 #endif
 
 	//Initialize DeviceInputManager object.
@@ -404,7 +404,8 @@ __TERMINAL:
 #ifdef __STM32__
 int main()
 {
-	__OS_Entry();  //Call OS entry routine.
+	__OS_Entry();  //Call OS entry ro
+
 	return 0;
 }
 #endif

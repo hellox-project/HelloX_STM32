@@ -29,4 +29,5 @@
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\KAPI.H
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\COMQUEUE.H
 .\obj&lst\fibonacci.o: HXOS\shell\..\include\..\include\debug.h
+.\obj&lst\fibonacci.o: HXOS\shell\shell.h
 .\obj&lst\fibonacci.o: HXOS\shell\fibonacci.h

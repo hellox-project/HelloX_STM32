@@ -380,6 +380,7 @@ static void do_pio_write(struct stm32_host *host)
 	enable_imask(host, S3C2410_SDIIMSK_TXFIFOHALF);
 }
 #endif
+
 static void stm32_send_command(struct stm32_host *host,
 					struct mmc_command *cmd)
 {
@@ -563,14 +564,6 @@ static void  stm32_enable_dma(void)
 
 }
 
-
-
-
-
-
-
-
-
 #define BOTH_DIR (MMC_DATA_WRITE | MMC_DATA_READ)
 
 #ifdef MASK_DEBUG
@@ -648,15 +641,15 @@ static void finalize_request(struct stm32_host *host)
 	}
 
 	/* Read response from controller. */
-	cmd->resp[0] =SDIO->RESP1;//readl(host->base + S3C2410_SDIRSP0);
-	cmd->resp[1] =SDIO->RESP2;// readl(host->base + S3C2410_SDIRSP1);
-	cmd->resp[2] =SDIO->RESP3;// readl(host->base + S3C2410_SDIRSP2);
-	cmd->resp[3] =SDIO->RESP4;// readl(host->base + S3C2410_SDIRSP3);
+	cmd->resp[0] = SDIO->RESP1;//readl(host->base + S3C2410_SDIRSP0);
+	cmd->resp[1] = SDIO->RESP2;// readl(host->base + S3C2410_SDIRSP1);
+	cmd->resp[2] = SDIO->RESP3;// readl(host->base + S3C2410_SDIRSP2);
+	cmd->resp[3] = SDIO->RESP4;// readl(host->base + S3C2410_SDIRSP3);
 
 	//writel(host->prescaler, host->base + S3C2410_SDIPRE);
-	clkcr=SDIO->CLKCR&(~(0xFF));
-	clkcr|=host->prescaler;
-	SDIO->CLKCR=clkcr;//重新写回分频值
+	clkcr  = SDIO->CLKCR&(~(0xFF));
+	clkcr |= host->prescaler;
+	SDIO->CLKCR = clkcr;//重新写回分频值
 
 /*	if (cmd->error)
 		debug_as_failure = 1;	  */
@@ -686,6 +679,7 @@ static void finalize_request(struct stm32_host *host)
 	/* If we have no data transfer we are finished here */
 	if (!mrq->data)
 		goto request_done;
+	
 #ifdef MASK_DEBUG
 	/* Calulate the amout of bytes transfer if there was no error */
 	if (mrq->data->error == 0) {
@@ -717,6 +711,7 @@ static void finalize_request(struct stm32_host *host)
 		}
 	}
 #endif
+	
 request_done:
 	host->complete_what = COMPLETION_NONE;
 	host->mrq = NULL;
@@ -724,8 +719,6 @@ request_done:
 	stm32_check_sdio_irq(host);
 	mmc_request_done(host->mmc, mrq);//正常出口，请求完成交给唤醒正在等待的命令处理函数
 }
-
-
 
 static void pio_tasklet(unsigned long data)
 {

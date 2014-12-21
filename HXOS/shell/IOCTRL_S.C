@@ -22,6 +22,7 @@
 #include "shell.h"
 #include "IOCTRL_S.H"
 
+#define  IOCTRL_PROMPT_STR   "[ioctrl_view]"
 //
 //The IO control application is used to input or output data to or from IO port.
 //This application is very powerful,it can support input/output one byte,one word,
@@ -111,20 +112,6 @@ static struct __IOCTRL_COMMAND_MAP{
 };
 
 //
-//The following routine is used to print a prompt.
-//
-
-static VOID PrintPound()
-{
-	WORD  wr = 0x0700;
-	
-	wr += '#';
-	GotoHome();
-	ChangeLine();
-	PrintCh(wr);
-}
-
-//
 //The following is the entry point of IO control application.
 //This routine does the following:
 // 1. Get input message from kernel thread message queue,by calling GetMessage;
@@ -132,101 +119,80 @@ static VOID PrintPound()
 // 3. Form a command parameter object by calling FormParameterObj;
 // 4. Lookup the IO command and handler's map,to find appropriate handler;
 // 5. Call the handler,command parameter as the handler's parameter;
-// 6. If the hander returns IOCTRL_TERMINAL,then exit the application;
+// 6. If the hander returns SHELL_CMD_PARSER_FAILED,then exit the application;
 // 7. Otherwise,continue the loop.
 //
 
-static CHAR strCmdBuffer[MAX_BUFFER_LEN] = {0};  //Command buffer.
-DWORD IoCtrlStart(LPVOID p)
+static DWORD CommandParser(LPCSTR lpszCmdLine)
 {
-	DWORD                    dwCurrentPtr       = 0;
-	__KERNEL_THREAD_MESSAGE  Msg;
-	BYTE                     bt;
-	WORD                     wr                 = 0x0700;
-	DWORD                    dwMapIndex         = 0;
-	BOOL                     bValidCmd          = FALSE;
-	__CMD_PARA_OBJ*          lpParamObj         = NULL;
-	DWORD                    dwRetVal           = 0;
+	__CMD_PARA_OBJ*   lpParamObj   = NULL;
+	DWORD             dwRetVal     = SHELL_CMD_PARSER_INVALID;
+	DWORD             dwIndex      = 0;
+	BOOL              bValidCmd    = FALSE;
 
-	PrintPound();            //Print out the prompt of this application.
+	lpParamObj = FormParameterObj(lpszCmdLine);
+	if(NULL == lpParamObj)    //Can not create parameter object.
+	{		
+		return SHELL_CMD_PARSER_FAILED;
+	}
 
-	while(TRUE)
+	if(0 != lpParamObj->byParameterNum)  //Valid parameter(s) exits.
 	{
-		if(KernelThreadManager.GetMessage((__COMMON_OBJECT*)KernelThreadManager.lpCurrentKernelThread,&Msg))
+		while(IOCtrlCmdMap[dwIndex].lpszCommand)
 		{
-			if(MSG_KEY_DOWN == Msg.wCommand)  //This is a key down event.
+			if(StrCmp(IOCtrlCmdMap[dwIndex].lpszCommand,
+				lpParamObj->Parameter[0]))
 			{
-				bt = (BYTE)Msg.dwParam;
-				if(VK_RETURN == bt)    //The ENTER key is pressed.
-				{
-					strCmdBuffer[dwCurrentPtr] = 0;  //Set the end flag.
-					dwCurrentPtr               = 0;  //Set the pointer to begin.
-					//
-					//The following code handles the command.
-					//
-
-					lpParamObj = FormParameterObj(&strCmdBuffer[0]);
-					if(NULL == lpParamObj)    //Can not create parameter object.
-					{
-						PrintLine("Fatal error occurs,application exit.");
-						goto __TERMINAL;    //Exit the application.
-					}
-					if(0 != lpParamObj->byParameterNum)  //Valid parameter(s) exits.
-					{
-						while(IOCtrlCmdMap[dwMapIndex].lpszCommand)
-						{
-							if(StrCmp(IOCtrlCmdMap[dwMapIndex].lpszCommand,
-								lpParamObj->Parameter[0]))
-							{
-								bValidCmd = TRUE;    //Find the valid command.
-								break;
-							}
-							dwMapIndex ++;
-						}
-						if(bValidCmd)  //Handle the command.
-						{
-							dwRetVal = IOCtrlCmdMap[dwMapIndex].CommandRoutine(lpParamObj);
-						}
-						else
-						{
-							PrintLine("Unrecognized command.");
-						}
-					}
-
-					bValidCmd      = FALSE;
-					dwMapIndex     = 0;
-					ReleaseParameterObj(lpParamObj);  //Release the parameter object.
-					if(IOCTRL_TERMINAL == dwRetVal)
-						goto __TERMINAL;
-					PrintPound();
-				}
-				else
-				if(VK_BACKSPACE == bt)  //Delete one character.
-				{
-					if(dwCurrentPtr)
-					{
-						dwCurrentPtr --;
-						GotoPrev();    //Erase one character from screen.
-					}
-				}
-				else  //This only a normal key down event.
-				{
-					if(dwCurrentPtr < MAX_BUFFER_LEN)  //If the buffer is not overflow.
-					{
-						strCmdBuffer[dwCurrentPtr] = bt;
-						dwCurrentPtr ++;
-						wr += bt;
-						PrintCh(wr);                   //Print the character to screen.
-						wr  = 0x0700;                  //Restore the chatacter's display
-						                               //attribute.
-					}
-				}
+				bValidCmd = TRUE;    //Find the valid command.
+				break;
 			}
+			dwIndex ++;
+		}
+
+		if(bValidCmd)  //Handle the command.
+		{
+			dwRetVal = IOCtrlCmdMap[dwIndex].CommandRoutine(lpParamObj);
+		}
+		else
+		{
+			dwRetVal = SHELL_CMD_PARSER_INVALID;			
 		}
 	}
 
-__TERMINAL:
-	return 0;
+	ReleaseParameterObj(lpParamObj);  //Release the parameter object.
+
+	return dwRetVal;
+}
+
+
+static DWORD QueryCmdName(LPSTR pMatchBuf,INT nBufLen)
+{
+	static DWORD dwIndex = 0;
+
+	if(pMatchBuf == NULL)
+	{
+		dwIndex    = 0;	
+		return SHELL_QUERY_CONTINUE;
+	}
+
+
+	if(NULL == IOCtrlCmdMap[dwIndex].lpszCommand)
+	{
+		dwIndex = 0;
+		return SHELL_QUERY_CANCEL;	
+	}
+
+	strncpy(pMatchBuf,IOCtrlCmdMap[dwIndex].lpszCommand,nBufLen);
+	dwIndex ++;
+
+	return SHELL_QUERY_CONTINUE;	
+}
+
+//static CHAR strCmdBuffer[MAX_BUFFER_LEN] = {0};  //Command buffer.
+DWORD IoCtrlStart(LPVOID p)
+{
+	return Shell_Msg_Loop(IOCTRL_PROMPT_STR,CommandParser,QueryCmdName);	
+
 }
 
 //
@@ -241,17 +207,19 @@ static DWORD inputb(__CMD_PARA_OBJ* lpCmdObj)
 	CHAR           strBuffer[15]      = {0};
 
 	if(NULL == lpCmdObj)  //Parameter check.
-		return IOCTRL_TERMINAL;
+	{
+		return SHELL_CMD_PARSER_FAILED;
+	}
 
 	if(lpCmdObj->byParameterNum < 2)  //Two small parameters.
 	{
 		PrintLine("Please input the port where to read.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwInputPort))  //Convert the string value to hex.
 	{
 		PrintLine("Invalid port value.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	wInputPort = (WORD)dwInputPort;  //Now,wInputPort contains the port number.
@@ -269,7 +237,7 @@ static DWORD inputb(__CMD_PARA_OBJ* lpCmdObj)
 	Hex2Str(dwInputPort,&strBuffer[4]);
 	PrintLine(strBuffer);    //Print out the byte.
 
-	return 0;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD inputw(__CMD_PARA_OBJ* lpCmdObj)
@@ -280,17 +248,17 @@ static DWORD inputw(__CMD_PARA_OBJ* lpCmdObj)
 	CHAR           strBuffer[15]      = {0};
 
 	if(NULL == lpCmdObj)  //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 2)  //Two small parameters.
 	{
 		PrintLine("Please input the port where to read.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwInputPort))  //Convert the string value to hex.
 	{
 		PrintLine("Invalid port value.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	wInputPort = (WORD)(dwInputPort);  //Now,wInputPort contains the port number.
@@ -308,7 +276,7 @@ static DWORD inputw(__CMD_PARA_OBJ* lpCmdObj)
 	Hex2Str(dwInputPort,&strBuffer[4]);
 	PrintLine(strBuffer);    //Print out the byte.
 
-	return 0;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //
@@ -322,18 +290,18 @@ static DWORD inputd(__CMD_PARA_OBJ* lpParamObj)
 	CHAR                 strBuffer[15];
 
 	if(NULL == lpParamObj)    //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpParamObj->byParameterNum < 2)    //Not enough parameters.
 	{
 		PrintLine("Please input the port value.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpParamObj->Parameter[1],&dwVal))  //Incorrect port value.
 	{
 		PrintLine("Please input the port correctly.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	wPort = (WORD)(dwVal);
@@ -359,18 +327,19 @@ static DWORD inputd(__CMD_PARA_OBJ* lpParamObj)
 	Hex2Str(dwVal,&strBuffer[4]);
 	PrintLine(strBuffer);    //Print out the byte.
 
-	return 0;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD inputsb(__CMD_PARA_OBJ* lpCmdObj)
 {
 	PrintLine("inputsb is handled.");
-	return 0;
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD inputsw(__CMD_PARA_OBJ* lpCmdObj)
 {
-	return 0;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD outputb(__CMD_PARA_OBJ* lpCmdObj)
@@ -380,29 +349,29 @@ static DWORD outputb(__CMD_PARA_OBJ* lpCmdObj)
 	DWORD            dwPort     = 0;
 
 	if(NULL == lpCmdObj)  //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 3)  //Not enough parameters.
 	{
 		PrintLine("Please input the port and value.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwPort))
 	{
 		PrintLine("Please input port number correctly.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	wPort = (WORD)(dwPort);    //Now,wPort contains the port where to output.
 	if(!Str2Hex(lpCmdObj->Parameter[2],&dwPort))
 	{
 		PrintLine("Please input the value to output correctly.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	bt = (BYTE)(dwPort);
 
 	//WriteByteToPort(bt,wPort);    //Write the byte to port.
 	__outb(bt,wPort);
-	return IOCTRL_NORMAL;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD outputw(__CMD_PARA_OBJ* lpCmdObj)
@@ -412,29 +381,29 @@ static DWORD outputw(__CMD_PARA_OBJ* lpCmdObj)
 	DWORD            dwPort     = 0;
 
 	if(NULL == lpCmdObj)  //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 3)  //Not enough parameters.
 	{
 		PrintLine("Please input the port and value.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwPort))
 	{
 		PrintLine("Please input port number correctly.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	wPort = (WORD)(dwPort);    //Now,wPort contains the port where to output.
 	if(!Str2Hex(lpCmdObj->Parameter[2],&dwPort))
 	{
 		PrintLine("Please input the value to output correctly.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 	wr = (WORD)(dwPort);
 
 	//WriteWordToPort(wr,wPort);    //Write the byte to port.
 	__outw(wr,wPort);
-	return IOCTRL_NORMAL;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 //
@@ -448,24 +417,24 @@ static DWORD outputd(__CMD_PARA_OBJ* lpCmdObj)
 	DWORD           dwPort             = 0;
 
 	if(NULL == lpCmdObj)  //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 3)    //Without enough parameter.
 	{
 		PrintLine("Please input the port and value.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwPort))  //Can not convert the port to hex.
 	{
 		PrintLine("Please input the port value correctly.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[2],&dwVal))  //Can not convert the value to hex.
 	{
 		PrintLine("Please input the value correctly.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	wPort = (WORD)(dwPort);
@@ -483,18 +452,18 @@ static DWORD outputd(__CMD_PARA_OBJ* lpCmdObj)
 #else
 #endif
 
-	return IOCTRL_NORMAL;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 
 static DWORD outputsb(__CMD_PARA_OBJ* lpCmdObj)
 {
-	return 0;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD outputsw(__CMD_PARA_OBJ* lpCmdObj)
 {
-	return 0;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD memalloc(__CMD_PARA_OBJ* lpCmdObj)
@@ -504,25 +473,25 @@ static DWORD memalloc(__CMD_PARA_OBJ* lpCmdObj)
 	CHAR       strBuffer[16];
 
 	if(NULL == lpCmdObj)  //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 2) //Not enough parameters.
 	{
 		PrintLine("Please input the memory size to be allocated.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwMemSize)) //Invalid size value.
 	{
 		PrintLine("Invalid memory size value.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	lpMemAddr = KMemAlloc(dwMemSize,KMEM_SIZE_TYPE_ANY);
 	if(NULL == lpMemAddr)  //Failed to allocate memory.
 	{
 		PrintLine("Can not allocate memory.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	Hex2Str((DWORD)lpMemAddr,&strBuffer[4]);  //Convert to string.
@@ -532,7 +501,8 @@ static DWORD memalloc(__CMD_PARA_OBJ* lpCmdObj)
 	strBuffer[2] = '0';
 	strBuffer[3] = 'x';
 	PrintLine(strBuffer);    //Print out the result.
-	return IOCTRL_NORMAL;
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD memrels(__CMD_PARA_OBJ* lpCmdObj)
@@ -540,22 +510,22 @@ static DWORD memrels(__CMD_PARA_OBJ* lpCmdObj)
 	DWORD           dwMemAddr          = 0;
 
 	if(NULL == lpCmdObj)
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 2) //Not enough parameters.
 	{
 		PrintLine("Please input the memory address to be released.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwMemAddr)) //Invalid address value.
 	{
 		PrintLine("Please input the address correctly.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	KMemFree((LPVOID)dwMemAddr,KMEM_SIZE_TYPE_ANY,0);  //Release the memory.
-	return IOCTRL_NORMAL;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD memwb(__CMD_PARA_OBJ* lpCmdObj)
@@ -565,31 +535,31 @@ static DWORD memwb(__CMD_PARA_OBJ* lpCmdObj)
 	DWORD          dwTmp             = 0;
 
 	if(NULL == lpCmdObj)  //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 3)
 	{
 		PrintLine("Please input the address and value together.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwAddress)) //Can not convert the address string to
 		                                            //valid address.
 	{
 		PrintLine("  Please input correct address.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}  //Now,dwAddress contains the target address to be write.
 
 	if(!Str2Hex(lpCmdObj->Parameter[2],&dwTmp))  //Invalid value.
 	{
 		PrintLine("  Please input the correct value.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	bt = (BYTE)(dwTmp);
 	*((BYTE*)dwAddress) = bt;    //Write the byte to the appropriate address.
 
-	return IOCTRL_NORMAL;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD memww(__CMD_PARA_OBJ* lpCmdObj)
@@ -599,64 +569,65 @@ static DWORD memww(__CMD_PARA_OBJ* lpCmdObj)
 	DWORD          dwTmp             = 0;
 
 	if(NULL == lpCmdObj)  //Parameter check.
-		return IOCTRL_TERMINAL;
+	{
+		return SHELL_CMD_PARSER_FAILED;
+	}
 
 	if(lpCmdObj->byParameterNum < 3)
 	{
 		PrintLine("Please input the address and value together.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwAddress)) //Can not convert the address string to
 		                                            //valid address.
 	{
 		PrintLine("  Please input correct address.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}  //Now,dwAddress contains the target address to be write.
 
 	if(!Str2Hex(lpCmdObj->Parameter[2],&dwTmp))  //Invalid value.
 	{
 		PrintLine("  Please input the correct value.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	wr = (WORD)(dwTmp);
 	*((WORD*)dwAddress) = wr;    //Write the byte to the appropriate address.
 
-	return IOCTRL_NORMAL;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD memwd(__CMD_PARA_OBJ* lpCmdObj)
 {
-	DWORD          dwAddress         = 0;
-	//DWORD          dwValue           = 0;
+	DWORD          dwAddress         = 0;	
 	DWORD          dwTmp             = 0;
 
 	if(NULL == lpCmdObj)  //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 3)
 	{
 		PrintLine("Please input the address and value together.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwAddress)) //Can not convert the address string to
 		                                            //valid address.
 	{
 		PrintLine("  Please input correct address.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}  //Now,dwAddress contains the target address to be write.
 
 	if(!Str2Hex(lpCmdObj->Parameter[2],&dwTmp))  //Invalid value.
 	{
 		PrintLine("  Please input the correct value.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	*((DWORD*)dwAddress) = dwTmp;    //Write the byte to the appropriate address.
 
-	return IOCTRL_NORMAL;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD memrb(__CMD_PARA_OBJ* lpCmdObj)
@@ -667,18 +638,18 @@ static DWORD memrb(__CMD_PARA_OBJ* lpCmdObj)
 	CHAR           strBuffer[16];
 
 	if(NULL == lpCmdObj)    //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 2)  //Not enough parameter.
 	{
 		PrintLine("Please input the address where to read.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwAddress)) //Invalid address value.
 	{
 		PrintLine("Please input the correct address.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	bt = *((BYTE*)dwAddress);
@@ -690,7 +661,7 @@ static DWORD memrb(__CMD_PARA_OBJ* lpCmdObj)
 	strBuffer[2] = '0';
 	strBuffer[3] = 'x';
 	PrintLine(strBuffer);  //Print out the result.
-	return IOCTRL_NORMAL;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD memrw(__CMD_PARA_OBJ* lpCmdObj)
@@ -701,18 +672,18 @@ static DWORD memrw(__CMD_PARA_OBJ* lpCmdObj)
 	CHAR           strBuffer[16];
 
 	if(NULL == lpCmdObj)    //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 2)  //Not enough parameter.
 	{
 		PrintLine("Please input the address where to read.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwAddress)) //Invalid address value.
 	{
 		PrintLine("Please input the correct address.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	wr = *((WORD*)dwAddress);
@@ -724,7 +695,7 @@ static DWORD memrw(__CMD_PARA_OBJ* lpCmdObj)
 	strBuffer[2] = '0';
 	strBuffer[3] = 'x';
 	PrintLine(strBuffer);  //Print out the result.
-	return IOCTRL_NORMAL;
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD memrd(__CMD_PARA_OBJ* lpCmdObj)
@@ -734,18 +705,18 @@ static DWORD memrd(__CMD_PARA_OBJ* lpCmdObj)
 	CHAR           strBuffer[16];
 
 	if(NULL == lpCmdObj)    //Parameter check.
-		return IOCTRL_TERMINAL;
+		return SHELL_CMD_PARSER_FAILED;
 
 	if(lpCmdObj->byParameterNum < 2)  //Not enough parameter.
 	{
 		PrintLine("Please input the address where to read.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	if(!Str2Hex(lpCmdObj->Parameter[1],&dwAddress)) //Invalid address value.
 	{
 		PrintLine("Please input the correct address.");
-		return IOCTRL_NORMAL;
+		return SHELL_CMD_PARSER_SUCCESS;
 	}
 
 	dwTmp = *((DWORD*)dwAddress);
@@ -756,7 +727,8 @@ static DWORD memrd(__CMD_PARA_OBJ* lpCmdObj)
 	strBuffer[2] = '0';
 	strBuffer[3] = 'x';
 	PrintLine(strBuffer);  //Print out the result.
-	return IOCTRL_NORMAL;
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD help(__CMD_PARA_OBJ* lpCmdObj)
@@ -769,11 +741,12 @@ static DWORD help(__CMD_PARA_OBJ* lpCmdObj)
 		PrintLine(IOCtrlCmdMap[dwMapIndex].lpszHelpInfo);
 		dwMapIndex ++;
 	}
-	return 0;
+
+	return SHELL_CMD_PARSER_SUCCESS;
 }
 
 static DWORD exit(__CMD_PARA_OBJ* lpCmdObj)
 {
-	return IOCTRL_TERMINAL;
+	return SHELL_CMD_PARSER_TERMINAL;
 }
 

@@ -201,8 +201,9 @@ static DWORD WiFiDriverThreadEntry(LPVOID pData)
 	struct ip_addr          ipaddr;                  //IP address of Ethernet interface.
 	struct ip_addr          netmask;                 //Subnet mask of Ethernet interface.
 	struct ip_addr          gw;                      //Default gateway.
-	struct netif*           pif    = (struct netif*)pData;
+	struct netif*           pif        = (struct netif*)pData;
 	__WIFI_ASSOC_INFO*      pAssocInfo = NULL;
+	__IF_PBUF_ASSOC*        pIfPbuf    = NULL;
 
   //Call prepare_init routine first.
 #ifdef __STM32__
@@ -232,7 +233,7 @@ static DWORD WiFiDriverThreadEntry(LPVOID pData)
 		netif_set_up(pif);
 		
 		ifState.bDhcpCltOK = FALSE;
-		dhcp_start(pif);     //Start DHCL client process under this interface.
+		dhcp_start(pif);     //Start DHCP client process under this interface.
 	}
 	
 	//Set the receive polling timer.
@@ -251,7 +252,7 @@ static DWORD WiFiDriverThreadEntry(LPVOID pData)
 				case KERNEL_MESSAGE_TERMINAL:
 					goto __TERMINAL;
 				
-				case WIFI_MSG_SEND:                //Send a link level frame.
+				case ETH_MSG_SEND:                //Send a link level frame.
 					if(!ifState.bSendPending)        //Maybe duplicated send message.
 					{
 						break;
@@ -262,7 +263,7 @@ static DWORD WiFiDriverThreadEntry(LPVOID pData)
 					ifState.bSendPending = FALSE;
 					break;
 					
-				case WIFI_MSG_RECEIVE:             //Receive frame,may triggered by interrupt.
+				case ETH_MSG_RECEIVE:             //Receive frame,may triggered by interrupt.
 					ethernetif_input(pif);
 					break;
 				
@@ -274,13 +275,13 @@ static DWORD WiFiDriverThreadEntry(LPVOID pData)
 					dhcpAssist(pif,&ifState);        //Call DHCP assist function routinely.
 					break;
 					
-				case WIFI_MSG_SCAN:                //Scan WiFi hot spot.
+				case ETH_MSG_SCAN:                //Scan WiFi hot spot.
 #ifdef __STM32__
 				  DoScan();
 #endif
 					break;
 					
-				case WIFI_MSG_ASSOC:               //Associate to a specified WiFi hot spot.
+				case ETH_MSG_ASSOC:               //Associate to a specified WiFi hot spot.
 					pAssocInfo = (__WIFI_ASSOC_INFO*)msg.dwParam;
 				  if(NULL == pAssocInfo)
 					{
@@ -298,7 +299,7 @@ static DWORD WiFiDriverThreadEntry(LPVOID pData)
 					KMemFree(pAssocInfo,KMEM_SIZE_TYPE_ANY,0);
 					break;
 					
-				case WIFI_MSG_SHOWINT:             //Show interface's statistics info.
+				case ETH_MSG_SHOWINT:             //Show interface's statistics info.
 					_hx_printf("\r\n");
 					_hx_printf("  Ethernet statistics information:\r\n");
 				  _hx_printf("    Send frame #       : %d\r\n",ifState.dwFrameSend);
@@ -309,6 +310,35 @@ static DWORD WiFiDriverThreadEntry(LPVOID pData)
 				  _hx_printf("    Receive bytes size : %d\r\n",ifState.dwTotalRecvSize);
 				  break;
 				
+				case ETH_MSG_DELIVER:  //Delivery a packet.
+					_hx_printf("  Eth_Kernel: Received a packet from interrupt.\r\n");  //Just for debugging.
+					pIfPbuf = (__IF_PBUF_ASSOC*)msg.dwParam;  //The association object of netif and pbuf is created by client.
+				  if(NULL == pIfPbuf)
+					{
+						_hx_printf("  Eth_Kernel: Received a NULL packet to delivery.\r\n");
+						break;
+					}
+					if(NULL == pIfPbuf->p)
+					{
+						//Just release the association object.
+						KMemFree(pIfPbuf,KMEM_SIZE_TYPE_ANY,0);
+						break;
+					}
+					//Update statistics counters.
+					ifState.dwFrameRecv ++;
+					ifState.dwTotalRecvSize += pIfPbuf->p->tot_len;
+					//Try to delivery the packet to upper layer.
+					if(pif->input(pIfPbuf->p,pif) != ERR_OK)
+					{
+						pbuf_free(pIfPbuf->p);  //Release pbuf object.
+					}
+					else
+					{
+						ifState.dwFrameRecvSuccess ++;
+					}
+					//Destroy the association object.
+					KMemFree(pIfPbuf,KMEM_SIZE_TYPE_ANY,0);
+					break;
 				default:
 					break;
 			}
@@ -334,7 +364,7 @@ BOOL InitializeEthernetIf()
 	ifState.bDhcpCltEnabled   = TRUE;
 	ifState.bDhcpCltOK        = FALSE;
 	ifState.bDhcpSrvEnabled   = FALSE;
-	IP4_ADDR(&ifState.IpConfig.ipaddr,169,254,0,10);
+	IP4_ADDR(&ifState.IpConfig.ipaddr,169,254,0,100);
 	IP4_ADDR(&ifState.IpConfig.mask,255,255,0,0);
 	IP4_ADDR(&ifState.IpConfig.defgw,169,254,0,1);
 	

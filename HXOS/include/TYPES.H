@@ -50,6 +50,7 @@ typedef float               FLOAT;
 
 typedef char*               LPSTR;
 typedef const char*         LPCTSTR;
+typedef const char*         LPCSTR;
 
 typedef void                VOID;
 typedef void*               LPVOID;

@@ -9,6 +9,7 @@
 #include "..\include\KAPI.H"
 #endif
 
+#include "shell.h"
 #include "fibonacci.h"
 
 typedef struct{
@@ -39,7 +40,8 @@ DWORD CalculateThread(LPVOID lpParam)  //Calculate fibonacci sequence's element.
 
 DWORD Fibonacci(LPVOID lpParam)
 {
-    LPSTR lpszParam = (LPSTR)lpParam;
+    //LPSTR lpszParam = (LPSTR)lpParam;
+	__CMD_PARA_OBJ* pCmdParaObj               = (__CMD_PARA_OBJ*)lpParam;
     __FIBONACCI_CONTROL_BLOCK ControlBlock[5] = {0};
     HANDLE hThread[5] = {NULL};
     CHAR Buffer[12];
@@ -50,27 +52,29 @@ DWORD Fibonacci(LPVOID lpParam)
 	GotoHome();
 	ChangeLine();
 
-    if(NULL == lpszParam)  //Invalidate parameter.
-        return 0;
-    
+	if(NULL == pCmdParaObj || pCmdParaObj->byParameterNum < 2)
+	{
+		return 0;
+	}
+
     dwCounter = 0;
     for(i = 0;i < 5;i ++)
-    {
-        while(' ' == lpszParam[dwCounter])
-			dwCounter ++;  //Skip the space character(s).
-
+    {     
         dwIndex = 0;
-        while((lpszParam[dwCounter] != ' ') && lpszParam[dwCounter])
+        while(pCmdParaObj->Parameter[1][dwCounter])
 		{
-			Buffer[dwIndex] = lpszParam[dwCounter];
+			Buffer[dwIndex] =  pCmdParaObj->Parameter[1][dwCounter];
 			dwIndex ++;
 			dwCounter ++;
 		}
 
         Buffer[dwIndex] = 0;
         Str2Hex(Buffer,&ControlBlock[i].dwInitNum);  //Convert the parameter to integer.
-        if(!lpszParam[dwCounter])
-            break;
+
+        if(pCmdParaObj->Parameter[1][dwCounter])
+		{
+			break;
+		}
     }
 
 	i = 5;

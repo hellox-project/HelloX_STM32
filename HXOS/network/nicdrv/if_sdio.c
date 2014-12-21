@@ -108,8 +108,6 @@ static u16 if_sdio_read_rx_len(struct if_sdio_card *card, int *err)
 	return rx_len;
 }
 
-
-
 static int if_sdio_handle_cmd(struct if_sdio_card *card,
 		u8 *buffer, unsigned size)
 {
@@ -126,10 +124,9 @@ static int if_sdio_handle_cmd(struct if_sdio_card *card,
 		goto out;
 	}
 
-
 	i = priv->resp_idx = 0;
-	priv->resp_len[i] = size;//主线程会读取本字段的值来确定是否有响应要处理
-	memcpy(priv->resp_buf[i], buffer, size);//copy到响应数组中，这里定义了两个priv->resp_buf
+	priv->resp_len[i] = size; //主线程会读取本字段的值来确定是否有响应要处理
+	memcpy(priv->resp_buf[i], buffer, size); //copy到响应数组中，这里定义了两个priv->resp_buf
 	lbs_thread(priv);
 	ret = 0;
 out:
@@ -142,19 +139,18 @@ static int if_sdio_handle_data(struct if_sdio_card *card,
 {
 	int ret;
 	lbs_deb_enter("enter if_sdio_handle_data\n");
-	if (size>MRVDRV_ETH_RX_PACKET_BUFFER_SIZE ) {
+	if (size > MRVDRV_ETH_RX_PACKET_BUFFER_SIZE ) {
 		lbs_deb_sdio("response packet too large (%d bytes)\n",
 			(int)size);
 		ret = -E2BIG;
 		goto out;
 	}
-	lbs_process_rxed_packet(card->priv,(char *)buffer,size);//处理数据包,封装802.3MAC头，并提交给上层协议栈
+	lbs_process_rxed_packet(card->priv,(char *)buffer,size);
 	ret = 0;
 out:
 	lbs_deb_leave_args("leave if_sdio_handle_data(ret=%d)\n", ret);
 	return ret;
 }
-
 
 #if 0
 
@@ -203,7 +199,7 @@ static int if_sdio_card_to_host(struct if_sdio_card *card)
 	u8 status;
 	u16 size, type, chunk;
 	unsigned long timeout;
-	struct lbs_private	*priv=card->priv;
+	struct lbs_private	*priv = card->priv;
 	//lbs_deb_enter(LBS_DEB_SDIO);
 	size = if_sdio_read_rx_len(card, &ret);
 	if (ret)
@@ -220,7 +216,7 @@ static int if_sdio_card_to_host(struct if_sdio_card *card)
 		status = sdio_readb(card->func, IF_SDIO_STATUS, &ret);
 		if (ret)
 			goto out;
-		if (status & IF_SDIO_IO_RDY)//正常出口，说明接收的数据包已经准备好，主机可以读取数据包
+		if (status & IF_SDIO_IO_RDY) //Data in card is available,can be fetched by host.
 			break;
 		if (time_after(jiffies, &timeout)) {
 			ret = -ETIMEDOUT;
@@ -234,21 +230,20 @@ static int if_sdio_card_to_host(struct if_sdio_card *card)
 	 * goes suicidal. There's no way to guarantee that for all
 	 * controllers, but we can at least try.
 	 */
-	 //最好按size对齐，控制器为其选择一个最优的对齐方式来返回最后应该传输的长度
 	chunk = sdio_align_size(card->func, size);
-	ret = sdio_readsb(card->func, card->buffer, card->ioport, chunk);//读取数据块
+	ret = sdio_readsb(card->func, card->buffer, card->ioport, chunk);
 	//ret=sdio_io_rw_ext_helper(card->func, 0, card->ioport, 0, card->buffer, chunk);
 	if (ret)
 		goto out;
 
-	chunk = card->buffer[0] | (card->buffer[1] << 8);//这是真正读取到的数据长度，存放在buffer[1]buffer[0]中(小端存储)
-	type = card->buffer[2] | (card->buffer[3] << 8);//包的类型
+	chunk = card->buffer[0] | (card->buffer[1] << 8); //Data packet's length.
+	type  = card->buffer[2] | (card->buffer[3] << 8); //Data pakcet's type.
 	//debug_data_stream("card->buffer",card->buffer,chunk);
 	lbs_deb_sdio("packet of type %d and size %d bytes\n",
 		(int)type, (int)chunk);
 	//debug_data_stream("packet",card->buffer,chunk);
-	if (chunk > size) {//错误，收到的数据比包还长?		
-          lbs_deb_sdio("packet fragment (%d > %d)\n",
+	if (chunk > size) {
+		lbs_deb_sdio("packet fragment (%d > %d)\n",
 			(int)chunk, (int)size);
 		ret = -EINVAL;
 		goto out;
@@ -261,12 +256,12 @@ static int if_sdio_card_to_host(struct if_sdio_card *card)
 
 	switch (type) {
 	case MVMS_CMD:
-		 ret = if_sdio_handle_cmd(card, card->buffer + 4, chunk - 4);//命令包处理
+		 ret = if_sdio_handle_cmd(card, card->buffer + 4, chunk - 4);  //Command process.
 		if (ret)
 			goto out; 
 		break;
 	case MVMS_DAT:
-		 ret = if_sdio_handle_data(card, card->buffer + 4, chunk - 4);//数据报的处理
+		 ret = if_sdio_handle_data(card, card->buffer + 4, chunk - 4); //Data process.
 		if (ret)
 			goto out; 
 		break;
@@ -281,17 +276,17 @@ static int if_sdio_card_to_host(struct if_sdio_card *card)
 		/*pr_debug("invalid type (%d) from firmware\n",
 				(int)type);
 		ret = -EINVAL;*/
-		priv->connect_status=LBS_DISCONNECTED;
-		ret=0;
+		priv->connect_status = LBS_DISCONNECTED;
+		ret = 0;
 		goto out;
 	}
 
 out:
 	if (ret)
+	{
 		pr_err("problem fetching packet from firmware\n");
-
+	}
 	pr_debug("ret %d", ret);
-
 	return ret;
 }
 
@@ -461,18 +456,11 @@ out:
 	return ret;
 }
 
-
-
-
-
-
-
-
 /*******************************************************************/
 /* SDIO callbacks                                                  */
 /*******************************************************************/
 
- void if_sdio_interrupt(struct sdio_func *func)
+void if_sdio_interrupt(struct sdio_func *func)
 {
 	int ret;
 	struct if_sdio_card *card;
@@ -896,7 +884,7 @@ u16 wireless_card_rx(u8 *uiprxbuf)
 	struct eth_packet *rx_pkt=&priv->rx_pkt;
 	int ret;
 	memset(rx_pkt,0,sizeof(struct eth_packet ));//清零以判断数据接收正常
-	ret=pool_sdio_interrupt(card->func);
+	ret = poll_sdio_interrupt(card->func);
 	if(ret<0){
 			lbs_pr_err("read interrupt error!\n");
 			try_bug(0);
@@ -916,20 +904,15 @@ u16 wireless_card_rx(u8 *uiprxbuf)
 	return 0;
 }
 
-int pool_sdio_interrupt(struct sdio_func *func)
+int poll_sdio_interrupt(struct sdio_func *func)
 {
 	int ret;
 	u8 cause;
-	cause=sdio_readb(func, IF_SDIO_H_INT_STATUS, &ret);
+	cause = sdio_readb(func, IF_SDIO_H_INT_STATUS, &ret);
 	if (ret)
 		return -EIO;
 	return cause;
-
 }
-
-
-
-
 
 void wireless_card_tx(u8 *uiptxbuf,u16 len)
 {	

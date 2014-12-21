@@ -24,12 +24,13 @@
 #include "network.h"   //Network diagnostic application.
 
 __EXTERNAL_COMMAND ExtCmdArray[] = {
+	{"fs",NULL,FALSE,fsEntry},
+	{"fdisk",NULL,FALSE,fdiskEntry},
+	{"hedit",NULL,FALSE,heditEntry},
 	{"fibonacci",NULL,FALSE,Fibonacci},
 	{"hypertrm",NULL,FALSE,Hypertrm},
 	{"hyptrm2",NULL,FALSE,Hyptrm2},
-	{"fdisk",NULL,FALSE,fdiskEntry},
-	{"fs",NULL,FALSE,fsEntry},
-	{"hedit",NULL,FALSE,heditEntry},
+
 #if defined(__CFG_NET_IPv4) || defined(__CFG_NET_IPv6)
 	{"network",NULL,FALSE,networkEntry},
 #endif

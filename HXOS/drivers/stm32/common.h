@@ -168,32 +168,32 @@ enum { MSG_MSGDUMP, MSG_DEBUG, MSG_INFO, MSG_WARNING, MSG_ERROR };
 #define lbs_deb_cmd_enter_args(fmt,arg) 
 #define lbs_deb_cmd_leave_args(fmt,arg) 
 #else
-#define printk
-#define pr_err     
-#define lbs_pr_err 
-#define lbs_deb_sdio		
-#define lbs_deb_scan		
-#define lbs_deb_assoc 	
-#define lbs_deb_join  	
+#define printk                      //do{}while(0);
+#define pr_err                      //do{}while(0); 
+#define lbs_pr_err                  //do{}while(0);
+#define lbs_deb_sdio		            //do{}while(0);
+#define lbs_deb_scan		            _hx_printf //do{}while(0);
+#define lbs_deb_assoc 	            //do{}while(0);
+#define lbs_deb_join  	            //do{}while(0);
 #define DEBUG_PARAM_SDIO
-#define pr_sdio_interrupt(arg...)
-#define printf_scan
-#define lbs_pr_alert(arg...) 
-#define lbs_deb_host(arg...)  
-#define lbs_deb_thread(arg...)  
-#define lbs_pr_debug(arg...)          // void_dbg
-#define lbs_pr_info(arg...)           // void_dbg//Uart_Printf//
-#define lbs_deb_cmd(arg...)           // lbs_pr_info
-#define lbs_deb_tx(arg...)            // void_dbg//lbs_pr_info
-#define lbs_deb_11d(arg...)           // void_dbg
-#define pr_fifo_debug 
-#define pr_debug
-#define pr_warning 
-#define dbg 
-#define marvell_error 
-#define sdio_deb_enter()
-#define sdio_deb_leave()
-#define lbs_deb_rx 
+#define pr_sdio_interrupt(arg...)   //do{}while(0);
+#define printf_scan                 //do{}while(0);
+#define lbs_pr_alert(arg...)        //do{}while(0);
+#define lbs_deb_host(arg...)        //do{}while(0);
+#define lbs_deb_thread(arg...)      //do{}while(0);
+#define lbs_pr_debug(arg...)        //do{}while(0);
+#define lbs_pr_info(arg...)         //do{}while(0);
+#define lbs_deb_cmd(arg...)         //do{}while(0);
+#define lbs_deb_tx(arg...)          //do{}while(0);
+#define lbs_deb_11d(arg...)         //do{}while(0);
+#define pr_fifo_debug               //do{}while(0);
+#define pr_debug                    //do{}while(0);
+#define pr_warning                  //do{}while(0);
+#define dbg                         //do{}while(0);
+#define marvell_error               //do{}while(0);
+#define sdio_deb_enter()            //do{}while(0);
+#define sdio_deb_leave()            //do{}while(0);
+#define lbs_deb_rx                  //do{}while(0);
 #define dbg_netdata(info,buf,size)	 debug_data_stream(info,buf,size)	
 #define lbs_deb_enter(fmt)    	     //_hx_printf("lbs_deb_enter %s\r\n",__func__)
 #define lbs_deb_leave(fmt)		       //_hx_printf("lbs_deb_leave %s\r\n",__func__)

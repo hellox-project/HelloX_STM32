@@ -62,7 +62,7 @@ BOOL PrepareInit()
 	_hx_printf("  WiFi debugging: End of SDIO and WiFi initialization.\r\n");
 #endif
 	//Try to associate to the default SSID,use INFRASTRUCTURE mode.
-	marvel_assoc_network(priv,WIFI_DEFAULT_SSID,WIFI_DEFAULT_KEY,WIFI_MODE_INFRA);
+	marvel_assoc_network(priv,WIFI_DEFAULT_SSID,WIFI_DEFAULT_KEY,WIFI_MODE_ADHOC);
 	return TRUE;
 }
 
@@ -180,7 +180,7 @@ err_t low_level_output(struct netif *netif, struct pbuf *p)
 	
 	//Send a message to WiFi driver damon thread,this will wakeup the ethernet thread and
 	//triger the physical sending process.
-	msg.wCommand = WIFI_MSG_SEND;
+	msg.wCommand = ETH_MSG_SEND;
 	msg.wParam   = 0;
 	msg.dwParam  = 0;
 	SendMessage((HANDLE)g_pWiFiDriverThread,&msg);
@@ -211,7 +211,7 @@ struct pbuf *low_level_input(struct netif *netif)
      variable. */ 
   len = lbs_rev_pkt();
 	
-  if(len>0){
+  if(len > 0){
 		buffer = rx_pkt->data;
 		/* We allocate a pbuf chain of pbufs from the pool. */
 		p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);

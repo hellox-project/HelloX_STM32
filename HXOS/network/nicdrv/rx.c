@@ -1,13 +1,43 @@
+//***********************************************************************/
+//    Author                    : Garry
+//    Original Date             : Dec 7,2014
+//    Module Name               : rx.c
+//    Module Funciton           : 
+//                                This module countains receive functions of
+//                                WiFi module.
+//                                It's part of Marvell 8686 Linux driver source
+//                                code and modified by Garry,which complies GPL
+//                                license.
+//
+//    Last modified Author      :
+//    Last modified Date        :
+//    Last modified Content     :
+//                                1.
+//                                2.
+//    Lines number              :
+//***********************************************************************/
+
+#ifndef __STDAFX_H__
+#include "StdAfx.h"
+#endif
+
+#ifndef __KAPI_H__
+#include "kapi.h"
+#endif
+
 #include "rxtx.h"
-#include "type.h"
-#include "common.h"
-#include "hostcmd.h"
-#include "dev.h"
-#include "mac80211.h"
-#include "mdef.h"
-#include "types.h"
-#include "marvel_main.h"
 #include "marvell_ops.h"
+#include "lwip/opt.h"
+#include "lwip/def.h"
+#include "lwip/mem.h"
+#include "lwip/pbuf.h"
+#include "lwip/sys.h"
+#include "lwip/stats.h"
+#include "lwip/snmp.h"
+#include "lwip/tcpip.h"
+#include "lwip/dhcp.h"
+
+#include "ethif.h"
 
 #pragma pack(1)
 struct ethhdr {
@@ -42,6 +72,75 @@ struct rx80211packethdr {
 
 #pragma pack()
 
+//A local refered function to delivery a received packet to
+//HelloX's kernel.
+//  @pBuff is the packet buffer's start address,and 
+//  @len is the total length of packet buffer.
+//  @pIf is the original interface where the packet is received.
+static void DeliveryPacket(const char* pBuff,int len,struct netif* pIf)
+{
+	struct pbuf* p           = NULL;
+	struct pbuf* q           = NULL;
+	int    l                 = 0;
+	__IF_PBUF_ASSOC* pAssoc  = NULL;
+	__KERNEL_THREAD_MESSAGE  msg;
+	BOOL   bResult           = FALSE;
+	
+	if((NULL == pBuff) || (0 == len))
+	{
+		return;
+	}
+	
+	//Create the association object to associate netif and pbuf together.
+	//This object will be released by HelloX's ethernet kernel thread.
+	pAssoc = (__IF_PBUF_ASSOC*)KMemAlloc(sizeof(__IF_PBUF_ASSOC),KMEM_SIZE_TYPE_ANY);
+	if(NULL == pAssoc)
+	{
+		goto __TERMINAL;
+	}
+	
+	//Create pbuf object.
+	p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
+	if(NULL == p)
+	{
+		goto __TERMINAL;
+	}
+	
+	//Copy the packet buffer to pbuf.
+	for (q = p; q != NULL; q = q->next)
+	{
+		memcpy((u8_t*)q->payload, (u8_t*)&pBuff[l], q->len);
+		l = l + q->len;
+	}
+	
+	//Associate the interface and pbuf together.
+	pAssoc->p       = p;
+	pAssoc->pnetif  = pIf;
+	
+	//Delivery a message to HelloX's ethernet kernel thread,this
+	//will lead the packet's processing in kernel.
+	msg.dwParam    = (DWORD)pAssoc;
+	msg.wParam     = 0;
+	msg.wCommand   = ETH_MSG_DELIVER;
+	SendMessage((HANDLE)g_pWiFiDriverThread,&msg);
+	
+	bResult = TRUE;
+	
+__TERMINAL:
+	if(!bResult)
+	{
+		if(pAssoc)
+		{
+			KMemFree(pAssoc,KMEM_SIZE_TYPE_ANY,0);
+		}
+		if(p)
+		{
+			pbuf_free(p);
+		}
+	}
+	return;
+}
+
 /**
  *  @brief This function processes received packet and forwards it
  *  to kernel/upper layer
@@ -57,21 +156,19 @@ int lbs_process_rxed_packet(struct lbs_private *priv, char *buffer,u16 size)
 	struct rxpd *p_rx_pd;
 	int hdrchop;
 	struct ethhdr *p_ethhdr;
-	const u8 rfc1042_eth_hdr[] = { 0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00 };
-	struct eth_packet *rx_ethpkt=&priv->rx_pkt;//我们要的以太网数据报
+	const u8 rfc1042_eth_hdr[]   = { 0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00 };
+	struct eth_packet *rx_ethpkt = &priv->rx_pkt;
 	lbs_deb_enter(LBS_DEB_RX);
-	p_rx_pd = (struct rxpd *)buffer;//包的状态信息
+	p_rx_pd  = (struct rxpd *)buffer;
 	p_rx_pkt = (struct rxpackethdr *) ((u8 *)p_rx_pd +
-		le32_to_cpu(p_rx_pd->pkt_ptr));//得到存放802.3的头信息的地址
+		le32_to_cpu(p_rx_pd->pkt_ptr));
 		
-//	lbs_deb_hex(LBS_DEB_RX, "RX Data: Before chop rxpd", buffer,
-	//	 min(size, 100));
-
 	if (size < (ETH_HLEN + 8 + sizeof(struct rxpd))) {
 		lbs_deb_rx("rx err: frame received with bad length\n");
 		ret = 0;
 		goto done;
 	}
+	
 #ifdef MASK_DEBUG
 	lbs_deb_rx("rx data: skb->len - pkt_ptr = %d-%zd = %zd\n",
 		size, (size_t)le32_to_cpu(p_rx_pd->pkt_ptr),
@@ -83,7 +180,8 @@ int lbs_process_rxed_packet(struct lbs_private *priv, char *buffer,u16 size)
 		sizeof(p_rx_pkt->eth803_hdr.src_addr));
 #endif
 	if (memcmp(&p_rx_pkt->rfc1042_hdr,
-		   rfc1042_eth_hdr, sizeof(rfc1042_eth_hdr)) == 0) {//这是RFC1042中定义的SNAP头信息，比较是否是rfc1042封装的mac帧
+		   rfc1042_eth_hdr, sizeof(rfc1042_eth_hdr)) == 0)
+	{
 		/*
 		 *  Replace the 803 header and rfc1042 header (llc/snap) with an
 		 *    EthernetII header, keep the src/dst and snap_type (ethertype)
@@ -94,17 +192,14 @@ int lbs_process_rxed_packet(struct lbs_private *priv, char *buffer,u16 size)
 		 *  To create the Ethernet II, just move the src, dst address right
 		 *    before the snap_type.
 		 */
-		 //marvel芯片给出的数据为802.11LLC层的数据包格式，有snap头，现在将其更改为802.3的
-		 //数据报格式，只要将802.11mac头信息中的源地址和目的地址复制到snap的右边即可，具体格式请参考相关标准的
-		 //mac帧格式
 		p_ethhdr = (struct ethhdr *)
 		    ((u8 *) & p_rx_pkt->eth803_hdr
 		     + sizeof(p_rx_pkt->eth803_hdr) + sizeof(p_rx_pkt->rfc1042_hdr)
 		     - sizeof(p_rx_pkt->eth803_hdr.dest_addr)
 		     - sizeof(p_rx_pkt->eth803_hdr.src_addr)
-		     - sizeof(p_rx_pkt->rfc1042_hdr.snap_type));//找出存放802.3 MAC的起始位置
+		     - sizeof(p_rx_pkt->rfc1042_hdr.snap_type));
 
-		memcpy(p_ethhdr->h_source, p_rx_pkt->eth803_hdr.src_addr,//直接覆盖,从后往前拷贝
+		memcpy(p_ethhdr->h_source, p_rx_pkt->eth803_hdr.src_addr,
 		       sizeof(p_ethhdr->h_source));
 		memcpy(p_ethhdr->h_dest, p_rx_pkt->eth803_hdr.dest_addr,
 		       sizeof(p_ethhdr->h_dest));
@@ -112,8 +207,9 @@ int lbs_process_rxed_packet(struct lbs_private *priv, char *buffer,u16 size)
 		/* Chop off the rxpd + the excess memory from the 802.2/llc/snap header
 		 *   that was removed
 		 */
-		hdrchop = (u8 *)p_ethhdr - (u8 *)p_rx_pd;//用于重新更改skb->data的地址，后面使用的是skb_pull
-	} else {
+		hdrchop = (u8 *)p_ethhdr - (u8 *)p_rx_pd;
+	}
+	else{
 		lbs_deb_hex(LBS_DEB_RX, "RX Data: LLC/SNAP",
 			(u8 *) & p_rx_pkt->rfc1042_hdr,
 			sizeof(p_rx_pkt->rfc1042_hdr));
@@ -125,26 +221,25 @@ int lbs_process_rxed_packet(struct lbs_private *priv, char *buffer,u16 size)
 	/* Chop off the leading header bytes so the skb points to the start of
 	 *   either the reconstructed EthII frame or the 802.2/llc/snap frame
 	 */
-	//skb_pull(skb, hdrchop);//去掉前面的rxtp以及802.11mac
+	//skb_pull(skb, hdrchop);
 
-	rx_ethpkt->len=size-hdrchop;
-	rx_ethpkt->data=(char *)((char *)buffer+hdrchop);//这就是我们数据的真正存放地址
-	//dbg_netdata("rx network data",rx_ethpkt->data,rx_ethpkt->len);
-	/* Take the data rate from the rxpd structure
-	 * only if the rate is auto
-	 */
+	rx_ethpkt->len  = size - hdrchop;
+	rx_ethpkt->data = (char *)((char *)buffer+hdrchop);
+	//Delivery the data into HelloX's kernel.
+	//DeliveryPacket(rx_ethpkt->data,rx_ethpkt->len,NULL);
+
 #if 0
 	if (priv->enablehwauto)
-		priv->cur_rate = lbs_fw_index_to_data_rate(p_rx_pd->rx_rate);//记录下当前数据传输的速率
-
-	lbs_compute_rssi(priv, p_rx_pd);//副产品，计算RSSI信号强度
+	{
+		priv->cur_rate = lbs_fw_index_to_data_rate(p_rx_pd->rx_rate);
+	}
+	lbs_compute_rssi(priv, p_rx_pd);
 #endif
 	ret = 0;
 done:
 	lbs_deb_leave_args(LBS_DEB_RX, ret);
 	return ret;
 }
-
 
 int  wait_for_data_end(void)
 {	
@@ -168,9 +263,4 @@ int  wait_for_data_end(void)
 	}
         return 0;
 }
-
-
-
-
-
 

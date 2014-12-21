@@ -72,19 +72,14 @@ struct firmware {
 struct if_sdio_card {
 	struct sdio_func	*func;
 	struct lbs_private	*priv;
-
 	int					model;
 	unsigned long		ioport;
 	unsigned int		scratch_reg;
-
-	const struct firmware 	*helper;//bootloader
-	const struct firmware 	*firmware;//固件
+	const struct firmware *helper;
+	const struct firmware *firmware;
 	u8			rx_unit;
 	struct if_sdio_packet	*packets;
-	//修改当前buffer大小65536
 	u8			buffer[1600];
-
-	
 };
 
 
@@ -92,7 +87,7 @@ void if_sdio_interrupt(struct sdio_func *func);
 u8 sdio_readb(struct sdio_func *func, unsigned int addr, int *err_ret);
 int if_sdio_send_data(struct lbs_private *priv, u8 *buf, u16 nb);
 static int if_sdio_handle_event(struct if_sdio_card *card,u8 *buffer, unsigned size);
-int pool_sdio_interrupt(struct sdio_func *func);
+int poll_sdio_interrupt(struct sdio_func *func);
 int  wait_for_data_end(void);
 struct sdio_func;
 struct sdio_device_id;

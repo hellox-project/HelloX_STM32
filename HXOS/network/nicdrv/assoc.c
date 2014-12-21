@@ -408,8 +408,7 @@ done:
  *
  *  @return          0-success, otherwise fail
  */
-static int lbs_try_associate(struct lbs_private *priv,
-	struct assoc_request *assoc_req)
+static int lbs_try_associate(struct lbs_private *priv,struct assoc_request *assoc_req)
 {
 	int ret;
 	u8 preamble = RADIO_PREAMBLE_LONG;
@@ -421,7 +420,7 @@ static int lbs_try_associate(struct lbs_private *priv,
 	 */
 	if (priv->fwrelease < 0x09000000) {
 		ret = lbs_set_authentication(priv, assoc_req->bss.bssid,
-					     priv->secinfo.auth_mode);//设置认证
+					     priv->secinfo.auth_mode);
 		if (ret)
 			goto out;
 	}
@@ -567,13 +566,21 @@ static struct bss_descriptor *lbs_find_ssid_in_list(struct lbs_private *priv,
 		    (iter_bss->last_scanned < tmp_oldest->last_scanned))
 			tmp_oldest = iter_bss;
 
+		_hx_printf("  WiFi SSID Search: ssid1 = %s, ssid2 = %s\r\n",ssid,iter_bss->ssid);
 		if (lbs_ssid_cmp(iter_bss->ssid, iter_bss->ssid_len,
 				 ssid, ssid_len) != 0)
+		{
+			_hx_printf("  SSID Compare failed:ssid1_len = %d,ssid2_len = %d\r\n",ssid_len,iter_bss->ssid_len);
 			continue; /* ssid doesn't match */
+		}
+		else
+		{
+			_hx_printf("  SSID Compare success.\r\n");
+		}
 		if (bssid && compare_ether_addr(iter_bss->bssid, bssid) != 0)
 			continue; /* bssid doesn't match */
-		if ((channel > 0) && (iter_bss->channel != channel))
-			continue; /* channel doesn't match */
+		//if ((channel > 0) && (iter_bss->channel != channel))
+		//	continue; /* channel doesn't match */
 
 		switch (mode) {
 		case IW_MODE_INFRA:
@@ -609,7 +616,6 @@ out:
 }
 
 
-
 int lbs_send_specific_ssid_scan(struct lbs_private *priv, uint8_t *ssid,
 				uint8_t ssid_len);
 
@@ -636,27 +642,29 @@ static int assoc_helper_essid(struct lbs_private *priv,
 		/*lbs_send_specific_ssid_scan(priv, assoc_req->ssid,
 			assoc_req->ssid_len);*/
 
+		_hx_printf("  WiFi assoc:Try to find ssid[%s] in network list.\r\n",assoc_req->ssid);
 		bss = lbs_find_ssid_in_list(priv, assoc_req->ssid,
 				assoc_req->ssid_len, NULL, IW_MODE_INFRA, channel);
-		if (bss != NULL) {			
-			priv->cur_bss=bss;
+		if (bss != NULL) {
+			_hx_printf("  WiFi assoc:Find SSID in network list.\r\n");
+			priv->cur_bss = bss;
 			memcpy(&assoc_req->bss, bss, sizeof(struct bss_descriptor));
 			ret = lbs_try_associate(priv, assoc_req);
 		} else {
-			lbs_deb_assoc("SSID not found; cannot associate\n");
+			_hx_printf("  WiFi assoc:SSID not found; cannot associate\r\n");
 		}
 	} else if (assoc_req->mode == IW_MODE_ADHOC) {
 		/* Scan for the network, do not save previous results.  Stale
 		 *   scan data will cause us to join a non-existant adhoc network
 		 */
-	/*	lbs_send_specific_ssid_scan(priv, assoc_req->ssid,
+		/*	lbs_send_specific_ssid_scan(priv, assoc_req->ssid,
 			assoc_req->ssid_len);*/
 
 		/* Search for the requested SSID in the scan table */
 		bss = lbs_find_ssid_in_list(priv, assoc_req->ssid,
 				assoc_req->ssid_len, NULL, IW_MODE_ADHOC, channel);
 		if (bss != NULL) {
-			priv->cur_bss=bss;
+			priv->cur_bss = bss;
 			lbs_deb_assoc("SSID found, will join\n");
 			memcpy(&assoc_req->bss, bss, sizeof(struct bss_descriptor));
 			lbs_adhoc_join(priv, assoc_req);
@@ -673,8 +681,6 @@ static int assoc_helper_essid(struct lbs_private *priv,
 	lbs_deb_leave_args(LBS_DEB_ASSOC,  ret);
 	return ret;
 }
-
-
 
 
 static int assoc_helper_associate(struct lbs_private *priv,
@@ -701,9 +707,6 @@ static int assoc_helper_associate(struct lbs_private *priv,
 	lbs_deb_leave_args(LBS_DEB_ASSOC, ret);
 	return ret;
 }
-
-
-
 
 
 static int assoc_helper_mode(struct lbs_private *priv,
@@ -1334,7 +1337,7 @@ static __inline int match_bss_no_security(struct lbs_802_11_security *secinfo,
 	    && !secinfo->WPA2enabled
 	    && match_bss->wpa_ie[0] != WLAN_EID_GENERIC
 	    && match_bss->rsn_ie[0] != WLAN_EID_RSN
-	    && !(match_bss->capability & WLAN_CAPABILITY_PRIVACY))//没有任何加密
+	    && !(match_bss->capability & WLAN_CAPABILITY_PRIVACY))
 		return 1;
 	else
 		return 0;
@@ -1418,7 +1421,7 @@ static int is_network_compatible(struct lbs_private *priv,
 
 	lbs_deb_enter(LBS_DEB_SCAN);
 
-	if (bss->mode != mode)//网络模式对不上，是不能匹配的
+	if (bss->mode != mode)
 		goto done;
 
 	matched = match_bss_no_security(&priv->secinfo, bss);
@@ -1661,34 +1664,35 @@ struct assoc_request gmarvel_adhoc_assoc;
 static void init_marvel_adhoc_assoc(struct assoc_request *assoc,char *ssid,char *key,char mode)
 {	
 	memset(assoc,0,sizeof(struct assoc_request));
-	assoc->flags|=(1<<ASSOC_FLAG_SSID);
+	assoc->flags |= (1<<ASSOC_FLAG_SSID);
 	printk("please input essid:%s\n",ssid);
 	printk("please input wep key:%s\n",key);
   memcpy(assoc->ssid,ssid,strlen(ssid));
-  assoc->ssid_len=strlen((const char *)assoc->ssid);
+  assoc->ssid_len = strlen((const char *)assoc->ssid);
 	if(strlen(key)){
-		assoc->wep_keys[0].len=strlen(key);
+		assoc->wep_keys[0].len = strlen(key);
 		memcpy(assoc->wep_keys[0].key,key,strlen(key));
-		assoc->secinfo.wep_enabled=1;
-		assoc->flags|=((1<<ASSOC_FLAG_WEP_KEYS)|
+		assoc->secinfo.wep_enabled = 1;
+		assoc->flags |= ((1<<ASSOC_FLAG_WEP_KEYS)|
 		(1<<ASSOC_FLAG_WEP_TX_KEYIDX)|
 		(1<<ASSOC_FLAG_SECINFO)|
 		(1<<ASSOC_FLAG_MODE));
 	}
-  assoc->channel=1;
-  assoc->band=0;
-  assoc->mode=(mode=='0')?IW_MODE_INFRA:IW_MODE_ADHOC;
+	//Set security information element changing flags.
+	assoc->flags |= 1<<ASSOC_FLAG_SECINFO;
+	assoc->channel = 1;
+  assoc->band    = 0;
+  assoc->mode    = (mode == '0') ? IW_MODE_INFRA:IW_MODE_ADHOC;
   memset(assoc->bssid,0,6);
-  assoc->secinfo.auth_mode=1;
+  assoc->secinfo.auth_mode = 1;
 }
-
 
 void marvel_assoc_open_network(struct lbs_private *priv,
 	char *ssid,char *key,char mode)
 {
 	static struct assoc_request gmarvel_adhoc_assoc;
 	init_marvel_adhoc_assoc(&gmarvel_adhoc_assoc,ssid,key,mode);
-	priv->pending_assoc_req=&gmarvel_adhoc_assoc;
+	priv->pending_assoc_req = &gmarvel_adhoc_assoc;
 	lbs_deb_assoc("start assoc...\n");
 	lbs_association_worker(priv);
 }
@@ -1714,7 +1718,7 @@ void lbs_association_worker(struct lbs_private *priv)
 
 	lbs_deb_enter(LBS_DEB_ASSOC);
 
-	assoc_req = priv->pending_assoc_req;//如何关联记录在这里
+	assoc_req = priv->pending_assoc_req;
 	priv->pending_assoc_req = NULL;
 	priv->in_progress_assoc_req = assoc_req;
 
@@ -1752,17 +1756,19 @@ void lbs_association_worker(struct lbs_private *priv)
 	wpa_hexdump_key(MSG_DEBUG,"wpa ie",assoc_req->wpa_ie,assoc_req->wpa_ie_len);	
 	/* If 'any' SSID was specified, find an SSID to associate with */
 	if (test_bit(ASSOC_FLAG_SSID, &assoc_req->flags)
-	    && !assoc_req->ssid_len)//说明没有指定关联的ESSID
+	    && !assoc_req->ssid_len)
+	{
 		find_any_ssid = 1;
+	}
 
 	/* But don't use 'any' SSID if there's a valid locked BSSID to use */
-	if (test_bit(ASSOC_FLAG_BSSID, &assoc_req->flags)) {// 根据BSSID来关联
-		if (compare_ether_addr(assoc_req->bssid, bssid_any)//不相同
+	if (test_bit(ASSOC_FLAG_BSSID, &assoc_req->flags)) {
+		if (compare_ether_addr(assoc_req->bssid, bssid_any)
 		    && compare_ether_addr(assoc_req->bssid, bssid_off))
 			find_any_ssid = 0;
 	}
 
-	if (find_any_ssid) {//寻找最优网络
+	if (find_any_ssid) {
 		u8 new_mode = assoc_req->mode;
 
 		ret = lbs_find_best_network_ssid(priv, assoc_req->ssid,
@@ -1784,7 +1790,7 @@ void lbs_association_worker(struct lbs_private *priv)
 	 * Check if the attributes being changing require deauthentication
 	 * from the currently associated infrastructure access point.
 	 */
-	if (priv->mode == IW_MODE_INFRA) {//在基础网络下，网络连接改变时去关联
+	if (priv->mode == IW_MODE_INFRA) {
 		if (should_deauth_infrastructure(priv, assoc_req)) {
 			ret = lbs_cmd_80211_deauthenticate(priv,
 							   priv->curbssparams.bssid,
@@ -1795,7 +1801,7 @@ void lbs_association_worker(struct lbs_private *priv)
 					ret);
 			}
 		}
-	} else if (priv->mode == IW_MODE_ADHOC) {//在adhoc模式下，网络状态改变，停用adhoc模式
+	} else if (priv->mode == IW_MODE_ADHOC) {
 		if (should_stop_adhoc(priv, assoc_req)) {
 			ret = lbs_adhoc_stop(priv);
 			if (ret) {
@@ -1806,7 +1812,7 @@ void lbs_association_worker(struct lbs_private *priv)
 	}
 	/* Send the various configuration bits to the firmware */
 	if (test_bit(ASSOC_FLAG_MODE, &assoc_req->flags)) {
-		ret = assoc_helper_mode(priv, assoc_req);//模式改变，发送命令改变网络模式
+		ret = assoc_helper_mode(priv, assoc_req);
 		if (ret)
 			goto out;
 	}
@@ -1819,12 +1825,12 @@ void lbs_association_worker(struct lbs_private *priv)
 
 	if ( test_bit(ASSOC_FLAG_WEP_KEYS, &assoc_req->flags)
 	    || test_bit(ASSOC_FLAG_WEP_TX_KEYIDX, &assoc_req->flags)) {
-		ret = assoc_helper_wep_keys(priv, assoc_req);//wep密钥管理
+		ret = assoc_helper_wep_keys(priv, assoc_req);
 		if (ret)
 			goto out;
 	}
 
-	if (test_bit(ASSOC_FLAG_SECINFO, &assoc_req->flags)) {//加密信息改变
+	if (test_bit(ASSOC_FLAG_SECINFO, &assoc_req->flags)) {
 		ret = assoc_helper_secinfo(priv, assoc_req);
 		if (ret)
 			goto out;
@@ -1846,7 +1852,7 @@ void lbs_association_worker(struct lbs_private *priv)
 	 * trigger the association attempt.
 	 */
 	if (test_bit(ASSOC_FLAG_BSSID, &assoc_req->flags)
-	    || test_bit(ASSOC_FLAG_SSID, &assoc_req->flags)) {//真正处理关联的地方
+	    || test_bit(ASSOC_FLAG_SSID, &assoc_req->flags)) {
 		int success = 1;
 
 		ret = assoc_helper_associate(priv, assoc_req);

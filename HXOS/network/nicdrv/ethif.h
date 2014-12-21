@@ -31,16 +31,17 @@ extern __KERNEL_THREAD_OBJECT* g_pWiFiDriverThread;
 //Messages that can be sent to WiFi driver thread.The WiFi driver thread is
 //driven by message,other thread or application can call WiFi functions by
 //send message to WiFi driver thread.
-#define WIFI_MSG_SEND    0x0001    //Send link level frame.
-#define WIFI_MSG_RECEIVE 0x0002    //Receive link level frame.
-#define WIFI_MSG_SCAN    0x0004    //Re-scan WiFi hot spot.
-#define WIFI_MSG_ASSOC   0x0008    //Associate a specified hot spot.
-#define WIFI_MSG_ACT     0x0010    //Activate the WiFi interface.
-#define WIFI_MSG_DEACT   0x0020    //De-activate the WiFi interface.
-#define WIFI_MSG_SETIP   0x0040    //Set IP address of WiFi interface.
-#define WIFI_MSG_DHCPSRV 0x0080    //Set interface's DHCP server configuration.
-#define WIFI_MSG_DHCPCLT 0x0100    //Set interface's DHCP client configuration.
-#define WIFI_MSG_SHOWINT 0x0200    //Display interface's statistics informtion.
+#define ETH_MSG_SEND    0x0001    //Send link level frame.
+#define ETH_MSG_RECEIVE 0x0002    //Receive link level frame.
+#define ETH_MSG_SCAN    0x0004    //Re-scan WiFi hot spot.
+#define ETH_MSG_ASSOC   0x0008    //Associate a specified hot spot.
+#define ETH_MSG_ACT     0x0010    //Activate the WiFi interface.
+#define ETH_MSG_DEACT   0x0020    //De-activate the WiFi interface.
+#define ETH_MSG_SETIP   0x0040    //Set IP address of WiFi interface.
+#define ETH_MSG_DHCPSRV 0x0080    //Set interface's DHCP server configuration.
+#define ETH_MSG_DHCPCLT 0x0100    //Set interface's DHCP client configuration.
+#define ETH_MSG_SHOWINT 0x0200    //Display interface's statistics informtion.
+#define ETH_MSG_DELIVER 0x0400    //Delivery a packet to upper layer.
 
 //A helper structure used to change an ethernet interface's IP configuration.
 //Shell thread can change the ethernet interface's configuration by sending
@@ -59,6 +60,13 @@ typedef struct tag__WIFI_ASSOC_INFO{
 	char   key[24];
 	char   mode;     //0 for infrastructure,1 for adHoc.
 }__WIFI_ASSOC_INFO;
+
+//Association of pbuf and netif,which is used by ethernet kernel thread
+//to determine where the packet(pbuf) is received(netif).
+typedef struct tag__IF_PBUF_ASSOC{
+	struct pbuf*  p;
+	struct netif* pnetif;
+}__IF_PBUF_ASSOC;
 
 //Interface state data associate to net interface,HelloX specified.All this state
 //information is saved in static storage and is restored when HelloX boot up.
@@ -95,11 +103,11 @@ typedef struct tag__ETH_INTERFACE_STATE{
 
 //Default WiFi hot spot SSID to associate when startup,and also the default
 //SSID when HelloX running in AdHoc mode.
-#define WIFI_DEFAULT_SSID "vienna hotel WIFI"
+#define WIFI_DEFAULT_SSID "HelloX_HGW"
 
 //Default key when associate with the default SSID,or the default key when
 //run in AdHoc mode.
-#define WIFI_DEFAULT_KEY  ""
+#define WIFI_DEFAULT_KEY  "0123456789012"
 
 //Running mode of the HelloX.
 #define WIFI_MODE_INFRA   '0'
