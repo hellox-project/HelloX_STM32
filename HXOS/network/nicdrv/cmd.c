@@ -483,46 +483,67 @@ int __lbs_cmd(struct lbs_private *priv, uint16_t command,
 	      unsigned long callback_arg)
 {
 	struct cmd_ctrl_node *cmdnode;
-//	unsigned long flags;
+	unsigned long flags = 0;  //Just for debugging.
 	struct if_sdio_card *card=priv->card;
 	int ret = 0;
 	unsigned long time_out;
-	 lbs_deb_cmd_enter("enter __lbs_cmd\n");
+	
+	lbs_deb_cmd_enter("enter __lbs_cmd\n");
 
 	cmdnode = __lbs_cmd_async(priv, command, in_cmd, in_cmd_size,
-				  callback, callback_arg);//异步提交命令，唤醒主线程执行命令
+				  callback, callback_arg);
 	if (IS_ERR(cmdnode)) {
 		ret = PTR_ERR(cmdnode);
 		goto done;
 	}
 	
 	// might_sleep();
-	//等待主线程唤醒，可中断的 sdio_irq_thread
 	// wait_event_interruptible(cmdnode->cmdwait_q, cmdnode->cmdwaitqwoken);
 	/*we have no choice but to pool*/
-	time_out=1000;
-	while(1){
-		
+	time_out=10000;
+	while(1){		
 		ret = poll_sdio_interrupt(card->func);
 		if(ret<0){
 			lbs_pr_err("read interrupt error!\n");
 			try_bug(0);
 		}
-		else if(ret&IF_SDIO_H_INT_UPLD){//先判断数据
+		//else if(ret > 0)
+		//{
+		//	if_sdio_interrupt(card->func);
+		//}
+		else if(ret&IF_SDIO_H_INT_UPLD)
+		{
 			if_sdio_interrupt(card->func);
+			flags = 1;
 			break;
 		}
 		else if(ret&IF_SDIO_H_INT_DNLD)
-				if_sdio_interrupt(card->func);
-		else if(time_after(jiffies,&time_out)){
-			priv->cmd_timed_out=1;
-			 lbs_thread(priv);//处理超时
-			 ret=-ETIME;
-			 break;
-			}
+		{
+			if_sdio_interrupt(card->func);
 		}
-	 
-	while(!cmdnode->cmdwaitqwoken);//等待命令处理完成
+		else if(time_after(jiffies,&time_out))
+		{
+			priv->cmd_timed_out=1;
+			lbs_thread(priv);//处理超时
+			ret=-ETIME;
+			flags = 2;
+			break;
+		}
+	}
+	time_out = 500;
+	//_hx_printf("  WiFi scan: Begin to wait the interrupt over,flags = %d\r\n",flags);
+	while((!cmdnode->cmdwaitqwoken) && (!time_after(jiffies,&time_out)));//等待命令处理完成
+	//_hx_printf("  WiFi scan: End to wait the interrupt over,flags = %d\r\n",flags);
+	if(0 == time_out)  //Timeout,should clean up the commands.
+	{
+		_hx_printf("__lbs_cmd: Wait interrupt timeout.\r\n");
+		priv->cur_cmd = NULL;
+		if(!list_empty(&priv->cmdpendingq))
+		{
+			cmdnode = list_first_entry(&priv->cmdpendingq,
+					   struct cmd_ctrl_node, list);
+		}
+	}
 	//spin_lock_irqsave(&priv->driver_lock, flags);
 	ret = cmdnode->result;//命令执行的结果
 	if (ret)
@@ -533,7 +554,7 @@ int __lbs_cmd(struct lbs_private *priv, uint16_t command,
 	//spin_unlock_irqrestore(&priv->driver_lock, flags);
 
 done:
-	 lbs_deb_cmd_leave_args( "leave __lbs_cmd(ret=%d)\n", ret);
+	lbs_deb_cmd_leave_args( "leave __lbs_cmd(ret=%d)\n", ret);
 	return ret;
 }
 
@@ -999,7 +1020,7 @@ int lbs_execute_next_command(struct lbs_private *priv)
 
 	if (!list_empty(&priv->cmdpendingq)) {
 		cmdnode = list_first_entry(&priv->cmdpendingq,
-					   struct cmd_ctrl_node, list);//取出命令node
+					   struct cmd_ctrl_node, list);
 	}
 
 	//spin_unlock_irqrestore(&priv->driver_lock, flags);
@@ -1594,6 +1615,7 @@ int lbs_prepare_and_send_command(struct lbs_private *priv,
 			priv->cmd_timed_out=1;
 			 lbs_thread(priv);//处理超时
 			 ret=-ETIME;
+			 _hx_printf("  lbs_prepare_and_send_command: Wait interrupt timeout.\r\n");
 			 break;
 			}
 		}

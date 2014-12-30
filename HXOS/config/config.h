@@ -180,11 +180,17 @@
 //
 //************************************************************************
 
+//Include ethernet manager in OS.
+#define __CFG_NET_ETHMGR
+
 //Include IPv4 network protocol in OS.
 #define __CFG_NET_IPv4
 
 //Include IPv6 network protocol in OS.
 //#define __CFG_NET_IPv6
+
+//Include Marvel WLAN's ethernet driver.
+#define __CFG_NET_MARVELLAN
 
 //************************************************************************
 //

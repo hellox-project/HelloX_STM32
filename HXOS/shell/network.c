@@ -23,7 +23,7 @@
 #include "lwip/ip_addr.h"
 #include "lwip/netif.h"
 #include "lwip/inet.h"
-#include "nicdrv/ethif.h"
+#include "ethernet/ethif.h"
 
 #include "kapi.h"
 #include "shell.h"
@@ -45,6 +45,7 @@ static DWORD route(__CMD_PARA_OBJ*);
 static DWORD showint(__CMD_PARA_OBJ*);    //Display ethernet interface's statistics information.
 static DWORD assoc(__CMD_PARA_OBJ*);      //Associate to a specified WiFi SSID.
 static DWORD scan(__CMD_PARA_OBJ*);       //Rescan the WiFi networks.
+static DWORD setif(__CMD_PARA_OBJ*);      //Set a given interface's configurations.
 
 //
 //The following is a map between command and it's handler.
@@ -62,6 +63,7 @@ static struct __FDISK_CMD_MAP{
   {"showint",    showint,   "  showint  : Display ethernet interface's statistics information."},
   {"assoc",      assoc,     "  assoc    : Associate to a specified WiFi SSID."},
   {"scan",       scan,      "  scan     : Scan WiFi networks and show result."},
+  {"setif",      setif,     "  setif    : Set IP configurations to a given interface."},
 	{NULL,		   NULL,      NULL}
 };
 
@@ -248,6 +250,139 @@ static DWORD ping(__CMD_PARA_OBJ* lpCmdObj)
 	return dwRetVal;
 }
 
+//setif command's implementation.
+static DWORD setif(__CMD_PARA_OBJ* lpCmdObj)
+{
+	DWORD                   dwRetVal   = SHELL_CMD_PARSER_FAILED;
+	__ETH_IP_CONFIG*        pifConfig  = NULL;
+	BYTE                    index      = 1;
+	char*                   errmsg     = "  Error: Invalid parameter(s).\r\n";
+	BOOL                    bAddrOK    = FALSE;
+	BOOL                    bMaskOK    = FALSE;
+
+	//Allocate a association information object,to contain user specified associating info.
+	//This object will be destroyed by ethernet thread.
+	pifConfig = (__ETH_IP_CONFIG*)KMemAlloc(sizeof(__ETH_IP_CONFIG),KMEM_SIZE_TYPE_ANY);
+	if(NULL == pifConfig)
+	{
+		goto __TERMINAL;
+	}
+	
+	//Initialize to default value.
+	memset(pifConfig,0,sizeof(__ETH_IP_CONFIG));
+	
+	if(lpCmdObj->byParameterNum <= 1)
+	{
+		goto __TERMINAL;
+	}
+
+	//Parse command line.
+	while(index < lpCmdObj->byParameterNum)
+	{		
+		if(strcmp(lpCmdObj->Parameter[index],"/d") == 0) //Key of association.
+		{
+			index ++;
+			if(index >= lpCmdObj->byParameterNum)
+			{
+				_hx_printf(errmsg);
+				goto __TERMINAL;
+			}
+			if(strcmp(lpCmdObj->Parameter[index],"enable") == 0)  //Enable DHCP functions.
+			{
+				pifConfig->dwDHCPFlags = ETH_DHCPFLAGS_ENABLE;
+			}
+			else if(strcmp(lpCmdObj->Parameter[index],"disable") == 0) //Disable DHCP functions.
+			{
+				pifConfig->dwDHCPFlags = ETH_DHCPFLAGS_DISABLE;
+			}
+			else if(strcmp(lpCmdObj->Parameter[index],"restart") == 0) //Restart DHCP.
+			{
+				pifConfig->dwDHCPFlags = ETH_DHCPFLAGS_RESTART;
+			}
+			else if(strcmp(lpCmdObj->Parameter[index],"release") == 0) //Release DHCP configurations.
+			{
+				pifConfig->dwDHCPFlags = ETH_DHCPFLAGS_RELEASE;
+			}
+			else
+			{
+				_hx_printf(errmsg);
+				goto __TERMINAL;
+			}
+		}
+		else if(strcmp(lpCmdObj->Parameter[index],"/a") == 0) //Set IP address.
+		{
+			index ++;
+			if(index >= lpCmdObj->byParameterNum)
+			{
+				_hx_printf(errmsg);
+				goto __TERMINAL;
+			}						
+			pifConfig->ipaddr.addr = inet_addr(lpCmdObj->Parameter[index]);
+			bAddrOK = TRUE;
+		}		
+		else if(strcmp(lpCmdObj->Parameter[index],"/m") == 0) //Set IP subnet mask.
+		{
+			index ++;
+			if(index >= lpCmdObj->byParameterNum)
+			{
+				_hx_printf(errmsg);
+				goto __TERMINAL;
+			}
+			pifConfig->mask.addr = inet_addr(lpCmdObj->Parameter[index]);
+			bMaskOK = TRUE;
+		}
+		else if(strcmp(lpCmdObj->Parameter[index],"/g") == 0) //Set default gateway.
+		{
+			index ++;
+			if(index >= lpCmdObj->byParameterNum)
+			{
+				_hx_printf(errmsg);
+				goto __TERMINAL;
+			}
+			pifConfig->defgw.addr = inet_addr(lpCmdObj->Parameter[index]);
+		}
+		else  //Default parameter as interface's name.
+		{
+			if(strlen(lpCmdObj->Parameter[index]) < 2)  //Invalid interface name.
+			{
+				_hx_printf(errmsg);
+				goto __TERMINAL;
+			}
+			//pifConfig->ifName[0] = lpCmdObj->Parameter[index][0];
+			//pifConfig->ifName[1] = lpCmdObj->Parameter[index][1];
+			strcpy(pifConfig->ethName,lpCmdObj->Parameter[index]);
+		}
+		index ++;
+	}
+	
+	//If IP address and mask are all specified correctly,then assume the DHCP
+	//functions will be disabled.
+	if(bAddrOK && bMaskOK)
+	{
+		pifConfig->dwDHCPFlags = ETH_DHCPFLAGS_DISABLE;
+	}
+	
+	//If only specify one parameter without another,it's an error.
+	if((bAddrOK && !bMaskOK) || (!bAddrOK & bMaskOK))
+	{
+		_hx_printf(errmsg);
+		goto __TERMINAL;
+	}
+	
+	//Everything is OK,send a message to EthernetManager to launch the
+	//modification.
+	EthernetManager.ConfigInterface(pifConfig->ethName,pifConfig);
+	
+	dwRetVal = SHELL_CMD_PARSER_SUCCESS;
+	
+__TERMINAL:
+	if(dwRetVal != SHELL_CMD_PARSER_SUCCESS)  //Should release the config object.
+	{
+		KMemFree(pifConfig,KMEM_SIZE_TYPE_ANY,0);
+	}
+	return dwRetVal;
+}
+
 //A helper routine used to dumpout a network interface.
 static void ShowIf(struct netif* pIf)
 {
@@ -285,13 +420,8 @@ static DWORD iflist(__CMD_PARA_OBJ* lpCmdObj)
 //showint command,display statistics information of ethernet interface.
 static DWORD showint(__CMD_PARA_OBJ* lpCmdObj)
 {
-	__KERNEL_THREAD_MESSAGE msg;
-	
 	//Just send a message to ethernet main thread.
-	msg.wCommand = ETH_MSG_SHOWINT;
-	msg.dwParam  = 0;
-	msg.wParam   = 0;
-	SendMessage((HANDLE)g_pWiFiDriverThread,&msg);
+	EthernetManager.ShowInt(NULL);
 	
 	return NET_CMD_SUCCESS;
 }
@@ -299,23 +429,15 @@ static DWORD showint(__CMD_PARA_OBJ* lpCmdObj)
 //WiFi association operation,associate to a specified WiFi SSID.
 static DWORD assoc(__CMD_PARA_OBJ* lpCmdObj)
 {
-	 DWORD                   dwRetVal   = SHELL_CMD_PARSER_FAILED;
-	__WIFI_ASSOC_INFO*      pAssocInfo  = NULL;
+	 DWORD                  dwRetVal   = SHELL_CMD_PARSER_FAILED;
+	__WIFI_ASSOC_INFO       AssocInfo;
 	BYTE                    index       = 1;
 	__KERNEL_THREAD_MESSAGE msg;
 
-	//Allocate a association information object,to contain user specified associating info.
-	//This object will be destroyed by ethernet thread.
-	pAssocInfo = (__WIFI_ASSOC_INFO*)KMemAlloc(sizeof(__WIFI_ASSOC_INFO),KMEM_SIZE_TYPE_ANY);
-	if(NULL == pAssocInfo)
-	{
-		goto __TERMINAL;
-	}
-	
 	//Initialize to default value.
-	pAssocInfo->ssid[0] = 0;
-	pAssocInfo->key[0]  = 0;
-	pAssocInfo->mode    = 0;
+	AssocInfo.ssid[0] = 0;
+	AssocInfo.key[0]  = 0;
+	AssocInfo.mode    = 0;
 	
 	if(lpCmdObj->byParameterNum <= 1)
 	{
@@ -339,7 +461,7 @@ static DWORD assoc(__CMD_PARA_OBJ* lpCmdObj)
 				goto __TERMINAL;
 			}
 			//Copy the key into information object.
-			strcpy(pAssocInfo->key,lpCmdObj->Parameter[index]);
+			strcpy(AssocInfo.key,lpCmdObj->Parameter[index]);
 		}
 		else if(strcmp(lpCmdObj->Parameter[index],"/m") == 0) //Assoction mode.
 		{
@@ -351,7 +473,7 @@ static DWORD assoc(__CMD_PARA_OBJ* lpCmdObj)
 			}						
 			if(strcmp(lpCmdObj->Parameter[index],"adhoc") == 0)  //AdHoc mode.
 			{
-				pAssocInfo->mode = 1;
+				AssocInfo.mode = 1;
 			}
 		}		
 		else
@@ -371,31 +493,24 @@ static DWORD assoc(__CMD_PARA_OBJ* lpCmdObj)
 			}
 
 			//Copy the SSID into information object.
-			strcpy(pAssocInfo->ssid,lpCmdObj->Parameter[index]);		
+			strcpy(AssocInfo.ssid,lpCmdObj->Parameter[index]);		
 		}
 		index ++;
 	}
 	
 	//Re-check the parameters.
-	if(0 == pAssocInfo->ssid[0])
+	if(0 == AssocInfo.ssid[0])
 	{
 		_hx_printf("  Error: Please specifiy the SSID to associate with.\r\n");
 		goto __TERMINAL;
 	}
 	
-	//Everything is OK,send a message to ethernet thread.
-	msg.wCommand = ETH_MSG_ASSOC;
-	msg.wParam   = 0;
-	msg.dwParam  = (DWORD)pAssocInfo;
-	SendMessage((HANDLE)g_pWiFiDriverThread,&msg);
+	//Everything is OK.
+	EthernetManager.Assoc(NULL,&AssocInfo);
 	
 	dwRetVal = SHELL_CMD_PARSER_SUCCESS;
 	
 __TERMINAL:
-	if(dwRetVal != SHELL_CMD_PARSER_SUCCESS)  //Should release the Association object.
-	{
-		KMemFree(pAssocInfo,KMEM_SIZE_TYPE_ANY,0);
-	}
 	return dwRetVal;
 }
 
@@ -403,14 +518,6 @@ __TERMINAL:
 //Scan WiFi networks and show the scanning result.
 static DWORD scan(__CMD_PARA_OBJ* lpCmdObj)
 {
-	__KERNEL_THREAD_MESSAGE msg;
-	
-	//Just send a message to ethernet main thread.
-	msg.wCommand = ETH_MSG_SCAN;
-	msg.dwParam  = 0;
-	msg.wParam   = 0;
-	SendMessage((HANDLE)g_pWiFiDriverThread,&msg);
-	
+	EthernetManager.Rescan(NULL);
 	return NET_CMD_SUCCESS;
 }
-

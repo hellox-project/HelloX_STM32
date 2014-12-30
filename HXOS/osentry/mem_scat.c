@@ -21,7 +21,7 @@
 
 __MEMORY_REGION SystemMemRegion[] = {
 	//{Start address of memory region,memory region's length}
-	{(LPVOID)0x20008000,0x00008000},//32K heap memory.
+	{(LPVOID)0x20009000,0x00007000},//32K heap memory.
 	//Please add more memory regions here.
 	//The last entry must be NULL and zero,to indicate the end of this array.
 	{NULL,0}

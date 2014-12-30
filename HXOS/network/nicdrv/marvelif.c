@@ -37,7 +37,7 @@
 #include "string.h"
 #include "stdio.h"
 
-#include "ethif.h"
+#include "ethernet/ethif.h"
 #include "netif/etharp.h"
 #include "marvell_ops.h"
 
@@ -45,118 +45,120 @@
 #include "marvelif.h"
 #endif
 
+/*
+*
+*  Implementation of Marvell WiFi ethernet drivers,under the framework
+*  of HelloX's Ethernet Manager.
+*
+*/
+
 //A helper local variable to record the lbs_private.
 static struct lbs_private* priv = NULL;
 
-//Do some preparations before entry low_level_init,for example initializes the
-//hardware,set up operation environment,etc.
-BOOL PrepareInit()
+//Assist functions to handle the associate request.
+static void DoAssoc(__WIFI_ASSOC_INFO* pAssocInfo)
 {
-	//Initialize Ethernet Interface Driver.
-#ifdef __WIFI_DEBUG
-	_hx_printf("  WiFi debugging: Begin to initialize SDIO and WiFi devices...\r\n");
-#endif
-	priv = init_marvell_driver();
-	lbs_scan_worker(priv);
-#ifdef __WIFI_DEBUG
-	_hx_printf("  WiFi debugging: End of SDIO and WiFi initialization.\r\n");
-#endif
-	//Try to associate to the default SSID,use INFRASTRUCTURE mode.
-	marvel_assoc_network(priv,WIFI_DEFAULT_SSID,WIFI_DEFAULT_KEY,WIFI_MODE_ADHOC);
+	if(0 == pAssocInfo->mode)  //Infrastructure mode.
+	{
+		marvel_assoc_network(priv,pAssocInfo->ssid,pAssocInfo->key,WIFI_MODE_INFRA);
+  }
+	else
+	{
+		marvel_assoc_network(priv,pAssocInfo->ssid,pAssocInfo->key,WIFI_MODE_ADHOC);
+	}
+}
+
+//Handle the scan request.
+static void DoScan()
+{
+	struct bss_descriptor* iter = NULL;
+	int i = 0;
+	
+	lbs_scan_worker(priv);				
+	//Dump out the scan result.
+#define list_for_each_entry_bssdes(pos, head, member)                 \
+	for (pos = list_entry((head)->next,struct bss_descriptor, member);	\
+	&pos->member != (head);                                             \
+	pos = list_entry(pos->member.next,struct bss_descriptor, member))
+
+	_hx_printf("  Available WiFi list:\r\n");
+	_hx_printf("  ----------------------------- \r\n");
+	list_for_each_entry_bssdes(iter, &priv->network_list, list)
+	{
+		_hx_printf("  %02d: BSSID = %06X, RSSI = %d, SSID = '%s'\n", \
+						  i++, iter->bssid, iter->rssi, \
+						  iter->ssid);
+  }
+}
+
+//Initializer of the ethernet interface,it will be called by HelloX's ethernet framework.
+//No need to specify it if no customized requirement.
+static BOOL Marvel_Int_Init(__ETHERNET_INTERFACE* pInt)
+{
 	return TRUE;
 }
 
-/**
- * In this function, the hardware should be initialized.
- * Called from ethernetif_init().
- *
- * @param netif the already initialized lwip network interface structure
- *        for this ethernetif
- */
-void low_level_init(struct netif *netif)
+//Control functions of the ethernet interface.Some special operations,such as
+//scaninn or association in WLAN,should be implemented in this routine,since they
+//are not common operations for Ethernet.
+static BOOL Marvel_Ctrl(__ETHERNET_INTERFACE* pInt,DWORD dwOperation,LPVOID pData)
 {
-  netif->hwaddr_len = 6;
-  /* maximum transfer unit */
-  netif->mtu = 1500;
-  /* device capabilities */
-  /* don't set NETIF_FLAG_ETHARP if this device is not an ethernet one */
-  netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_LINK_UP;
-	//Set the MAC address of this interface.
-	netif->hwaddr_len = ETHARP_HWADDR_LEN;
-	memcpy(netif->hwaddr,pgmarvel_priv->current_addr,ETHARP_HWADDR_LEN);
-}
-
-//Do the actual sending of a frame,by calling hardware level interface to copy
-//the frame into WiFi chips buffer.
-int DoPhysicalSend(struct netif* outif,struct pbuf* p)
-{
-	int                    ret      = 0;
-	__ETH_INTERFACE_STATE* pIfState = (__ETH_INTERFACE_STATE*)outif->state;
+	__WIFI_ASSOC_INFO*    pAssocInfo = (__WIFI_ASSOC_INFO*)pData;
 	
-	if (priv->resp_len[0] > 0) {
-		ret = if_sdio_send_data(priv,priv->resp_buf[0],priv->resp_len[0]);
-		if (ret){
-#ifdef __WIFI_DEBUG
-			_hx_printf("  WiFi debugging: host_to_card failed %d\n", ret);
+	switch(dwOperation)
+	{
+		case ETH_MSG_SCAN:
+			DoScan();
+			break;
+		case ETH_MSG_ASSOC:
+			if(NULL == pAssocInfo)
+			{
+				break;
+			}
+			DoAssoc(pAssocInfo);
+			break;
+		default:
+#ifdef __ETH_DEBUG
+		_hx_printf("  Marvell Driver: Invalid control operations[opcode = %d].\r\n",dwOperation);
 #endif
-			priv->dnld_sent = DNLD_RES_RECEIVED;
-	  }
-		else
-		{
-			//Update interface statistics info.
-			pIfState->dwFrameSendSuccess += 1;
-#ifdef __WIFI_DEBUG
-			_hx_printf("  WiFi debugging: host_to_card successfully.\r\n");
-#endif
-		}
-		priv->resp_len[0] = 0;
+			break;
 	}
-	sdio_sys_wait=1;
-	return ret;
+	return TRUE;
 }
 
-/**
- * This function should do the actual transmission of the packet. The packet is
- * contained in the pbuf that is passed to the function. This pbuf
- * might be chained.
- *
- * @param netif the lwip network interface structure for this ethernetif
- * @param p the MAC packet to send (e.g. IP packet including MAC addresses and type)
- * @return ERR_OK if the packet could be sent
- *         an err_t value if the packet couldn't be sent
- *
- * @note Returning ERR_MEM here if a DMA queue of your MAC is full can lead to
- *       strange results. You might consider waiting for space in the DMA queue
- *       to become availale since the stack doesn't retry to send a packet
- *       dropped because of memory failure (except for the TCP timers).
- * 
- * In HelloX's current implementation,a dedicated WiFi driver thread is running in
- * background,the low_level_output just copy the frame to be sent into the sending
- * buffer of lbs_private struct,and send a message to WiFi driver thread,which will
- * wakeup the thread and do actual sending operation.
- */
-
-err_t low_level_output(struct netif *netif, struct pbuf *p)
+//Send a ethernet frame out through Marvell wifi interface.The frame's content is in pInt's
+//send buffer.
+static BOOL Marvel_SendFrame(__ETHERNET_INTERFACE* pInt)
 {
+	BOOL          bResult       = FALSE;
 	struct txpd   *txpd         = NULL;
-	struct pbuf   *q            = NULL;
 	char          *p802x_hdr    = NULL;
 	char          *buffer       = NULL;
 	uint16_t      pkt_len       = 0;
-	int           l             = 0;
-	__KERNEL_THREAD_MESSAGE     msg;
-	__ETH_INTERFACE_STATE*      pIfState = (__ETH_INTERFACE_STATE*)netif->state;
+	int           ret           = 0;
+	__ETH_INTERFACE_STATE*      pIfState = NULL;
+	
+	if(NULL == pInt)
+	{
+		goto __TERMINAL;
+	}
+	if((0 == pInt->buffSize) || (pInt->buffSize > ETH_DEFAULT_MTU))  //No data to send or exceed the MTU.
+	{
+		goto __TERMINAL;
+	}
+	
+	pIfState = &pInt->ifState;
 	
 	sdio_sys_wait = 0;
 	
-#ifdef __WIFI_DEBUG
-	_hx_printf("  WiFi debugging: low_level_output routine is called.\r\n");
+#ifdef __ETH_DEBUG
+	_hx_printf("  Marvel Driver: SendFrame routine is called.\r\n");
 #endif
 
 	txpd=(void *)&priv->resp_buf[0][4];     //Why start from 4?
 	memset(txpd, 0, sizeof(struct txpd));
-	p802x_hdr = (char *)p->payload;         //802.3 mac.
-	pkt_len = (uint16_t)p->tot_len;
+	p802x_hdr = (char *)&pInt->SendBuff[0];         //802.3 mac.
+	pkt_len = (uint16_t)pInt->buffSize;
 	
 	memcpy(txpd->tx_dest_addr_high, p802x_hdr, ETH_ALEN);
 	txpd->tx_packet_length = cpu_to_le16(pkt_len);
@@ -164,41 +166,45 @@ err_t low_level_output(struct netif *netif, struct pbuf *p)
 	
 	//Copy the frame to be sent into buffer.
 	buffer=(char *)&txpd[1];
-	for(q = p; q != NULL; q = q->next)
-	{
-		memcpy(buffer+l, q->payload, q->len);
-		l+= (int)q->len;
-	}
+	memcpy(buffer,pInt->SendBuff,pkt_len);
 	priv->resp_len[0] = pkt_len + sizeof(struct txpd);//Total sending length,include txpd.
 	
-	//Indicate the ethernet thread that a packet is pending to send.
-	pIfState->bSendPending = TRUE;
-	
-	//Update statistics info.
-	pIfState->dwFrameSend += 1;
-	pIfState->dwTotalSendSize += pkt_len;
-	
-	//Send a message to WiFi driver damon thread,this will wakeup the ethernet thread and
-	//triger the physical sending process.
-	msg.wCommand = ETH_MSG_SEND;
-	msg.wParam   = 0;
-	msg.dwParam  = 0;
-	SendMessage((HANDLE)g_pWiFiDriverThread,&msg);
+	if (priv->resp_len[0] > 0)
+	{
+		ret = if_sdio_send_data(priv,priv->resp_buf[0],priv->resp_len[0]);
+		if (ret)
+		{
+#ifdef __ETH_DEBUG
+			_hx_printf("   Marvel Driver: host_to_card failed %d\r\n", ret);
+#endif
+			priv->dnld_sent = DNLD_RES_RECEIVED;
+			bResult         = FALSE;
+	  }
+		else
+		{
+			//Update interface statistics info.
+			pIfState->dwFrameSendSuccess += 1;
+			bResult                       = TRUE;
+#ifdef __ETH_DEBUG
+			_hx_printf("  Marvel Driver: host_to_card successfully.\r\n");
+#endif
+		}
+		priv->resp_len[0] = 0;
+	}
+	sdio_sys_wait=1;
 
-	//lbs_sendpbuf(priv,p);
-	//wait_for_data_end();
-	return ERR_OK;
+__TERMINAL:
+	return bResult;
 }
 
 /**
+ *
+ * Receive a frame from ehternet link.
  * Should allocate a pbuf and transfer the bytes of the incoming
  * packet from the interface into the pbuf.
  *
- * @param netif the lwip network interface structure for this ethernetif
- * @return a pbuf filled with the received packet (including MAC header)
- *         NULL on memory error
  */
-struct pbuf *low_level_input(struct netif *netif)
+static struct pbuf* Marvel_RecvFrame(__ETHERNET_INTERFACE* pInt)
 {
 	struct eth_packet   *rx_pkt    = &pgmarvel_priv->rx_pkt;
   struct pbuf         *p, *q;
@@ -221,45 +227,50 @@ struct pbuf *low_level_input(struct netif *netif)
 				l = l + q->len;
 	    }    
 	  }
-	  else{
-	  	_hx_printf("low_level_input: Allocate pbuf failed.\r\n");
+	  else
+		{
+#ifdef __ETH_DEBUG
+	  	_hx_printf("  Marvel Driver: Allocate pbuf failed in RecvFrame.\r\n");
+#endif
 	  }
   }
   return p;
 }
 
-//Assist functions to handle the associate request.
-void DoAssoc(__WIFI_ASSOC_INFO* pAssocInfo)
+//Initializer or the Marvel Ethernet Driver,it's a global function and is called
+//by Ethernet Manager in process of initialization.
+BOOL Marvel_Initialize(LPVOID pData)
 {
-	if(0 == pAssocInfo->mode)  //Infrastructure mode.
-	{
-		marvel_assoc_network(priv,pAssocInfo->ssid,pAssocInfo->key,WIFI_MODE_INFRA);
-  }
-	else
-	{
-		marvel_assoc_network(priv,pAssocInfo->ssid,pAssocInfo->key,WIFI_MODE_ADHOC);
-	}
-}
-
-//Handle the scan request.
-void DoScan()
-{
-	struct bss_descriptor* iter = NULL;
-	int i = 0;
+	__ETHERNET_INTERFACE* pMarvelInt = NULL;
+	char                  mac[ETH_MAC_LEN];
 	
-	lbs_scan_worker(priv);				
-	//Dump out the scan result.
-#define list_for_each_entry_bssdes(pos, head, member)                 \
-	for (pos = list_entry((head)->next,struct bss_descriptor, member);	\
-	&pos->member != (head);                                             \
-	pos = list_entry(pos->member.next,struct bss_descriptor, member))
-
-	_hx_printf("  Available WiFi list:\r\n");
-	_hx_printf("  ----------------------------- \r\n");
-	list_for_each_entry_bssdes(iter, &priv->network_list, list)
+	//Initialize Ethernet Interface Driver.
+#ifdef __ETH_DEBUG
+	_hx_printf("  Marvel Driver: Begin to initialize SDIO and Marvel WiFi device...\r\n");
+#endif
+	priv = init_marvell_driver();
+	lbs_scan_worker(priv);
+#ifdef __ETH_DEBUG
+	_hx_printf("  Marvel Driver: End of SDIO and WiFi initialization.\r\n");
+#endif
+	//Try to associate to the default SSID,use INFRASTRUCTURE mode.
+	marvel_assoc_network(priv,WIFI_DEFAULT_SSID,WIFI_DEFAULT_KEY,WIFI_MODE_ADHOC);
+	
+	//Copy the MAC address.
+	memcpy(mac,pgmarvel_priv->current_addr,ETH_MAC_LEN);
+	
+	//Register the ethernet interface.
+	pMarvelInt = EthernetManager.AddEthernetInterface(
+	  MARVEL_ETH_NAME,
+	  &mac[0],
+	  (LPVOID)priv,
+	  Marvel_Int_Init,
+	  Marvel_SendFrame,
+		Marvel_RecvFrame,
+		Marvel_Ctrl);
+	if(NULL == pMarvelInt)
 	{
-		_hx_printf("  %02d: BSSID = %06X, RSSI = %d, SSID = '%s'\n", \
-						  i++, iter->bssid, iter->rssi, \
-						  iter->ssid);
-  }
+		return FALSE;
+	}
+	return TRUE;
 }

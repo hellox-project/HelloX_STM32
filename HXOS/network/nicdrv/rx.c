@@ -37,7 +37,7 @@
 #include "lwip/tcpip.h"
 #include "lwip/dhcp.h"
 
-#include "ethif.h"
+#include "ethernet/ethif.h"
 
 #pragma pack(1)
 struct ethhdr {
@@ -77,7 +77,7 @@ struct rx80211packethdr {
 //  @pBuff is the packet buffer's start address,and 
 //  @len is the total length of packet buffer.
 //  @pIf is the original interface where the packet is received.
-static void DeliveryPacket(const char* pBuff,int len,struct netif* pIf)
+/*static void DeliveryPacket(const char* pBuff,int len,struct netif* pIf)
 {
 	struct pbuf* p           = NULL;
 	struct pbuf* q           = NULL;
@@ -139,7 +139,7 @@ __TERMINAL:
 		}
 	}
 	return;
-}
+}*/
 
 /**
  *  @brief This function processes received packet and forwards it

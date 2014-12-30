@@ -743,7 +743,7 @@ static int lbs_do_scan(struct lbs_private *priv, uint8_t bsstype,
   //	le16_to_cpu(scan_cmd->hdr.size));
 	ret= __lbs_cmd(priv, CMD_802_11_SCAN, &scan_cmd->hdr,
 			le16_to_cpu(scan_cmd->hdr.size),
-			lbs_ret_80211_scan, 0);//这里直接提交扫描命令即可*/
+			lbs_ret_80211_scan, 0);
 	
 out:
 	if(gscan_cmdbuf)

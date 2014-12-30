@@ -169,11 +169,11 @@ enum { MSG_MSGDUMP, MSG_DEBUG, MSG_INFO, MSG_WARNING, MSG_ERROR };
 #define lbs_deb_cmd_leave_args(fmt,arg) 
 #else
 #define printk                      //do{}while(0);
-#define pr_err                      //do{}while(0); 
-#define lbs_pr_err                  //do{}while(0);
-#define lbs_deb_sdio		            //do{}while(0);
+#define pr_err                      _hx_printf //do{}while(0); 
+#define lbs_pr_err                  _hx_printf //do{}while(0);
+#define lbs_deb_sdio		            _hx_printf //do{}while(0);
 #define lbs_deb_scan		            _hx_printf //do{}while(0);
-#define lbs_deb_assoc 	            //do{}while(0);
+#define lbs_deb_assoc 	            _hx_printf //do{}while(0);
 #define lbs_deb_join  	            //do{}while(0);
 #define DEBUG_PARAM_SDIO
 #define pr_sdio_interrupt(arg...)   //do{}while(0);

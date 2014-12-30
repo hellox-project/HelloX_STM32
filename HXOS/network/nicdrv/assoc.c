@@ -213,7 +213,7 @@ static int lbs_assoc_post(struct lbs_private *priv,
 	if (status_code) {
 		//lbs_mac_event_disconnected(priv);
 		lbs_deb_assoc("%s:wrong status code(%d)","assoc",status_code);
-		try_bug(0);
+		try_bug(1);
 		ret = -1;
 		goto done;
 	}
@@ -381,6 +381,7 @@ static int lbs_associate(struct lbs_private *priv,
 	/* update curbssparams */
 	priv->curbssparams.channel = bss->phy.ds.channel;
 	if (lbs_parse_dnld_countryinfo_11d(priv, bss)) {
+		_hx_printf("  lbs_associate: parse dnld countryinfo failed.\r\n");
 		ret = -1;
 		goto done;
 	}

@@ -31,7 +31,7 @@
 #include "..\include\MODMGR.H"
 #include "..\include\console.h"
 #include "lwip\tcpip.h"
-#include "nicdrv\ethif.h"
+#include "ethernet\ethif.h"
 
 #include "..\lib\stdio.h"
 
@@ -202,6 +202,15 @@ void __OS_Entry()
 	//Enable the virtual memory management mechanism if __CFG_SYS_VMM flag is defined.
 #ifdef __CFG_SYS_VMM
 	EnableVMM();
+#endif
+	
+	//Initialize Ethernet Manager if it is enabled.
+#ifdef __CFG_NET_ETHMGR
+	if(!EthernetManager.Initialize(&EthernetManager))
+	{
+		pszErrorMsg = "INIT ERROR: Can not initialize Ethernet Manager.\r\n";
+		goto __TERMINAL;
+	}
 #endif
 
 	//********************************************************************************
@@ -376,11 +385,6 @@ void __OS_Entry()
 	if(!IPv4_Entry(NULL))
 	{
 		pszErrorMsg = "INIT ERROR: Can not initialize IPv4 protocol function.";
-		goto __TERMINAL;
-	}
-	if(!InitializeEthernetIf())
-	{
-		pszErrorMsg = "INIT ERROR: Can not initialize Ethernet interface.";
 		goto __TERMINAL;
 	}
 #endif

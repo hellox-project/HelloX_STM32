@@ -84,12 +84,12 @@ static __inline void lbs_deb_hex(unsigned int grp, const char *prompt, u8 *buf, 
 
 #define MRVDRV_MAX_MULTICAST_LIST_SIZE	32
 #define LBS_NUM_CMD_BUFFERS             1
-#define LBS_CMD_BUFFER_SIZE             1024
+#define LBS_CMD_BUFFER_SIZE             1500  //Bugs caused by less value of 1024.
 #define MRVDRV_MAX_CHANNEL_SIZE		14
 #define MRVDRV_ASSOCIATION_TIME_OUT	255
 #define MRVDRV_SNAP_HEADER_LEN          8
 
-#define	LBS_UPLD_SIZE			1600 //1024*3  //This change may lead bug(s),should be roll back if so.
+#define	LBS_UPLD_SIZE			1600  //1024*3  //This change may lead bug(s),should be roll back if so.
 #define DEV_NAME_LEN			32
 
 /* Wake criteria for HOST_SLEEP_CFG command */
