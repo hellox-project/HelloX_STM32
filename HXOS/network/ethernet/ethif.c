@@ -44,17 +44,35 @@
 //A helper routine to refresh DHCP configurations of the given interface.
 static void dhcpRestart(struct netif* pif,__ETH_INTERFACE_STATE* pifState)
 {
+#ifdef __ETH_DEBUG
+	_hx_printf("  dhcpRestart: Begin to entry.\r\n");
+#endif
 	if(!pifState->bDhcpCltEnabled)  //DHCP is not enabled.
 	{
+		_hx_printf("  dhcpRestart: Try to start DHCP on interface.\r\n");
+		pifState->bDhcpCltEnabled = TRUE;
+		pifState->bDhcpCltOK      = FALSE;
+		//start DHCP on 
+		dhcp_start(pif);
+		_hx_printf("  dhcpRestart: DHCP started on interface.\r\n");
 		return;
 	}
-	//Release the previous DHCP configurations.
-	dhcp_release(pif);
-	dhcp_stop(pif);
-	//Re-enable the DHCP client on the given interface.
-	pifState->bDhcpCltOK = FALSE;
-	dhcp_start(pif);
-	return;
+	else  //DHCP already enabled.
+	{
+#ifdef __ETH_DEBUG
+		_hx_printf("  dhcpRestart: DHCP already enabled,restart it.\r\n");
+#endif
+		//Release the previous DHCP configurations.
+		dhcp_release(pif);
+		dhcp_stop(pif);
+		//Re-enable the DHCP client on the given interface.
+		pifState->bDhcpCltOK = FALSE;
+		dhcp_start(pif);
+		return;
+	}
+#ifdef __ETH_DEBUG
+	_hx_printf("  dhcpRestart: End of routine.\r\n");
+#endif
 }
 
 //Configure a given interface by applying the given parameters.
@@ -64,6 +82,9 @@ static void netifConfig(struct netif* pif,__ETH_INTERFACE_STATE* pifState,__ETH_
 	{
 		return;
 	}
+#ifdef __ETH_DEBUG
+	_hx_printf("  netifConfig: Begin to compare flags and locate proper routine.\r\n");
+#endif
 	//Configure the interface according different DHCP flags.
 	if(pifConfig->dwDHCPFlags & ETH_DHCPFLAGS_DISABLE)
 	{
@@ -85,6 +106,7 @@ static void netifConfig(struct netif* pif,__ETH_INTERFACE_STATE* pifState,__ETH_
 		netif_set_up(pif);
 		//Save new configurations to interface state.
 		memcpy(&pifState->IpConfig,pifConfig,sizeof(__ETH_IP_CONFIG));
+		_hx_printf("  DHCP on interface [%s] is disabled and IP address is set.\r\n",pifConfig->ethName);
 	}
 	if(pifConfig->dwDHCPFlags & ETH_DHCPFLAGS_ENABLE)
 	{
@@ -92,8 +114,12 @@ static void netifConfig(struct netif* pif,__ETH_INTERFACE_STATE* pifState,__ETH_
 	}
 	if(pifConfig->dwDHCPFlags & ETH_DHCPFLAGS_RESTART)
 	{
-		pifState->bDhcpCltEnabled = TRUE;
+#ifdef __ETH_DEBUG
+		_hx_printf("  netifConfig: DHCP Restart is required.\r\n");
+#endif
+		//pifState->bDhcpCltEnabled = TRUE;
 		dhcpRestart(pif,pifState);
+		_hx_printf("  DHCP restarted on interface [%s].\r\n",pifConfig->ethName);
 	}
 	if(pifConfig->dwDHCPFlags & ETH_DHCPFLAGS_RENEW)
 	{
@@ -339,6 +365,21 @@ static DWORD EthCoreThreadEntry(LPVOID pData)
 					
 				case ETH_MSG_DELIVER:  //Delivery a packet.
 					break;
+				case ETH_MSG_ASSOC:
+					pAssocInfo = (__WIFI_ASSOC_INFO*)msg.dwParam;
+				  if(NULL == pAssocInfo->pPrivate)
+					{
+						break;
+					}
+					pEthInt = (__ETHERNET_INTERFACE*)pAssocInfo->pPrivate;
+					if(pEthInt->IntControl)
+					{
+						pEthInt->IntControl(pEthInt,ETH_MSG_ASSOC,pAssocInfo);
+					}
+					//Release the association object,which is allocated in Assoc
+					//function.
+					KMemFree(pAssocInfo,KMEM_SIZE_TYPE_ANY,0);
+					break;
 				default:
 					break;
 			}
@@ -541,7 +582,7 @@ static __ETHERNET_INTERFACE*   AddEthernetInterface(char* ethName,
 		pEthInt->ethMac[index] = mac[index];
 	}
 	
-	pEthInt->ifState.bDhcpCltEnabled   = TRUE;
+	pEthInt->ifState.bDhcpCltEnabled   = FALSE;
 	pEthInt->ifState.bDhcpCltOK        = FALSE;
 	pEthInt->ifState.bDhcpSrvEnabled   = FALSE;
 	
@@ -613,7 +654,9 @@ static BOOL ConfigInterface(char* ethName,__ETH_IP_CONFIG* pConfig)
 	{
 		goto __TERMINAL;
 	}
-	
+#ifdef __ETH_DEBUG
+	_hx_printf("  ConfigInterface: Try to allocate memory and init it.\r\n");
+#endif
 	//Allocate a configuration object,it will be released by ethernet core thread.
 	pifConfig = (__ETH_IP_CONFIG*)KMemAlloc(sizeof(__ETH_IP_CONFIG),KMEM_SIZE_TYPE_ANY);
 	if(NULL == pifConfig)
@@ -622,7 +665,10 @@ static BOOL ConfigInterface(char* ethName,__ETH_IP_CONFIG* pConfig)
 	}
 	memcpy(pifConfig,pConfig,sizeof(__ETH_IP_CONFIG));
 	strcpy(pifConfig->ethName,ethName);
-	
+
+#ifdef __ETH_DEBUG
+  _hx_printf("  ConfigInterface: Try to send message to core thread.\r\n");
+#endif	
 	//Delivery a message to ethernet core thread.
 	msg.wCommand = ETH_MSG_SETCONF;
 	msg.wParam   = 0;
@@ -723,6 +769,8 @@ static BOOL Assoc(char* ethName,__WIFI_ASSOC_INFO* pAssoc)
 	__ETHERNET_INTERFACE*    pEthInt    = NULL;
 	BOOL                     bResult    = FALSE;
 	int                      index      = 0;
+	__WIFI_ASSOC_INFO*       pAssocInfo = NULL;
+	__KERNEL_THREAD_MESSAGE  msg;
 	
 	if(NULL == pAssoc)
 	{
@@ -752,7 +800,21 @@ static BOOL Assoc(char* ethName,__WIFI_ASSOC_INFO* pAssoc)
 	//Issue assoc command to ethernet interface.
 	if(pEthInt->IntControl)
 	{
-		bResult = pEthInt->IntControl(pEthInt,ETH_MSG_ASSOC,pAssoc);
+		//Allocate a association object and sent to Ethernet core thread,it will be released
+		//by ethernet core thread.
+		pAssocInfo = (__WIFI_ASSOC_INFO*)KMemAlloc(sizeof(__WIFI_ASSOC_INFO),KMEM_SIZE_TYPE_ANY);
+		if(NULL == pAssocInfo)
+		{
+			goto __TERMINAL;
+		}
+		memcpy(pAssocInfo,pAssoc,sizeof(__WIFI_ASSOC_INFO));
+		pAssocInfo->pPrivate = (LPVOID)pEthInt;
+		msg.wCommand  = ETH_MSG_ASSOC;
+		msg.wParam    = 0;
+		msg.dwParam   = (DWORD)pAssocInfo;
+		SendMessage((HANDLE)EthernetManager.EthernetCoreThread,&msg);
+		bResult       = TRUE;
+		//bResult = pEthInt->IntControl(pEthInt,ETH_MSG_ASSOC,pAssoc);
 	}
 __TERMINAL:
 	return bResult;

@@ -712,6 +712,7 @@ static int lbs_do_scan(struct lbs_private *priv, uint8_t bsstype,
 	gscan_cmdbuf = (u8*)KMemAlloc(sizeof(u8) * MAX_SCAN_CFG_ALLOC,KMEM_SIZE_TYPE_ANY);
 	if(NULL == gscan_cmdbuf)
 	{
+		_hx_printf("  lbs_do_scan: Allocate memory for gscan_cmdbuf failed.\r\n");
 		goto out;
 	}
 	/* create the fixed part for scan command */
@@ -788,11 +789,12 @@ int lbs_scan_networks(struct lbs_private *priv, int full_scan)
 	struct chanscanparamset *chan_list;
 	struct chanscanparamset *curr_chans;
 	int chan_count;
-	uint8_t bsstype = CMD_BSS_TYPE_ANY;//IBSS和BSS都接受
+	uint8_t bsstype = CMD_BSS_TYPE_ANY;
 	int numchannels = MRVDRV_CHANNELS_PER_SCAN_CMD;
 	union iwreq_data wrqu;
 	struct bss_descriptor *iter;
 	int i = 0;
+	static int first = 1;  //Indicate if the first time to call this routine,network list will be cleared if so.
 
 	lbs_deb_enter_args(LBS_DEB_SCAN, full_scan);
 	
@@ -802,6 +804,7 @@ int lbs_scan_networks(struct lbs_private *priv, int full_scan)
 	    KMEM_SIZE_TYPE_ANY);
 	if(NULL == gmarvel_scan_param)
 	{
+		_hx_printf("  lbs_scan_networks: Allocate memory for gmarvel_scan_param failed.\r\n");
 		goto out2;
 	}
 
@@ -826,14 +829,18 @@ int lbs_scan_networks(struct lbs_private *priv, int full_scan)
 		
 	}*/
 	
-	//Initialize scan related data structures,mainly bss descriptors.
-	INIT_LIST_HEAD(&priv->network_free_list);
-	INIT_LIST_HEAD(&priv->network_list);
-	for (i = 0; i < MAX_NETWORK_COUNT; i++) {
-		list_add_tail(&priv->networks[i].list,
-			      &priv->network_free_list);
-		clear_bss_descriptor(&priv->networks[i]);
-	}	
+	//Initialize scan related data structures,mainly bss descriptors,in the first time.
+	if(first)
+	{
+		INIT_LIST_HEAD(&priv->network_free_list);
+		INIT_LIST_HEAD(&priv->network_list);
+		for (i = 0; i < MAX_NETWORK_COUNT; i++) {
+			list_add_tail(&priv->networks[i].list,
+			&priv->network_free_list);
+			clear_bss_descriptor(&priv->networks[i]);
+		}
+		first = 0;
+	}
 
 	lbs_deb_scan("numchannels %d, bsstype %d\n", numchannels, bsstype);
 

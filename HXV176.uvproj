@@ -803,11 +803,6 @@
               <FilePath>.\HXOS\network\core\udp.c</FilePath>
             </File>
             <File>
-              <FileName>ethernetif.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\network\netif\ethernetif.c</FilePath>
-            </File>
-            <File>
               <FileName>slipif.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\HXOS\network\netif\slipif.c</FilePath>
@@ -898,16 +893,6 @@
               <FilePath>.\HXOS\include\console.h</FilePath>
             </File>
             <File>
-              <FileName>ethif.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\ethif.c</FilePath>
-            </File>
-            <File>
-              <FileName>ethif.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\ethif.h</FilePath>
-            </File>
-            <File>
               <FileName>SHELL_HELP_SMT32.C</FileName>
               <FileType>1</FileType>
               <FilePath>.\HXOS\shell\SHELL_HELP_SMT32.C</FilePath>
@@ -921,6 +906,16 @@
               <FileName>HISCMD .C</FileName>
               <FileType>1</FileType>
               <FilePath>.\HXOS\shell\HISCMD .C</FilePath>
+            </File>
+            <File>
+              <FileName>ethentry.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\network\ethernet\ethentry.c</FilePath>
+            </File>
+            <File>
+              <FileName>ethif.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\network\ethernet\ethif.c</FilePath>
             </File>
           </Files>
         </Group>

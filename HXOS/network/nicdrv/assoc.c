@@ -144,7 +144,6 @@ static int lbs_set_authentication(struct lbs_private *priv, u8 bssid[6], u8 auth
 	return ret;
 }
 
-
 static int lbs_assoc_post(struct lbs_private *priv,
 			  struct cmd_ds_802_11_associate_response *resp)
 {
@@ -219,7 +218,7 @@ static int lbs_assoc_post(struct lbs_private *priv,
 	}
 
 	lbs_deb_hex(LBS_DEB_ASSOC, "ASSOC_RESP",
-		    (void *) (resp + sizeof (resp->hdr)),
+		    (void *)((char*)resp + sizeof (resp->hdr)),
 		    le16_to_cpu(resp->hdr.size) - sizeof (resp->hdr));
 
 	/* Send a Media Connected event, according to the Spec */
@@ -1874,9 +1873,9 @@ void lbs_association_worker(struct lbs_private *priv)
 				priv->curbssparams.bssid[0],priv->curbssparams.bssid[1],
 				priv->curbssparams.bssid[2],priv->curbssparams.bssid[3],
 				priv->curbssparams.bssid[4],priv->curbssparams.bssid[5]);
-			 lbs_prepare_and_send_command(priv,
-				CMD_802_11_RSSI,
-				0, CMD_OPTION_WAITFORRSP, 0, NULL); 
+			//lbs_prepare_and_send_command(priv,
+			//CMD_802_11_RSSI,
+			//0, CMD_OPTION_WAITFORRSP, 0, NULL); 
 		} else {
 			ret = -1;
 		}

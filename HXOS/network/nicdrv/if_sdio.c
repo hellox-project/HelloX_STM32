@@ -286,7 +286,7 @@ out:
 	{
 		pr_err("problem fetching packet from firmware\n");
 	}
-	pr_debug("ret %d", ret);
+	pr_err("ret %d", ret);
 	return ret;
 }
 

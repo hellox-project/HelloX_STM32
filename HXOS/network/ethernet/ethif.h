@@ -67,6 +67,7 @@ typedef struct tag__WIFI_ASSOC_INFO{
 	char   ssid[24];
 	char   key[24];
 	char   mode;     //0 for infrastructure,1 for adHoc.
+	LPVOID pPrivate; //Used to transfer private information.
 }__WIFI_ASSOC_INFO;
 
 //Interface state data associate to ethernet interface,HelloX specified. All this state

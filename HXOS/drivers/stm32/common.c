@@ -64,6 +64,7 @@ void wpa_hexdump_key(int level, const char *title, const u8 *buf, size_t len)
  void  lbs_hex(unsigned int grp, const char *prompt, u8 *buf, int len)
 {
 	int i = 0;
+	_hx_printf("  lbs_hex: prompt = %s,buf = 0x%08X,len = %d.\r\n",prompt,buf,len);
 	if (len )
 	{
 		for (i = 1; i <= len; i++) {

@@ -274,7 +274,7 @@ struct cmd_ds_802_11_associate_response {
 	__le16 capability;
 	__le16 statuscode;
 	__le16 aid;
-	u8 iebuf[512];
+	u8 iebuf[768];
 } __attribute__((packed));
 
 struct cmd_ds_802_11_set_wep {

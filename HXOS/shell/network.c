@@ -376,7 +376,7 @@ static DWORD setif(__CMD_PARA_OBJ* lpCmdObj)
 	dwRetVal = SHELL_CMD_PARSER_SUCCESS;
 	
 __TERMINAL:
-	if(dwRetVal != SHELL_CMD_PARSER_SUCCESS)  //Should release the config object.
+	if(pifConfig)  //Should release the config object.
 	{
 		KMemFree(pifConfig,KMEM_SIZE_TYPE_ANY,0);
 	}
