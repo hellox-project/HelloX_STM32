@@ -1,12 +1,16 @@
 All authors have contribution to the GUI module of HelloX operating system will be recorded here.
 
-   NAME               CONTRIBUTION              CONTACT              OTHER INFO
-----------       -----------------------   ----------------   -------------------------`
- Garry.Xin        Original author of this  garryxin@gmail.com        N/A
+   NAME               CONTRIBUTION                   CONTACT              OTHER INFO
+----------       -----------------------        ----------------   -------------------------`
+ Garry.Xin        Original author of this       garryxin@gmail.com        N/A
                   module.
 
- Tywind.huang     Enhanced HelloX's shell  370543742@qq.com          N/A
+ Tywind.huang     Enhanced HelloX's shell       370543742@qq.com          N/A
                   functions,added history
                   command recording and
                   other functions.
 
+ Tywind.huang     Migrate ENC28J60's net        370543742@qq.com          N/A
+                  driver into HelloX,follow
+                  HelloX's ethernet framework,
+                  about 200 LOC.
