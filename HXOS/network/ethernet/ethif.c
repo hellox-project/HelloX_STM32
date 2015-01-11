@@ -38,7 +38,7 @@
 #include "netif/etharp.h"
 
 #ifndef __MARVELIF_H__
-#include "marvelif.h"
+#include "mrvlwifi/marvelif.h"
 #endif
 
 //A helper routine to refresh DHCP configurations of the given interface.
@@ -49,12 +49,16 @@ static void dhcpRestart(struct netif* pif,__ETH_INTERFACE_STATE* pifState)
 #endif
 	if(!pifState->bDhcpCltEnabled)  //DHCP is not enabled.
 	{
+#ifdef __ETH_DEBUG
 		_hx_printf("  dhcpRestart: Try to start DHCP on interface.\r\n");
+#endif
 		pifState->bDhcpCltEnabled = TRUE;
 		pifState->bDhcpCltOK      = FALSE;
 		//start DHCP on 
 		dhcp_start(pif);
+#ifdef __ETH_DEBUG
 		_hx_printf("  dhcpRestart: DHCP started on interface.\r\n");
+#endif
 		return;
 	}
 	else  //DHCP already enabled.
@@ -106,7 +110,7 @@ static void netifConfig(struct netif* pif,__ETH_INTERFACE_STATE* pifState,__ETH_
 		netif_set_up(pif);
 		//Save new configurations to interface state.
 		memcpy(&pifState->IpConfig,pifConfig,sizeof(__ETH_IP_CONFIG));
-		_hx_printf("  DHCP on interface [%s] is disabled and IP address is set.\r\n",pifConfig->ethName);
+		_hx_printf("\r\n  DHCP on interface [%s] is disabled and IP address is set.\r\n",pifConfig->ethName);
 	}
 	if(pifConfig->dwDHCPFlags & ETH_DHCPFLAGS_ENABLE)
 	{
@@ -119,7 +123,7 @@ static void netifConfig(struct netif* pif,__ETH_INTERFACE_STATE* pifState,__ETH_
 #endif
 		//pifState->bDhcpCltEnabled = TRUE;
 		dhcpRestart(pif,pifState);
-		_hx_printf("  DHCP restarted on interface [%s].\r\n",pifConfig->ethName);
+		_hx_printf("\r\n  DHCP restarted on interface [%s].\r\n",pifConfig->ethName);
 	}
 	if(pifConfig->dwDHCPFlags & ETH_DHCPFLAGS_RENEW)
 	{

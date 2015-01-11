@@ -65,6 +65,13 @@ void * memzero(
 	return memset(dst,0,count);
 }
 
+/*Purpose:
+*       memmove() copies a source memory buffer to a destination memory buffer.
+*       This routine recognize overlapping buffers to avoid propogation.
+*       For cases where propogation is not a problem, memcpy() can be used.
+*
+*/
+
 //
 //String operation functions implementation.
 //

@@ -39,13 +39,13 @@ VOID CD_SetDisplayMode(INT nMode);
 VOID CD_GetDisPlayRang(WORD* pLines,WORD* pColums);
 
 //换行
-VOID CD_ChangeLine();
+VOID CD_ChangeLine(void);
 
 //回到行起点
-VOID CD_GotoHome();
+VOID CD_GotoHome(void);
 
 //回到上个字符
-VOID CD_GotoPrev();
+VOID CD_GotoPrev(void);
 
 //得到当前光标位置
 VOID  CD_GetCursorPos(WORD* pCursorX,WORD* pCursorY);
@@ -69,7 +69,7 @@ VOID  CD_DelString(WORD nCursorX,WORD nCursorY,INT nDelLen);
 VOID  CD_DelChar(INT nDelMode);	
 
 //清屏
-VOID  CD_Clear();
+VOID  CD_Clear(void);
 
 #ifdef __cplusplus
 }

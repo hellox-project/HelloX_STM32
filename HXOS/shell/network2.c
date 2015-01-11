@@ -69,6 +69,7 @@
 static u16_t ping_seq_num;
 static u32_t ping_time;
 static u32_t ping_pkt_seq = 0;
+static u32_t ping_succ    = 0;
 
 #if !PING_USE_SOCKETS
 static struct raw_pcb *ping_pcb;
@@ -154,26 +155,27 @@ ping_recv(int s)
   }
   while((len = lwip_recvfrom(s, buf, 1500, 0, (struct sockaddr*)&from, (socklen_t*)&fromlen)) > 0)
   {
-    if(len >= (int)(sizeof(struct ip_hdr)+sizeof(struct icmp_echo_hdr)))
-	{
-      ip_addr_t fromaddr;
+		if(len >= (int)(sizeof(struct ip_hdr)+sizeof(struct icmp_echo_hdr)))
+		{
+			ip_addr_t fromaddr;
       inet_addr_to_ipaddr(&fromaddr, &from.sin_addr);
-	  //Get times between sent and receive.
-	  ms = sys_now() - ping_time;
-	  ms *= SYSTEM_TIME_SLICE;
+			//Get times between sent and receive.
+			ms = sys_now() - ping_time;
+			ms *= SYSTEM_TIME_SLICE;
 
       iphdr = (struct ip_hdr *)buf;
       iecho = (struct icmp_echo_hdr *)(buf + (IPH_HL(iphdr) * 4));
       if (((iecho->id == PING_ID) && (iecho->seqno == htons(ping_seq_num)) && iecho->type == ICMP_ER))
-	  {
-		  len = len - sizeof(struct ip_hdr) - sizeof(struct icmp_echo_hdr);  //Adjust received data's length,since it
-		                                                                     //includes IP and ICMP headers.
-		  _hx_printf("  [%d] Reply from %s,size = %d,time = %d(ms)\r\n",ping_pkt_seq,inet_ntoa(fromaddr),len,ms);
-		  bResult = TRUE;
-	  }
-	  else
-	  {
-		  //printf("  ping : Received invalid replay,drop it.\r\n");
+			{
+				len = len - sizeof(struct ip_hdr) - sizeof(struct icmp_echo_hdr);  //Adjust received data's length,since it
+		                                                                       //includes IP and ICMP headers.
+				_hx_printf("  [%d] Reply from %s,size = %d,time = %d(ms)\r\n",ping_pkt_seq,inet_ntoa(fromaddr),len,ms);
+				ping_succ ++;
+				bResult = TRUE;
+      }
+	    else
+	    {
+		    //printf("  ping : Received invalid replay,drop it.\r\n");
       }
     }
   }
@@ -197,38 +199,44 @@ void ping_Entry(void *arg)
   __PING_PARAM* pParam = (__PING_PARAM*)arg;
 
   ping_pkt_seq = 0;  //Reset ping sequence number.
+	ping_succ    = 0;
 
   if((s = lwip_socket(AF_INET, SOCK_RAW, IP_PROTO_ICMP)) < 0)
   {
-	PrintLine("  ping : Create raw socket failed,quit.");
+		PrintLine("  ping : Create raw socket failed,quit.");
     return;
   }
 
   lwip_setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
   _hx_printf("\r\n  Ping %s with %d bytes packet:\r\n",inet_ntoa(pParam->targetAddr),pParam->size);
-  while (1) {
-    //ping_target = PING_TARGET; //ping gw
-	//IP4_ADDR(&ping_target, 127,0,0,1); //ping loopback.
-    if (ping_send(s, &pParam->targetAddr,pParam->size) == ERR_OK)
+  while (1)
 	{
-	  //printf(" ping_Entry : Send out packet,addr = %s,size = %d\r\n",inet_ntoa(pParam->targetAddr),pParam->size);
+		//ping_target = PING_TARGET; //ping gw
+		//IP4_ADDR(&ping_target, 127,0,0,1); //ping loopback.
+    if (ping_send(s, &pParam->targetAddr,pParam->size) == ERR_OK)
+		{
+			//printf(" ping_Entry : Send out packet,addr = %s,size = %d\r\n",inet_ntoa(pParam->targetAddr),pParam->size);
       ping_time = sys_now();
       ping_recv(s);
-	  ping_pkt_seq ++;
+	    ping_pkt_seq ++;
     }
-	else
-	{
-	  PrintLine("   ping : Send out packet failed.");
+	  else
+	  {
+	    PrintLine("   ping : Send out packet failed.");
     }
     //sys_msleep(PING_DELAY);
 
-	//Try the specified times.
-	pParam->count --;
-	if(0 == pParam->count)
-	{
-		break;
-	}
+	  //Try the specified times.
+	  pParam->count --;
+	  if(0 == pParam->count)
+	  {
+		  break;
+	  }
   }
+	//Show ping statistics.
+	_hx_printf("\r\n");
+	_hx_printf("  ping statistics: total send = %d,received = %d,%d loss.\r\n",
+	  ping_pkt_seq,ping_succ,(ping_pkt_seq - ping_succ));
   //Close socket.
   lwip_close(s);
 }

@@ -37,6 +37,7 @@
 #include "..\INCLUDE\MODMGR.H"
 #include "..\include\console.h"
 #include "..\lib\stdio.h"
+#include "..\lib\string.h"
 
 //*******************
 #include "../include/debug.h"

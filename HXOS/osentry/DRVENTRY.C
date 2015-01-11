@@ -45,11 +45,11 @@
 #endif
 
 #ifdef __CFG_DRV_USART
-#include "..\drivers\stm32\usart.h"
+#include "usart/usart.h"
 #endif
 
 #ifndef __SDIO_DRV_H__
-#include "..\drivers\stm32\sdio_drv.h"
+#include "mrvlwifi/sdio_drv.h"
 #endif
 
 //

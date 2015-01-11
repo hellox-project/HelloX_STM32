@@ -432,7 +432,6 @@ static DWORD assoc(__CMD_PARA_OBJ* lpCmdObj)
 	 DWORD                  dwRetVal   = SHELL_CMD_PARSER_FAILED;
 	__WIFI_ASSOC_INFO       AssocInfo;
 	BYTE                    index       = 1;
-	__KERNEL_THREAD_MESSAGE msg;
 
 	//Initialize to default value.
 	AssocInfo.ssid[0] = 0;

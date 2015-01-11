@@ -351,7 +351,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>.\HXOS\include;.\HXOS\lib;.\HXOS\arch\stm32;C:\Keil\ARM\CMSIS\Include;C:\Keil\ARM\INC\ST\STM32F10x;.\HXOS\network;.\HXOS\drivers\stm32;.\Startup\STM32F10x_lib\inc;.\HXOS\network\nicdrv</IncludePath>
+              <IncludePath>.\HXOS\include;.\HXOS\lib;.\HXOS\arch\stm32;C:\Keil\ARM\CMSIS\Include;C:\Keil\ARM\INC\ST\STM32F10x;.\HXOS\network;.\HXOS\drivers\stm32;.\Startup\STM32F10x_lib\inc;.</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -426,11 +426,6 @@
               <FileName>config.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\HXOS\config\config.h</FilePath>
-            </File>
-            <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\drivers\stm32\usart.c</FilePath>
             </File>
             <File>
               <FileName>COMQUEUE.C</FileName>
@@ -626,11 +621,6 @@
               <FileName>SHELL1.C</FileName>
               <FileType>1</FileType>
               <FilePath>.\HXOS\shell\SHELL1.C</FilePath>
-            </File>
-            <File>
-              <FileName>led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\drivers\stm32\led.c</FilePath>
             </File>
             <File>
               <FileName>synobj2.c</FileName>
@@ -950,107 +940,32 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>SDIO</GroupName>
+          <GroupName>Device</GroupName>
           <Files>
             <File>
-              <FileName>common.c</FileName>
+              <FileName>led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\HXOS\drivers\stm32\common.c</FilePath>
+              <FilePath>.\HXOS\drivers\stm32\led\led.c</FilePath>
             </File>
             <File>
-              <FileName>core.c</FileName>
+              <FileName>usart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\HXOS\drivers\stm32\core.c</FilePath>
+              <FilePath>.\HXOS\drivers\stm32\usart\usart.c</FilePath>
             </File>
             <File>
-              <FileName>s3cmci.c</FileName>
+              <FileName>enc28j60.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\HXOS\drivers\stm32\s3cmci.c</FilePath>
+              <FilePath>.\HXOS\drivers\stm32\enc_eth\enc28j60.c</FilePath>
             </File>
             <File>
-              <FileName>sdio.c</FileName>
+              <FileName>Ethernet.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\HXOS\drivers\stm32\sdio.c</FilePath>
+              <FilePath>.\HXOS\drivers\stm32\enc_eth\Ethernet.c</FilePath>
             </File>
             <File>
-              <FileName>sdio_cis.c</FileName>
+              <FileName>spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\HXOS\drivers\stm32\sdio_cis.c</FilePath>
-            </File>
-            <File>
-              <FileName>card.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\card.h</FilePath>
-            </File>
-            <File>
-              <FileName>common.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\common.h</FilePath>
-            </File>
-            <File>
-              <FileName>core.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\core.h</FilePath>
-            </File>
-            <File>
-              <FileName>host.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\host.h</FilePath>
-            </File>
-            <File>
-              <FileName>mmc.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\mmc.h</FilePath>
-            </File>
-            <File>
-              <FileName>reg_sdio.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\reg_sdio.h</FilePath>
-            </File>
-            <File>
-              <FileName>s3cmci.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\s3cmci.h</FilePath>
-            </File>
-            <File>
-              <FileName>sd.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\sd.h</FilePath>
-            </File>
-            <File>
-              <FileName>sdio.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\sdio.h</FilePath>
-            </File>
-            <File>
-              <FileName>sdio_func.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\sdio_func.h</FilePath>
-            </File>
-            <File>
-              <FileName>type.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\type.h</FilePath>
-            </File>
-            <File>
-              <FileName>stm32sys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\drivers\stm32\stm32sys.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32sys.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\stm32sys.h</FilePath>
-            </File>
-            <File>
-              <FileName>sdio_drv.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\drivers\stm32\sdio_drv.c</FilePath>
-            </File>
-            <File>
-              <FileName>sdio_drv.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\drivers\stm32\sdio_drv.h</FilePath>
+              <FilePath>.\HXOS\drivers\stm32\enc_eth\spi.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1058,164 +973,104 @@
           <GroupName>WLAN</GroupName>
           <Files>
             <File>
+              <FileName>11d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\11d.c</FilePath>
+            </File>
+            <File>
               <FileName>8686.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\8686.c</FilePath>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\8686.c</FilePath>
             </File>
             <File>
               <FileName>assoc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\assoc.c</FilePath>
-            </File>
-            <File>
-              <FileName>help.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\help.c</FilePath>
-            </File>
-            <File>
-              <FileName>help_firmware.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\help_firmware.c</FilePath>
-            </File>
-            <File>
-              <FileName>if_sdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\if_sdio.c</FilePath>
-            </File>
-            <File>
-              <FileName>marvel8385_firmware.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\marvel8385_firmware.c</FilePath>
-            </File>
-            <File>
-              <FileName>marvell_ops.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\marvell_ops.c</FilePath>
-            </File>
-            <File>
-              <FileName>scan.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\scan.c</FilePath>
-            </File>
-            <File>
-              <FileName>11d.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\11d.h</FilePath>
-            </File>
-            <File>
-              <FileName>assoc.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\assoc.h</FilePath>
-            </File>
-            <File>
-              <FileName>cmd.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\cmd.h</FilePath>
-            </File>
-            <File>
-              <FileName>dev.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\dev.h</FilePath>
-            </File>
-            <File>
-              <FileName>host_cmd.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\host_cmd.h</FilePath>
-            </File>
-            <File>
-              <FileName>hostcmd.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\hostcmd.h</FilePath>
-            </File>
-            <File>
-              <FileName>hostcmdcode.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\hostcmdcode.h</FilePath>
-            </File>
-            <File>
-              <FileName>if.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\if.h</FilePath>
-            </File>
-            <File>
-              <FileName>if_sdio.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\if_sdio.h</FilePath>
-            </File>
-            <File>
-              <FileName>list.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\list.h</FilePath>
-            </File>
-            <File>
-              <FileName>mac80211.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\mac80211.h</FilePath>
-            </File>
-            <File>
-              <FileName>marvel_main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\marvel_main.h</FilePath>
-            </File>
-            <File>
-              <FileName>marvell_ops.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\marvell_ops.h</FilePath>
-            </File>
-            <File>
-              <FileName>mdef.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\mdef.h</FilePath>
-            </File>
-            <File>
-              <FileName>rxtx.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\rxtx.h</FilePath>
-            </File>
-            <File>
-              <FileName>scan.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\scan.h</FilePath>
-            </File>
-            <File>
-              <FileName>sdio_ids.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\sdio_ids.h</FilePath>
-            </File>
-            <File>
-              <FileName>types.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\types.h</FilePath>
-            </File>
-            <File>
-              <FileName>wireless.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HXOS\network\nicdrv\wireless.h</FilePath>
-            </File>
-            <File>
-              <FileName>marvel_main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\marvel_main.c</FilePath>
-            </File>
-            <File>
-              <FileName>rx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\rx.c</FilePath>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\assoc.c</FilePath>
             </File>
             <File>
               <FileName>cmd.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\cmd.c</FilePath>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\cmd.c</FilePath>
             </File>
             <File>
-              <FileName>11d.c</FileName>
+              <FileName>common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\11d.c</FilePath>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\common.c</FilePath>
+            </File>
+            <File>
+              <FileName>core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\core.c</FilePath>
+            </File>
+            <File>
+              <FileName>help.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\help.c</FilePath>
+            </File>
+            <File>
+              <FileName>help_firmware.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\help_firmware.c</FilePath>
+            </File>
+            <File>
+              <FileName>if_sdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\if_sdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>marvel_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\marvel_main.c</FilePath>
+            </File>
+            <File>
+              <FileName>marvel8385_firmware.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\marvel8385_firmware.c</FilePath>
             </File>
             <File>
               <FileName>marvelif.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\HXOS\network\nicdrv\marvelif.c</FilePath>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\marvelif.c</FilePath>
+            </File>
+            <File>
+              <FileName>marvell_ops.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\marvell_ops.c</FilePath>
+            </File>
+            <File>
+              <FileName>rx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\rx.c</FilePath>
+            </File>
+            <File>
+              <FileName>s3cmci.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\s3cmci.c</FilePath>
+            </File>
+            <File>
+              <FileName>scan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\scan.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\sdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdio_cis.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\sdio_cis.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdio_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\sdio_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32sys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HXOS\drivers\stm32\mrvlwifi\stm32sys.c</FilePath>
             </File>
           </Files>
         </Group>

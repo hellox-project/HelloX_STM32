@@ -38,15 +38,28 @@
 
 #include "ethif.h"
 
+#ifdef __STM32__
+
 #ifndef __MARVELIF_H__
-#include "marvelif.h"
+#include "mrvlwifi/marvelif.h"
 #endif
+
+#ifndef __ETHERNET_H__
+#include "enc_eth/ethernet.h"
+#endif
+
+#endif //__STM32__
 
 __ETHERNET_DRIVER_ENTRY EthernetDriverEntry[] = 
 {
 #ifdef __CFG_NET_MARVELLAN
 	{Marvel_Initialize,NULL},
 #endif
+
+#ifdef __CFG_NET_ENC28J60
+  {Ethernet_Initialize,NULL},
+#endif
+
   //Please add your ethernet driver's entry here.
   {NULL,NULL}
 };

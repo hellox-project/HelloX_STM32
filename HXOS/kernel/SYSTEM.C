@@ -628,7 +628,9 @@ static VOID DefaultExcepHandler(LPVOID pESP,UCHAR ucVector)
 {
 	CHAR Buff[64];
 	static DWORD totalExcepNum = 0;
+#ifdef __I386__
 	DWORD excepAddr = 0;
+#endif
 	__KERNEL_THREAD_OBJECT* pKernelThread = KernelThreadManager.lpCurrentKernelThread;
 
 	//Switch to text mode,because the exception maybe caused in GUI mode.
@@ -847,7 +849,7 @@ __DESTROY_TIMER:  //Destroy the timer object.
 
 //Hardware platform initialization routine,implemented in arch_xxx.c file and will be called
 //in BeginInitialize routine.
-extern BOOL HardwareInitialize();
+extern BOOL HardwareInitialize(void);
 
 //Called before the OS enter initialization phase.It prepares the initialization evnironment
 //to run initializing code.Also hardware initialization routine will be called in this routine,

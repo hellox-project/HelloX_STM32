@@ -96,7 +96,6 @@ DWORD _HCNMain(LPVOID pData)
 	__COMMON_OBJECT* hUsart = NULL;
 	DWORD           dwWriteLen = 0;
 	CHAR            chCmd;
-	CHAR            strInfo[64];
 	
 	SER_PutString("_HCNMain thread is running...\r\n");
 	
