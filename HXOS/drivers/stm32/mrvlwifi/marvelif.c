@@ -60,11 +60,16 @@ static void DoAssoc(__WIFI_ASSOC_INFO* pAssocInfo)
 {
 	if(0 == pAssocInfo->mode)  //Infrastructure mode.
 	{
-		marvel_assoc_network(priv,pAssocInfo->ssid,pAssocInfo->key,WIFI_MODE_INFRA);
+		marvel_assoc_network(priv,pAssocInfo->ssid,pAssocInfo->key,WIFI_MODE_INFRA,pAssocInfo->channel);
   }
-	else
+	else  //Adhoc mode.
 	{
-		marvel_assoc_network(priv,pAssocInfo->ssid,pAssocInfo->key,WIFI_MODE_ADHOC);
+		//Radio channel must be specified.
+		if(0 == pAssocInfo->channel)
+		{
+			pAssocInfo->channel = 6;
+		}
+		marvel_assoc_network(priv,pAssocInfo->ssid,pAssocInfo->key,WIFI_MODE_ADHOC,pAssocInfo->channel);
 	}
 }
 
@@ -85,9 +90,9 @@ static void DoScan()
 	_hx_printf("  ----------------------------- \r\n");
 	list_for_each_entry_bssdes(iter, &priv->network_list, list)
 	{
-		_hx_printf("  %02d: BSSID = %06X, RSSI = %d, SSID = '%s'\n", \
+		_hx_printf("  %02d: BSSID = %06X, RSSI = %d, SSID = '%s', channel = %d\r\n", \
 						  i++, iter->bssid, iter->rssi, \
-						  iter->ssid);
+						  iter->ssid,iter->channel);
   }
 }
 
@@ -254,7 +259,7 @@ BOOL Marvel_Initialize(LPVOID pData)
 	_hx_printf("  Marvel Driver: End of SDIO and WiFi initialization.\r\n");
 #endif
 	//Try to associate to the default SSID,use INFRASTRUCTURE mode.
-	marvel_assoc_network(priv,WIFI_DEFAULT_SSID,WIFI_DEFAULT_KEY,WIFI_MODE_ADHOC);
+	marvel_assoc_network(priv,WIFI_DEFAULT_SSID,WIFI_DEFAULT_KEY,WIFI_MODE_ADHOC,6);
 	
 	//Copy the MAC address.
 	memcpy(mac,pgmarvel_priv->current_addr,ETH_MAC_LEN);

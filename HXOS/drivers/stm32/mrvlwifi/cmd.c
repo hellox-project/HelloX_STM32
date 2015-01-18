@@ -95,11 +95,6 @@ static struct cmd_ctrl_node *lbs_get_cmd_ctrl_node(struct lbs_private *priv)
 	return tempnode;
 }
 
-
-
-
-
-
 static void lbs_queue_cmd(struct lbs_private *priv,
 			  struct cmd_ctrl_node *cmdnode)
 {
@@ -145,8 +140,6 @@ done:
 	//lbs_deb_cmd_leave(LBS_DEB_HOST);
 	return;
 }
-
-
 
 static void lbs_submit_command(struct lbs_private *priv,
 			       struct cmd_ctrl_node *cmdnode)
@@ -407,8 +400,6 @@ int lbs_update_hw_spec(struct lbs_private *priv)
 	//if (priv->mesh_dev)
 	//	memcpy(priv->mesh_dev->dev_addr, priv->current_addr, ETH_ALEN);
 
-
-
 	if (lbs_set_regiontable(priv, priv->regioncode, 0)) {//根据区域码获取网卡的信道表
 		ret = -1;
 		goto out;
@@ -483,7 +474,7 @@ int __lbs_cmd(struct lbs_private *priv, uint16_t command,
 	      unsigned long callback_arg)
 {
 	struct cmd_ctrl_node *cmdnode;
-	unsigned long flags = 0;  //Just for debugging.
+	//unsigned long flags = 0;  //Just for debugging.
 	struct if_sdio_card *card=priv->card;
 	int ret = 0;
 	unsigned long time_out;
@@ -499,8 +490,8 @@ int __lbs_cmd(struct lbs_private *priv, uint16_t command,
 	
 	// might_sleep();
 	// wait_event_interruptible(cmdnode->cmdwait_q, cmdnode->cmdwaitqwoken);
-	/*we have no choice but to pool*/
-	time_out=10000;
+	// use poll mode to check if the desired interrupt is occur,in timeout style.
+	time_out = 500;
 	while(1){		
 		ret = poll_sdio_interrupt(card->func);
 		if(ret<0){
@@ -514,7 +505,7 @@ int __lbs_cmd(struct lbs_private *priv, uint16_t command,
 		else if(ret&IF_SDIO_H_INT_UPLD)
 		{
 			if_sdio_interrupt(card->func);
-			flags = 1;
+			//flags = 1;
 			break;
 		}
 		else if(ret&IF_SDIO_H_INT_DNLD)
@@ -523,17 +514,16 @@ int __lbs_cmd(struct lbs_private *priv, uint16_t command,
 		}
 		else if(time_after(jiffies,&time_out))
 		{
-			priv->cmd_timed_out=1;
-			lbs_thread(priv);//处理超时
-			ret=-ETIME;
-			flags = 2;
+			priv->cmd_timed_out = 1;
+			lbs_thread(priv);     //Handle timeout event,may reset the hardware.
+			ret = -ETIME;
+			//flags = 2;
 			break;
 		}
 	}
+	
 	time_out = 500;
-	//_hx_printf("  WiFi scan: Begin to wait the interrupt over,flags = %d\r\n",flags);
-	while((!cmdnode->cmdwaitqwoken) && (!time_after(jiffies,&time_out)));//等待命令处理完成
-	//_hx_printf("  WiFi scan: End to wait the interrupt over,flags = %d\r\n",flags);
+	while((!cmdnode->cmdwaitqwoken) && (!time_after(jiffies,&time_out)));//Wait command execute over.
 	if(0 == time_out)  //Timeout,should clean up the commands.
 	{
 		_hx_printf("__lbs_cmd: Wait interrupt timeout.\r\n");
@@ -545,12 +535,12 @@ int __lbs_cmd(struct lbs_private *priv, uint16_t command,
 		}
 	}
 	//spin_lock_irqsave(&priv->driver_lock, flags);
-	ret = cmdnode->result;//命令执行的结果
+	ret = cmdnode->result;
 	if (ret)
 		lbs_pr_err("PREP_CMD: command 0x%04x failed: %d\n",
 			    command, ret);
 	
-	__lbs_cleanup_and_insert_cmd(priv, cmdnode);//清除cmdnode，释放到到cmdfree链表
+	__lbs_cleanup_and_insert_cmd(priv, cmdnode);
 	//spin_unlock_irqrestore(&priv->driver_lock, flags);
 
 done:
@@ -564,6 +554,7 @@ void lbs_cmd_async(struct lbs_private *priv, uint16_t command,
 {
 	struct if_sdio_card *card=priv->card;
 	int ret = 0;
+	
 	lbs_deb_cmd_enter(LBS_DEB_CMD);
 	__lbs_cmd_async(priv, command, in_cmd, in_cmd_size,
 		lbs_cmd_async_callback, 0);
@@ -663,23 +654,6 @@ static int lbs_ret_reg_access(struct lbs_private *priv,//读取mac、baseband、rf寄
 	lbs_deb_cmd_leave_args("leave lbs_ret_reg_access(ret=%d)", ret);
 	return ret;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 static int lbs_ret_802_11_rssi(struct lbs_private *priv,
 				struct cmd_ds_command *resp)
@@ -981,10 +955,6 @@ done:
 	return ret;
 }
 
-
-
-
-
 /**
  *  @brief This function executes next command in command
  *  pending queue. It will put firmware back to PS mode
@@ -1151,19 +1121,6 @@ done:
 	return ret;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 static int lbs_cmd_802_11_ps_mode(struct cmd_ds_command *cmd,
 				   u16 cmd_action)
 {
@@ -1201,11 +1158,6 @@ static int lbs_cmd_802_11_ps_mode(struct cmd_ds_command *cmd,
 	lbs_deb_cmd_leave(LBS_DEB_CMD);
 	return 0;
 }
-
-
-
-
-
 
 static int lbs_cmd_reg_access(struct cmd_ds_command *cmdptr,
 			       u8 cmd_action, void *pdata_buf)
@@ -1281,10 +1233,6 @@ static int lbs_cmd_reg_access(struct cmd_ds_command *cmdptr,
 	return 0;
 }
 
-
-
-
-
 static int lbs_cmd_802_11_monitor_mode(struct cmd_ds_command *cmd,
 				      u16 cmd_action, void *pdata_buf)
 {
@@ -1303,11 +1251,6 @@ static int lbs_cmd_802_11_monitor_mode(struct cmd_ds_command *cmd,
 
 	return 0;
 }
-
-
-
-
-
 
 static int lbs_cmd_802_11_rssi(struct lbs_private *priv,
 				struct cmd_ds_command *cmd)
@@ -1368,9 +1311,6 @@ static int lbs_cmd_bt_access(struct cmd_ds_command *cmd,
 	return 0;
 }
 
-
-
-
 static int lbs_cmd_fwt_access(struct cmd_ds_command *cmd,
 			       u16 cmd_action, void *pdata_buf)
 {
@@ -1392,9 +1332,6 @@ static int lbs_cmd_fwt_access(struct cmd_ds_command *cmd,
 	return 0;
 }
 
-
-
-
 static int lbs_cmd_bcn_ctrl(struct lbs_private * priv,
 				struct cmd_ds_command *cmd,
 				u16 cmd_action)
@@ -1415,7 +1352,6 @@ static int lbs_cmd_bcn_ctrl(struct lbs_private * priv,
 	lbs_deb_cmd_leave(LBS_DEB_CMD);
 	return 0;
 }
-
 
 /**
  *  @brief This function prepare the command before send to firmware.
@@ -2081,6 +2017,7 @@ out:
 	lbs_deb_cmd_leave_args(LBS_DEB_CMD, ret);
 	return ret;
 }
+
 int __inline lbs_cmd(struct lbs_private *priv, uint16_t cmdnr, struct void_cmd_head* cmd,
 			 int (*callback)(struct lbs_private *, unsigned long, struct cmd_header *),
 	      		unsigned long callback_arg)

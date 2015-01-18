@@ -22,7 +22,7 @@ extern u8 sdio_sys_wait;
 #endif
 
 struct lbs_private * init_marvell_driver(void);
-void marvel_assoc_network(struct lbs_private *priv,char *ssid,char *key,char mode);
+void marvel_assoc_network(struct lbs_private *priv,char *ssid,char *key,char mode,int channel);
 void lbs_scan_worker(struct lbs_private *priv);
 u16 lbs_rev_pkt(void);
 char  lbs_hard_start_xmit(struct lbs_private *priv,struct eth_packet * tx_ethpkt);

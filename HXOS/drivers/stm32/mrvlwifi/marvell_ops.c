@@ -51,9 +51,9 @@ struct lbs_private * init_marvell_driver(void)
 	    mode:'0':基础网络(infra) ‘1’:ad-hoc网络
 ****返回:0:正常 其他:错误
 ***********************************************************************************************/
-void marvel_assoc_network(struct lbs_private *priv,char *ssid,char *key,char mode)
+void marvel_assoc_network(struct lbs_private *priv,char *ssid,char *key,char mode,int channel)
 {
-		marvel_assoc_open_network(priv,ssid,key,mode);
+		marvel_assoc_open_network(priv,ssid,key,mode,channel);
 }
 
 /***********************************************************************************************

@@ -356,7 +356,7 @@ static int if_sdio_host_to_card(struct lbs_private *priv,
 
 	if (nb > (65536 - sizeof(struct if_sdio_packet) - 4)) {
 		ret = -EINVAL;
-		KMemFree(host_tx_pktbuf,KMEM_SIZE_TYPE_ANY,0);
+		//KMemFree(host_tx_pktbuf,KMEM_SIZE_TYPE_ANY,0);
 		goto out;
 	}
 

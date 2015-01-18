@@ -161,7 +161,7 @@ struct lbs_private {
 	/* Events sent from hardware to driver */
 	struct kfifo *event_fifo;
 	/* nickname */
-	u8 nodename[16];
+	//u8 nodename[16];
 	int nr_retries;
 	int cmd_timed_out;
 	/** current ssid/bssid related parameters*/
@@ -180,8 +180,8 @@ struct lbs_private {
 	u16 capability;
 	/** MAC address information */
 	u8 current_addr[ETH_ALEN];
-	u8 multicastlist[MRVDRV_MAX_MULTICAST_LIST_SIZE][ETH_ALEN];
-	u32 nr_of_multicastmacaddr;
+	//u8 multicastlist[MRVDRV_MAX_MULTICAST_LIST_SIZE][ETH_ALEN];
+	//u32 nr_of_multicastmacaddr;
 	uint16_t enablehwauto;
 	uint16_t ratebitmap;
 	u8 txretrycount;
@@ -207,8 +207,9 @@ struct lbs_private {
 	struct enc_key wep_keys[4];
 	u16 wep_tx_keyidx;
 	/** WPA keys */
-	 struct enc_key wpa_mcast_key;
-	 struct enc_key wpa_unicast_key;
+	struct enc_key wpa_mcast_key;
+	struct enc_key wpa_unicast_key;
+	
 	/** Requested Signal Strength*/
 	u16 SNR[MAX_TYPE_B][MAX_TYPE_AVG];
 	u16 NF[MAX_TYPE_B][MAX_TYPE_AVG];
@@ -254,16 +255,11 @@ struct lbs_private {
  * In theory, the IE is limited to the IE length, 255,
  * but in practice 64 bytes are enough.
  */
-    #define MAX_WPA_IE_LEN 64
+  #define MAX_WPA_IE_LEN 64
 	/** WPA Information Elements*/
 	u8 wpa_ie[MAX_WPA_IE_LEN];
 	u8 wpa_ie_len;
 	u8 eapol_finish;
-
-	/*add by liud 这里是在搜索结果中存储一个IE结构体，供给关联时候用*/
-	u8 __wpa_ie[MAX_WPA_IE_LEN];
-	u8 __wpa_ie_len;
-	u8 __mac_addr[6];	
 };
 
 //extern struct cmd_confirm_sleep confirm_sleep;

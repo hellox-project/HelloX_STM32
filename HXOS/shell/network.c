@@ -437,6 +437,7 @@ static DWORD assoc(__CMD_PARA_OBJ* lpCmdObj)
 	AssocInfo.ssid[0] = 0;
 	AssocInfo.key[0]  = 0;
 	AssocInfo.mode    = 0;
+	AssocInfo.channel = 0;
 	
 	if(lpCmdObj->byParameterNum <= 1)
 	{
@@ -474,10 +475,20 @@ static DWORD assoc(__CMD_PARA_OBJ* lpCmdObj)
 			{
 				AssocInfo.mode = 1;
 			}
-		}		
+		}
+		else if(strcmp(lpCmdObj->Parameter[index],"/c") == 0)  //Association channel.
+		{
+			index ++;
+			if(index >= lpCmdObj->byParameterNum)
+			{
+				_hx_printf("  Error: Invalid parameter.\r\n");
+				goto __TERMINAL;
+			}
+			AssocInfo.channel = atoi(lpCmdObj->Parameter[index]);
+		}
 		else
 		{
-			//Default parameter as IP address.			
+			//Default parameter as SSID.
 			//index ++;
 			if(index >= lpCmdObj->byParameterNum)
 			{

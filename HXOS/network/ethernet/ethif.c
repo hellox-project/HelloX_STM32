@@ -37,10 +37,6 @@
 #include "ethif.h"
 #include "netif/etharp.h"
 
-#ifndef __MARVELIF_H__
-#include "mrvlwifi/marvelif.h"
-#endif
-
 //A helper routine to refresh DHCP configurations of the given interface.
 static void dhcpRestart(struct netif* pif,__ETH_INTERFACE_STATE* pifState)
 {
@@ -552,6 +548,7 @@ static __ETHERNET_INTERFACE*   AddEthernetInterface(char* ethName,
 	BOOL                         bResult            = FALSE;
 	int                          index              = 0;
 	struct netif*                pIf                = NULL;
+	BOOL                         bDefaultInt        = FALSE;       //If the added interface is default one.
 	
 	if((NULL == ethName) || (NULL == SendFrame) || (NULL == mac))  //Name and send operation are mandatory.
 	{
@@ -568,6 +565,10 @@ static __ETHERNET_INTERFACE*   AddEthernetInterface(char* ethName,
 	
 	//Get the free ethernet interface object from array.
 	pEthInt = &EthernetManager.EthInterfaces[EthernetManager.nIntIndex];
+	if(0 == EthernetManager.nIntIndex)  //First interface,set to default.
+	{
+		bDefaultInt = TRUE;
+	}
 	EthernetManager.nIntIndex ++;
 	memset(pEthInt,0,sizeof(__ETHERNET_INTERFACE));
 	
@@ -612,6 +613,10 @@ static __ETHERNET_INTERFACE*   AddEthernetInterface(char* ethName,
 	//Add the netif to lwIP.
 	netif_add(pIf,&pEthInt->ifState.IpConfig.ipaddr,&pEthInt->ifState.IpConfig.mask,
 	          &pEthInt->ifState.IpConfig.defgw,pEthInt,_ethernet_if_init, &tcpip_input);
+	if(bDefaultInt)
+	{
+		netif_set_default(pIf);	
+	}
 	
 	//Call driver's initializer,if specified.
 	if(Init)
@@ -621,6 +626,9 @@ static __ETHERNET_INTERFACE*   AddEthernetInterface(char* ethName,
 			goto __TERMINAL;
 		}
 	}
+	
+	//Start DHCP on the interface.
+	dhcpRestart(pIf,&pEthInt->ifState);
 	
 	bResult = TRUE;
 	

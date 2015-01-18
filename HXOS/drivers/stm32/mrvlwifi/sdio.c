@@ -1035,7 +1035,7 @@ int sdio_io_rw_ext_helper(struct sdio_func *func, int write,
 	alig_bug_buf = (u8*)KMemAlloc(size,KMEM_SIZE_TYPE_ANY);
 	if(NULL == alig_bug_buf)
 	{
-		_hx_printf("SDIO->sdio_io_rw_ext_helper: KMemAlloc failed.\r\n");
+		_hx_printf("  SDIO->sdio_io_rw_ext_helper: KMemAlloc failed,size = %d.\r\n",size);
 		return 0;
 	}
 	if(write){

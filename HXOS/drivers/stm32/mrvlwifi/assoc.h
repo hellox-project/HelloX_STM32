@@ -88,6 +88,6 @@ int lbs_cmd_80211_deauthenticate(struct lbs_private *priv, u8 bssid[ETH_ALEN],
  void marvel_assoc_wpa_network(struct lbs_private *priv,
  char *ssid,char *key);
  void marvel_assoc_open_network(struct lbs_private *priv,
-	 char *ssid,char *key,char mode);
+	 char *ssid,char *key,char mode,int channel);
 
 #endif

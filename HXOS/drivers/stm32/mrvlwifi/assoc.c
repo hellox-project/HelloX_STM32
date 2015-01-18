@@ -581,8 +581,8 @@ static struct bss_descriptor *lbs_find_ssid_in_list(struct lbs_private *priv,
 		}
 		if (bssid && compare_ether_addr(iter_bss->bssid, bssid) != 0)
 			continue; /* bssid doesn't match */
-		//if ((channel > 0) && (iter_bss->channel != channel))
-		//	continue; /* channel doesn't match */
+		if ((channel > 0) && (iter_bss->channel != channel))
+			continue; /* channel doesn't match */
 
 		switch (mode) {
 		case IW_MODE_INFRA:
@@ -806,11 +806,6 @@ static int assoc_helper_channel(struct lbs_private *priv,
 	return ret;
 }
 
-
-
-
-
-
 static int assoc_helper_wep_keys(struct lbs_private *priv,
 				 struct assoc_request *assoc_req)
 {
@@ -830,7 +825,7 @@ static int assoc_helper_wep_keys(struct lbs_private *priv,
 		goto out;
 
 	/* enable/disable the MAC's WEP packet filter */
-	if (assoc_req->secinfo.wep_enabled)//如果使能wep，这里就要重新写入mac
+	if (assoc_req->secinfo.wep_enabled)
 		priv->mac_control |= CMD_ACT_MAC_WEP_ENABLE;
 	else
 		priv->mac_control &= ~CMD_ACT_MAC_WEP_ENABLE;
@@ -952,8 +947,6 @@ static int assoc_helper_wpa_ie(struct lbs_private *priv,
 	lbs_deb_leave_args(LBS_DEB_ASSOC, ret);
 	return ret;
 }
-
-
 
 /**
  *  @brief Join an adhoc network found in a previous scan
@@ -1238,7 +1231,6 @@ out:
 	return ret;
 }
 
-
 /**
  *  @brief Stop and Ad-Hoc network and exit Ad-Hoc mode
  *
@@ -1331,7 +1323,6 @@ done:
 	return ret;
 }
 
-
 static __inline int match_bss_no_security(struct lbs_802_11_security *secinfo,
 					struct bss_descriptor *match_bss)
 {
@@ -1355,7 +1346,6 @@ static __inline int match_bss_static_wep(struct lbs_802_11_security *secinfo,
 	else
 		return 0;
 }
-
 
 static __inline int match_bss_wpa(struct lbs_802_11_security *secinfo,
 				struct bss_descriptor *match_bss)
@@ -1525,20 +1515,6 @@ static struct bss_descriptor *lbs_find_best_ssid_in_list(
 	return best_bss;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  *  @brief Find the best AP
  *
@@ -1549,7 +1525,6 @@ static struct bss_descriptor *lbs_find_best_ssid_in_list(
  *
  *  @return             0--success, otherwise--fail
  */
-
 
 static int lbs_find_best_network_ssid(struct lbs_private *priv,
 	uint8_t *out_ssid, uint8_t *out_ssid_len, uint8_t preferred_mode,
@@ -1660,43 +1635,84 @@ static int should_stop_adhoc(struct lbs_private *priv,
 	return 0;
 }
 
-
-//全局的关联变量
-struct assoc_request gmarvel_adhoc_assoc;
-static void init_marvel_adhoc_assoc(struct assoc_request *assoc,char *ssid,char *key,char mode)
-{	
+//struct assoc_request gmarvel_adhoc_assoc;
+static void init_marvel_adhoc_assoc(struct assoc_request *assoc,char *ssid,char *key,char mode,int channel)
+{
 	memset(assoc,0,sizeof(struct assoc_request));
-	assoc->flags |= (1<<ASSOC_FLAG_SSID);
-	printk("please input essid:%s\n",ssid);
-	printk("please input wep key:%s\n",key);
+	
+	//Set SSID.
   memcpy(assoc->ssid,ssid,strlen(ssid));
-  assoc->ssid_len = strlen((const char *)assoc->ssid);
+  assoc->ssid_len = strlen(ssid);
+	assoc->flags |= (1<<ASSOC_FLAG_SSID);	
+	
+	//Set encryption materials.
 	if(strlen(key)){
 		assoc->wep_keys[0].len = strlen(key);
 		memcpy(assoc->wep_keys[0].key,key,strlen(key));
 		assoc->secinfo.wep_enabled = 1;
-		assoc->flags |= ((1<<ASSOC_FLAG_WEP_KEYS)|
-		(1<<ASSOC_FLAG_WEP_TX_KEYIDX)|
-		(1<<ASSOC_FLAG_SECINFO)|
-		(1<<ASSOC_FLAG_MODE));
 	}
-	//Set security information element changing flags.
+	else
+	{
+		//Should clear all keys here,but since we initialized the whole structure to zero...
+	}
+	assoc->flags |= ((1<<ASSOC_FLAG_WEP_KEYS)|(1<<ASSOC_FLAG_WEP_TX_KEYIDX));
 	assoc->flags |= 1<<ASSOC_FLAG_SECINFO;
-	assoc->channel = 1;
-  assoc->band    = 0;
-  assoc->mode    = (mode == '0') ? IW_MODE_INFRA:IW_MODE_ADHOC;
-  memset(assoc->bssid,0,6);
-  assoc->secinfo.auth_mode = 1;
+	
+	//Set mode information.
+	if('0' == mode)  //Infrastructure.
+	{
+		assoc->mode = IW_MODE_INFRA;
+	}
+	else
+	{
+		assoc->mode = IW_MODE_ADHOC;
+	}
+	assoc->flags |= 1<<ASSOC_FLAG_MODE;
+	
+	//Set channel information.
+	if('0' == mode)  //Infrastructure.
+	{
+		assoc->channel = 0;
+		//assoc->flags  |= 1<<ASSOC_FLAG_CHANNEL;
+		assoc->band    = 0;
+	}
+	else
+	{
+		assoc->channel = channel;
+		assoc->flags  |= 1<<ASSOC_FLAG_CHANNEL;
+		assoc->band    = 0;
+	}
+	
+	//Clear BSSID and set authentication mode to open system.
+	memset(assoc->bssid,0,6);
+	assoc->secinfo.auth_mode = 1;
 }
 
 void marvel_assoc_open_network(struct lbs_private *priv,
-	char *ssid,char *key,char mode)
+	char *ssid,char *key,char mode,int channel)
 {
-	static struct assoc_request gmarvel_adhoc_assoc;
-	init_marvel_adhoc_assoc(&gmarvel_adhoc_assoc,ssid,key,mode);
-	priv->pending_assoc_req = &gmarvel_adhoc_assoc;
+	//static struct assoc_request gmarvel_adhoc_assoc;
+	struct assoc_request* par = NULL;
+	
+	//Create association request object.
+	//_hx_printf("  Assoc_Open_Network: Allocate memory for req obj.\r\n");
+	par = (struct assoc_request*)KMemAlloc(sizeof(struct assoc_request),KMEM_SIZE_TYPE_ANY);
+	if(NULL == par)
+	{
+		_hx_printf("  Assoc_Open_Network: Can not allocate memory.\r\n");
+		return;
+	}
+	//Initiliaze the request object.
+	init_marvel_adhoc_assoc(par,ssid,key,mode,channel);
+	//init_marvel_adhoc_assoc(&gmarvel_adhoc_assoc,ssid,key,mode,channel);
+	//priv->pending_assoc_req = &gmarvel_adhoc_assoc;
+	priv->pending_assoc_req = par;
 	lbs_deb_assoc("start assoc...\n");
 	lbs_association_worker(priv);
+	
+	//Destroy the request object.
+	//_hx_printf("  Assoc_Open_Network: Destroy req object.\r\n");
+	KMemFree(par,KMEM_SIZE_TYPE_ANY,0);
 }
 
 struct bss_descriptor *find_beacon_bss(struct lbs_private *priv,
@@ -1714,7 +1730,7 @@ void print_enckey(struct enc_key *key)
 void lbs_association_worker(struct lbs_private *priv)
 {
 	struct assoc_request * assoc_req = NULL;
-	char ssid[10];
+	char ssid[IW_ESSID_MAX_SIZE + 1];    //Fuck you the original code as define ssid[10],so bad coding skills...
 	int ret = 0;
 	int find_any_ssid = 0;
 
@@ -1820,7 +1836,7 @@ void lbs_association_worker(struct lbs_private *priv)
 	}
 
 	if (test_bit(ASSOC_FLAG_CHANNEL, &assoc_req->flags)) {
-		ret = assoc_helper_channel(priv, assoc_req);//改变信道
+		ret = assoc_helper_channel(priv, assoc_req);
 		if (ret)
 			goto out;
 	}
@@ -1875,9 +1891,9 @@ void lbs_association_worker(struct lbs_private *priv)
 				priv->curbssparams.bssid[0],priv->curbssparams.bssid[1],
 				priv->curbssparams.bssid[2],priv->curbssparams.bssid[3],
 				priv->curbssparams.bssid[4],priv->curbssparams.bssid[5]);
-			lbs_prepare_and_send_command(priv,
-			  CMD_802_11_RSSI,
-			  0, CMD_OPTION_WAITFORRSP, 0, NULL); 
+			//lbs_prepare_and_send_command(priv,
+			//  CMD_802_11_RSSI,
+			//  0, CMD_OPTION_WAITFORRSP, 0, NULL); 
 		} else {
 			ret = -1;
 		}
